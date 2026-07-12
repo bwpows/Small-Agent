@@ -1,0 +1,17 @@
+# === 前端与框架 ===
+streamlit>=1.30.0
+
+# === 基础网络请求 ===
+requests>=2.31.0
+
+# === 长期记忆组件 ===
+mem0ai>=0.0.15
+
+# === Google Drive 云端同步组件 ===
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.1.1
+google-auth-oauthlib>=1.1.0
+
+# === 网页搜索组件 (视你底层实现而定) ===
+duckduckgo-search>=5.0.0
+beautifulsoup4>=4.12.0
