@@ -49,7 +49,7 @@ def execute_tool(tool_name, arguments):
 # ==========================================
 # 2. Agent 核心大脑 (终极防死循环 + 强力参数拦截)
 # ==========================================
-def generate_answer(user_input, recent_history, parsed_memories, web_info):
+def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_status=None, forced_tools=None):
     current_time = datetime.datetime.now().strftime("%Y年%m月%d日 %H:%M")
     memory_text = "\n".join([f"- {m['text']}" for m in parsed_memories]) if parsed_memories else "无相关长期记忆。"
     
@@ -70,6 +70,18 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info):
 """
 
     messages = [{"role": "system", "content": system_prompt}]
+    
+    # 🌟 显式工具路由拦截：如果传入了 forced_tools，在提示词里加上最高权重指令
+    all_tools = get_tools_definition()
+    active_tools = []
+    
+    if forced_tools and len(forced_tools) > 0:
+        active_tools = [t for t in all_tools if t["function"]["name"] in forced_tools]
+        tool_names = ", ".join(forced_tools)
+        messages.append({"role": "system", "content": f"🚨 用户已强制指定使用以下工具：【{tool_names}】。请优先使用这些工具来完成任务！"})
+    else:
+        active_tools = all_tools
+
     if recent_history:
         for msg in recent_history:
             messages.append({"role": msg["role"], "content": msg["content"]})
@@ -77,13 +89,13 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info):
 
     payload = {
         "model": LLM_MODEL,
-        "tools": get_tools_definition(),
+        "tools": active_tools, # 👈 使用过滤后的工具列表
         "stream": False,
         "options": {"temperature": 0.2}
     }
     
     actual_write_success = False
-    max_loops = 4  # 稍微放宽一点容错率
+    max_loops = 4  
     error_count = 0
 
     for step in range(max_loops):
@@ -128,6 +140,11 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info):
             # 🌟 工具执行逻辑 🌟
             if tool_called_this_step and func_name:
                 print(f"⚙️ [循环回合 {step+1}] 执行工具: {func_name}, 参数: {args}")
+                
+                # 🌟 如果传入了 ui_status，把底层调用动态写回前端
+                if ui_status:
+                    ui_status.write(f"⚙️ 正在调用工具: `{func_name}` ...")
+                    
                 exec_result = execute_tool(func_name, args)
                 
                 if "✅ 成功" in str(exec_result) and ("drive" in func_name or "write" in func_name or "manage" in func_name):
@@ -153,6 +170,8 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info):
                 
                 if ai_claims_fake_write and not actual_write_success:
                     print(f"🚨 [第{step+1}回合] 拦截虚假写入！准备打回重做...")
+                    if ui_status:
+                        ui_status.write("🚨 拦截到虚假操作，正在强制重试...")
                     error_count += 1 
                     warning_prompt = "🚨 **系统强制纠错**：你并未真正调用写工具却声称已添加！如果用户指令缺失关键参数（如手机号），立刻反问用户；如果参数齐全，请生成工具调用指令！"
                     messages.append({"role": "assistant", "content": content})
