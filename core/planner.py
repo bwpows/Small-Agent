@@ -1,6 +1,8 @@
 import json
 import requests
 import re
+# 在 core/planner.py 顶部新增导入
+from core.retriever import retrieve_top_agents
 
 # 兼容不同的配置导入路径
 try:
@@ -9,10 +11,9 @@ except ImportError:
     from config.config import OLLAMA_BASE_URL, LLM_MODEL
     
 from core.llm_engine import get_tools_definition
-
 def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: list = None) -> list:
     """
-    🧠 究极大脑 (Planner) 模块：支持 DAG拓扑、Mem0记忆注入、格式自愈
+    🧠 究极大脑 (Planner) 模块：支持 DAG拓扑、Mem0记忆注入、格式自愈、RAG专家检索
     """
     tools = get_tools_definition()
     tool_descriptions = "\n".join([f"- **{t['function']['name']}**: {t['function']['description']}" for t in tools])
@@ -30,8 +31,18 @@ def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: 
         memory_text = "\n".join([f"- {m['text']}" for m in parsed_memories])
 
     # ==========================================
-    # 🌟 带有风控审计的 System Prompt
+    # 🌟 核心魔法：RAG 智能体检索注入
     # ==========================================
+    # 猎头去百人库里捞出最相关的 3 个专家
+    active_roster = retrieve_top_agents(user_goal, top_k=3)
+    
+    # 动态拼接这 3 个人的专属说明书
+    roster_prompt = "\n".join([f"- `{role_id}`: {info['desc']}" for role_id, info in active_roster.items()])
+
+    # ==========================================
+    # 🌟 带有风控审计与 RAG 路由的 System Prompt
+    # ==========================================
+    
     system_prompt = f"""你是一个顶级的 AI 项目经理兼安全风控官（Planner）。
 你的职责是将用户的宏大目标拆解为子任务队列，并对每一个任务进行极其严厉的安全风险评估！
 你不需要亲自执行，只需做好规划和审查。
@@ -56,14 +67,21 @@ def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: 
 如果用户的目标仅仅是“查询信息”或“问一个问题”，你的任务链应该在“搜集并总结”后就立刻结束！
 绝对不允许擅自添加用户没有要求的操作（例如：未经允许去建表格、写文件、发邮件等）！
 
+【⚙️ 专家分发路由规则 (极其重要)】
+你必须为每个任务指定一个 `agent_role`（执行者）。你只能从以下【本次任务最匹配的候选专家】中挑选：
+{roster_prompt}
+
+🚨 注意：如果以上专家都不匹配当前任务，请务必填写 "general" (通用打工人)。
+
 【⚙️ 输出格式要求】
-必须输出纯净的 JSON 数组，严禁包含任何 Markdown 代码块包裹。
+必须输出纯净的 JSON 数组，严禁包含任何 Markdown 代码块包裹（不要输出 ```json）。
 
 【📝 输出格式模板 (仅供结构参考，不要照搬动作！)】
 [
     {{
         "task_id": 1,
         "action": "搜集数据",
+        "agent_role": "researcher", 
         "depends_on": [], 
         "instruction": "使用合适的工具获取用户需要的信息。",
         "risk_level": "low",
@@ -75,7 +93,7 @@ def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: 
 
     messages = [
         {"role": "system", "content": system_prompt},
-        {"role": "user", "content": f"请结合以上记忆与上下文，拆解以下目标：\n{user_goal}"}
+        {"role": "user", "content": f"请结合以上记忆与上下文，严格按照规则拆解以下目标：\n{user_goal}"}
     ]
 
     payload = {
@@ -84,7 +102,7 @@ def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: 
         "options": {"temperature": 0.1} # 极致低温，杜绝幻觉
     }
 
-    print("🧠 大脑 (Planner) 正在结合记忆与上下文拆解任务...")
+    print("🧠 大脑 (Planner) 正在结合记忆、上下文并使用 RAG 检索拆解任务...")
     
     # ==========================================
     # 🌟 带格式自愈的请求循环
