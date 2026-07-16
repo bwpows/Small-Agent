@@ -1,11 +1,18 @@
-from ddgs import DDGS
+"""
+联网搜索工具
+---------------
+接入 core/sandbox.py 的 NetworkGuard，提供搜索结果域名过滤。
+"""
 
-def search_web(query, time_range="anytime"):
+from ddgs import DDGS
+from core.sandbox import get_network_guard
+
+
+def search_web(query: str, time_range: str = "anytime") -> str:
     """
-    带时间过滤的高级搜索实现
+    带时间过滤和域名安全守卫的高级搜索。
     """
     try:
-        # 将大模型传来的时间区间，映射为搜索引擎的底层参数
         time_map = {
             "past_day": "d",
             "past_week": "w",
@@ -14,16 +21,23 @@ def search_web(query, time_range="anytime"):
             "anytime": None
         }
         ddg_time = time_map.get(time_range)
-        
+
+        guard = get_network_guard()
         results = []
+
         with DDGS() as ddgs:
-            # 调用搜索引擎，传入时间限制，取前 3 条最相关的结果
-            for r in ddgs.text(query, timelimit=ddg_time, max_results=3):
-                results.append(f"【标题】: {r['title']}\n【摘要】: {r['body']}\n【链接】: {r['href']}")
-                
+            for r in ddgs.text(query, timelimit=ddg_time, max_results=5):
+                # 域名安全检查：过滤掉黑名单/非白名单域名的结果
+                href = r.get("href", "")
+                if href and not guard.check_url(href):
+                    continue
+                results.append(
+                    f"【标题】: {r['title']}\n【摘要】: {r['body']}\n【链接】: {href}"
+                )
+
         if not results:
             return "🔍 搜索完毕，未找到相关结果。请尝试更换关键词或放宽时间限制。"
-            
+
         return "\n\n".join(results)
     except Exception as e:
         return f"❌ 搜索接口调用失败: {str(e)}"

@@ -1,0 +1,30 @@
+{"timestamp": "2026-07-15T22:51:10.416707", "event": "file_write", "details": {"path": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_test_3yvoheui/data.json", "size": 16}}
+{"timestamp": "2026-07-15T22:51:10.417818", "event": "file_write", "details": {"path": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_test_hj_m3qry/test.txt", "size": 11}}
+{"timestamp": "2026-07-15T22:51:10.417999", "event": "file_read", "details": {"path": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_test_hj_m3qry/test.txt"}}
+{"timestamp": "2026-07-15T22:51:10.421424", "event": "sandbox_exec_start", "details": {"level": "relaxed", "code_length": 25, "code_preview": "import email; print('ok')"}}
+{"timestamp": "2026-07-15T22:51:10.421537", "event": "sandbox_workdir_created", "details": {"work_dir": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_v1d8lijn"}}
+{"timestamp": "2026-07-15T22:51:10.445890", "event": "sandbox_exec_success", "details": {"output_length": 2}}
+{"timestamp": "2026-07-15T22:51:10.446818", "event": "sandbox_exec_start", "details": {"level": "moderate", "code_length": 40, "code_preview": "import json; print(json.dumps({'a': 1}))"}}
+{"timestamp": "2026-07-15T22:51:10.446940", "event": "sandbox_workdir_created", "details": {"work_dir": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_osj4zmzm"}}
+{"timestamp": "2026-07-15T22:51:10.471907", "event": "sandbox_exec_success", "details": {"output_length": 8}}
+{"timestamp": "2026-07-15T22:51:10.472242", "event": "sandbox_exec_start", "details": {"level": "moderate", "code_length": 29, "code_preview": "import os; print(os.getcwd())"}}
+{"timestamp": "2026-07-15T22:51:10.472373", "event": "sandbox_workdir_created", "details": {"work_dir": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_lf75kvf1"}}
+{"timestamp": "2026-07-15T22:51:10.497967", "event": "sandbox_exec_failed", "details": {"returncode": 1, "error": "ImportError: Sandbox Blocked: module 'os' is banned (security level: moderate). Use a safer alternative or consult the allowed modules list.", "full_stderr": "Traceback (most recent call last):\n  File \"<string>\", line 34, in <module>\n  File \"<string>\", line 12, in __sandboxed_import__\nImportError: Sandbox Blocked: module 'os' is banned (security level: moderate). Use a safer alternative or consult the allowed modules list."}}
+{"timestamp": "2026-07-15T22:51:10.498302", "event": "sandbox_exec_start", "details": {"level": "moderate", "code_length": 0, "code_preview": ""}}
+{"timestamp": "2026-07-15T22:51:10.498427", "event": "sandbox_workdir_created", "details": {"work_dir": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_nd4rl7g2"}}
+{"timestamp": "2026-07-15T22:51:10.522426", "event": "sandbox_exec_success", "details": {"output_length": 0}}
+{"timestamp": "2026-07-15T22:51:10.522732", "event": "sandbox_exec_start", "details": {"level": "moderate", "code_length": 33, "code_preview": "import math; print(math.sqrt(16))"}}
+{"timestamp": "2026-07-15T22:51:10.522859", "event": "sandbox_workdir_created", "details": {"work_dir": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_26alojii"}}
+{"timestamp": "2026-07-15T22:51:10.547273", "event": "sandbox_exec_success", "details": {"output_length": 3}}
+{"timestamp": "2026-07-15T22:51:10.547602", "event": "sandbox_exec_start", "details": {"level": "moderate", "code_length": 12, "code_preview": "print(1 + 1)"}}
+{"timestamp": "2026-07-15T22:51:10.547730", "event": "sandbox_workdir_created", "details": {"work_dir": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_3wnx4l6a"}}
+{"timestamp": "2026-07-15T22:51:10.572106", "event": "sandbox_exec_success", "details": {"output_length": 1}}
+{"timestamp": "2026-07-15T22:51:10.572454", "event": "sandbox_exec_start", "details": {"level": "moderate", "code_length": 10, "code_preview": "print(1 + "}}
+{"timestamp": "2026-07-15T22:51:10.572591", "event": "sandbox_workdir_created", "details": {"work_dir": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_j_07ew9p"}}
+{"timestamp": "2026-07-15T22:51:10.606746", "event": "sandbox_exec_failed", "details": {"returncode": 1, "error": "SyntaxError: '(' was never closed", "full_stderr": "File \"<string>\", line 34\n    print(1 + \n         ^\nSyntaxError: '(' was never closed"}}
+{"timestamp": "2026-07-15T22:51:10.607136", "event": "sandbox_exec_start", "details": {"level": "strict", "code_length": 27, "code_preview": "import math; print(math.pi)"}}
+{"timestamp": "2026-07-15T22:51:10.607275", "event": "sandbox_workdir_created", "details": {"work_dir": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_l7uri8zl"}}
+{"timestamp": "2026-07-15T22:51:10.631462", "event": "sandbox_exec_success", "details": {"output_length": 17}}
+{"timestamp": "2026-07-15T22:51:10.631778", "event": "sandbox_exec_start", "details": {"level": "strict", "code_length": 27, "code_preview": "import email; print('test')"}}
+{"timestamp": "2026-07-15T22:51:10.631919", "event": "sandbox_workdir_created", "details": {"work_dir": "/var/folders/rv/5x_ytp314kvf60f00_fdskjm0000gn/T/sandbox_vz_x8h7u"}}
+{"timestamp": "2026-07-15T22:51:10.656030", "event": "sandbox_exec_failed", "details": {"returncode": 1, "error": "ImportError: Sandbox Blocked: module 'email' is not in the allowed list. Allowed: base64, collections, copy, csv, dataclasses, datetime, decimal, enum, fractions, functools, hashlib, html, io, itertools, json...", "full_stderr": "Traceback (most recent call last):\n  File \"<string>\", line 34, in <module>\n  File \"<string>\", line 18, in __sandboxed_import__\nImportError: Sandbox Blocked: module 'email' is not in the allowed list. Allowed: base64, collections, copy, csv, dataclasses, datetime, decimal, enum, fractions, functools, hashlib, html, io, itertools, json..."}}

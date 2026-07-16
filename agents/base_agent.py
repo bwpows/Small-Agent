@@ -5,6 +5,8 @@ import datetime
 import re
 import traceback
 from config.config import OLLAMA_BASE_URL, LLM_MODEL
+from core.json_utils import robust_parse
+from core.tracing import trace_span, SpanKind, get_tracer
 
 # 兼容过渡：目前工具仍由 llm_engine 管理，后续可独立抽离为 tool_registry
 from core.llm_engine import get_tools_definition, execute_tool
@@ -62,6 +64,23 @@ class BaseAgent:
         :param instruction: 当前专家需要执行的具体指令
         :param prior_context: 前置任务传递过来的情报 (XComs)
         """
+        tracer = get_tracer()
+        agent_span = tracer.start_span(
+            name=f"agent::{self.agent_name}",
+            kind=SpanKind.AGENT,
+            inputs={"instruction": instruction, "prior_context": prior_context[:200] if prior_context else ""},
+            metadata={"agent_name": self.agent_name},
+        )
+
+        try:
+            result = self._execute_impl(instruction, prior_context, parsed_memories, ui_status)
+            tracer.end_span(agent_span, output=result)
+            return result
+        except Exception as e:
+            tracer.end_span(agent_span, error=e)
+            return f"❌ [{self.agent_name}] 执行崩溃:\n```python\n{traceback.format_exc()}\n```"
+
+    def _execute_impl(self, instruction: str, prior_context: str = "", parsed_memories: list = None, ui_status=None) -> str:
         # 组装 XComs 数据流转
         full_instruction = instruction
         if prior_context:
@@ -78,29 +97,32 @@ class BaseAgent:
         }
         
         actual_tool_success = False
-        max_loops = 4  
+        called_tools: dict = {}          # 追踪已调用的工具，防止同一工具死循环
+        max_loops = 6                   # 给多步工具链留足空间
         error_count = 0
 
         for step in range(max_loops):
             payload["messages"] = messages
             try:
                 # 1. 呼叫大模型
-                response = requests.post(f"{OLLAMA_BASE_URL}/api/chat", json=payload, timeout=120)
-                response.raise_for_status()
-                message_obj = response.json().get("message", {})
-                content = message_obj.get("content", "")
+                with trace_span(f"llm_chat::{self.agent_name}", kind=SpanKind.LLM, capture_input=False) as llm_span:
+                    response = requests.post(f"{OLLAMA_BASE_URL}/api/chat", json=payload, timeout=120)
+                    response.raise_for_status()
+                    message_obj = response.json().get("message", {})
+                    content = message_obj.get("content", "")
+                    llm_span.set_output({"content_len": len(content), "has_tool_call": bool(message_obj.get("tool_calls"))})
                 
                 tool_called_this_step = False
                 func_name = None
                 args = {}
 
-                # 2. 兼容解析 JSON 或 XML 格式的工具调用
+                # 2. 兼容解析 JSON 或 XML 格式的工具调用（加固：自动修复参数 JSON）
                 if "tool_calls" in message_obj and message_obj["tool_calls"]:
                     func_name = message_obj["tool_calls"][0]["function"]["name"]
                     args = message_obj["tool_calls"][0]["function"].get("arguments", {})
                     if isinstance(args, str):
-                        try: args = json.loads(args)
-                        except: args = {}
+                        parsed = robust_parse(args, expect_array=False)
+                        args = parsed if isinstance(parsed, dict) else {}
                     tool_called_this_step = True
                 elif "<function=" in content or "<tool_call>" in content:
                     # (保留你原有的正则解析逻辑)
@@ -120,18 +142,37 @@ class BaseAgent:
                             except: pass
                     if func_name: tool_called_this_step = True
 
+                # ── 死循环守卫：同一工具重复调用超过 2 次则强制打断 ──
+                if tool_called_this_step and func_name:
+                    called_tools.setdefault(func_name, 0)
+                    called_tools[func_name] += 1
+                    if called_tools[func_name] > 2:
+                        if ui_status:
+                            ui_status.write(f"🛑 [{self.agent_name}] 检测到 `{func_name}` 被重复调用 {called_tools[func_name]} 次，强制打断！")
+                        nudge = f"🚨 你已经重复调用 `{func_name}` {called_tools[func_name]} 次！禁止再次调用它。请基于目前已获取的数据直接输出最终中文回答。"
+                        messages.append({"role": "assistant", "content": content} if content.strip() else {"role": "assistant", "content": f"调用了 {func_name}"})
+                        messages.append({"role": "user", "content": nudge})
+                        continue
+
                 # 3. ⚙️ 工具执行落地
                 if tool_called_this_step and func_name:
                     if ui_status:
                         ui_status.write(f"🧑‍💻 [{self.agent_name}] 正在调用工具: `{func_name}` ...")
-                        
-                    exec_result = execute_tool(func_name, args)
+
+                    with trace_span(f"tool::{func_name}", kind=SpanKind.TOOL, inputs={"args": args}, metadata={"agent": self.agent_name}) as tool_span:
+                        exec_result = execute_tool(func_name, args)
+                        tool_span.set_output(exec_result)
                     
                     if "✅ 成功" in str(exec_result):
                         actual_tool_success = True
                     
-                    # 打断指令：强制大模型消化数据，防止死循环
-                    nudge_prompt = f"系统已执行 `{func_name}`，返回数据：\n```text\n{exec_result}\n```\n请基于上述数据直接回答，绝不允许再次调用该工具！"
+                    # 推送到文案：鼓励继续多步工具链，但禁止重复调同一个工具
+                    nudge_prompt = (
+                        f"系统已执行 `{func_name}`，返回数据：\n```text\n{exec_result}\n```\n"
+                        f"如果还需要调用**其他**工具才能完成任务，请继续调用；"
+                        f"如果数据已经足够，请直接输出最终的中文回答。"
+                        f"【重要】绝对禁止再次调用 `{func_name}`！"
+                    )
                     
                     if "tool_calls" in message_obj:
                         messages.append(message_obj) 

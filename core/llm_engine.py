@@ -5,6 +5,7 @@ import requests
 import datetime
 import re
 from config.config import OLLAMA_BASE_URL, LLM_MODEL
+from core.json_utils import robust_parse
 
 # ==========================================
 # 🌟 全自动动态工具加载引擎 
@@ -42,9 +43,13 @@ def get_tools_definition():
 
 def execute_tool(tool_name, arguments):
     try:
-        if tool_name in _DYNAMIC_TOOLS: return _DYNAMIC_TOOLS[tool_name](**arguments)
-        else: return f"❌ 未知工具: {tool_name}"
-    except Exception as e: return f"❌ 工具执行崩溃: {str(e)}"
+        if tool_name in _DYNAMIC_TOOLS:
+            result = _DYNAMIC_TOOLS[tool_name](**arguments)
+        else:
+            result = f"❌ 未知工具: {tool_name}"
+        return result
+    except Exception as e:
+        return f"❌ 工具执行崩溃: {str(e)}"
 
 # ==========================================
 # 2. Agent 核心大脑 (终极防死循环 + 强力参数拦截)
@@ -110,13 +115,13 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
             func_name = None
             args = {}
 
-            # --- 解析 JSON 工具调用 ---
+            # --- 解析 JSON 工具调用（加固：自动修复参数 JSON）---
             if "tool_calls" in message_obj and message_obj["tool_calls"]:
                 func_name = message_obj["tool_calls"][0]["function"]["name"]
                 args = message_obj["tool_calls"][0]["function"].get("arguments", {})
                 if isinstance(args, str):
-                    try: args = json.loads(args)
-                    except: args = {}
+                    parsed = robust_parse(args, expect_array=False)
+                    args = parsed if isinstance(parsed, dict) else {}
                 tool_called_this_step = True
 
             # --- 解析 正则 XML 工具调用 ---

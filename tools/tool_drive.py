@@ -135,17 +135,30 @@ def auto_drive_manager(sheet_name, data_array=None):
 # ==========================================
 # 🚀 2. 删、改：高级表格编辑工具 (遗失的拼图补回)
 # ==========================================
-def manage_sheet_rows(sheet_name, action, row_index=None, new_data=None, confirmed=False):
-    """表格高级编辑：支持读取、删除、清空、修改"""
+def manage_sheet_rows(sheet_name=None, action=None, sheet_id=None, row_index=None, new_data=None, confirmed=False):
+    """表格高级编辑：支持读取、删除、清空、修改。
+    支持通过 sheet_name 或 sheet_id 定位表格（sheet_id 优先，可跳过名称搜索直接定位）。"""
     try:
         creds = authenticate_drive()
         sheets_service = build('sheets', 'v4', credentials=creds)
         drive_service = build('drive', 'v3', credentials=creds)
         
-        query = f"name='{sheet_name}' and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false"
-        files = drive_service.files().list(q=query).execute().get('files', [])
-        if not files: return f"❌ 找不到名为 {sheet_name} 的表格。"
-        sheet_id = files[0]['id']
+        if not sheet_id:
+            if not sheet_name:
+                return "❌ 必须提供 sheet_name 或 sheet_id 来进行定位。"
+            query = f"name='{sheet_name}' and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false"
+            files = drive_service.files().list(q=query).execute().get('files', [])
+            if not files: return f"❌ 找不到名为「{sheet_name}」的表格（或该文件不是 Google Sheets 格式）。"
+            sheet_id = files[0]['id']
+            sheet_name = sheet_name or files[0]['name']
+        else:
+            # 通过 ID 定位时，回填名称便于日志输出
+            if not sheet_name:
+                try:
+                    meta = drive_service.files().get(fileId=sheet_id, fields="name").execute()
+                    sheet_name = meta.get("name", sheet_id)
+                except:
+                    sheet_name = sheet_id
 
         # 🌟 新增：读取整个表格内容的功能
         if action == 'read':
@@ -204,8 +217,15 @@ def list_drive_files(limit=10, query=None):
         
         files = results.get('files', [])
         if not files: return f"📭 没有找到包含『{query}』的文件。" if query else "📭 没有任何文件。"
+        
+        # 🌟 根据 mimeType 标记文件类型
+        def type_label(mime):
+            if mime == "application/vnd.google-apps.spreadsheet": return "📊"
+            if mime == "application/vnd.google-apps.document": return "📝"
+            if mime == "application/vnd.google-apps.folder": return "📁"
+            return "📄"
             
-        file_list = [f"- 📄 {f['name']} (ID: {f['id']})" for f in files]
+        file_list = [f"- {type_label(f.get('mimeType',''))} {f['name']} (ID: {f['id']}, 类型: {f.get('mimeType','未知')})" for f in files]
         return f"📂 【查询结果】:\n" + "\n".join(file_list)
     except Exception as e:
         return f"❌ 获取列表失败: {str(e)}"
@@ -262,17 +282,18 @@ REGISTER_TOOLS = [
             "type": "function",
             "function": {
                 "name": "manage_sheet_rows",
-                "description": "表格高级编辑工具。支持：读取内容(read)、删除行(delete)、清空表(clear)、修改行(update)。",
+                "description": "表格高级编辑工具。支持：读取内容(read)、删除行(delete)、清空表(clear)、修改行(update)。可通过 sheet_name 或 sheet_id 定位表格（sheet_id 可跳过搜索直接精确定位，当你知道文件 ID 时优先使用）。",
                 "parameters": {
                     "type": "object",
                     "properties": {
-                        "sheet_name": {"type": "string"},
+                        "sheet_name": {"type": "string", "description": "表格名称（和 sheet_id 二选一）"},
+                        "sheet_id": {"type": "string", "description": "Google Sheets 文件 ID（和 sheet_name 二选一，优先使用）"},
                         "action": {"type": "string", "enum": ["read", "delete", "clear", "update"]},
                         "row_index": {"type": "integer", "description": "目标行号 (read和clear模式下不需要)"},
                         "new_data": {"type": "array", "description": "修改模式下必填的新数据数组"},
                         "confirmed": {"type": "boolean", "description": "删除确认标记"}
                     },
-                    "required": ["sheet_name", "action"]
+                    "required": ["action"]
                 }
             }
         }

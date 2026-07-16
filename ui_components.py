@@ -143,3 +143,14 @@ def render_chat_history():
         avatar = "🧑‍💻" if msg["role"] == "user" else "🤖"
         with st.chat_message(msg["role"], avatar=avatar):
             st.markdown(msg["content"])
+            # ── 对话历史下展示 trace 摘要徽章 ──
+            trace = msg.get("trace")
+            if trace:
+                dur = trace.get("duration_ms", 0)
+                spans = trace.get("spans", 0)
+                errors = trace.get("errors", 0)
+                tid = trace.get("trace_id", "?")
+                parts = [f"⏱️ {dur:.0f}ms", f"📊 {spans} spans"]
+                if errors:
+                    parts.append(f"❌ {errors} 错误")
+                st.caption(" | ".join(parts) + f" | `trace:{tid}`")
