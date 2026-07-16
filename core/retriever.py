@@ -1,23 +1,18 @@
-import requests
 import math
 
-# 🌟 核心修改：从配置文件中统一导入所有模型参数
-from config.config import OLLAMA_BASE_URL, EMBEDDING_MODEL
+from core.llm_client import get_embedding_client
 from agents.registry import AGENT_ROSTER
 
 _AGENT_VECTOR_CACHE = {} 
 
 def get_embedding(text: str) -> list:
-    """调用 Ollama 获取文本的向量表示"""
-    url = f"{OLLAMA_BASE_URL}/api/embeddings"
+    """调用嵌入服务获取文本的向量表示（自动适配 本地 Ollama / 云端 OpenAI）"""
     try:
-        # 🌟 核心修改：使用配置文件中的 EMBEDDING_MODEL 变量
-        res = requests.post(url, json={"model": EMBEDDING_MODEL, "prompt": text}, timeout=10)
-        res.raise_for_status()
-        return res.json().get("embedding", [])
+        client, model_name = get_embedding_client()
+        response = client.embeddings.create(model=model_name, input=text)
+        return response.data[0].embedding
     except Exception as e:
-        print(f"⚠️ 向量化失败 (当前使用模型: {EMBEDDING_MODEL}): {e}")
-        print("💡 提示：请确保你已在终端运行 `ollama pull {EMBEDDING_MODEL}`")
+        print(f"⚠️ 向量化失败: {e}")
         return []
     
 def cosine_similarity(v1: list, v2: list) -> float:

@@ -1,30 +1,48 @@
 # tools/tool_memory.py
 from mem0 import Memory
 
-# ✅ 1. 明确地从 config/config.py 中把所有需要的变量一次性全部拔出来
 from config.config import (
-    LLM_MODEL, 
-    EMBEDDING_MODEL, 
-    COLLECTION_NAME, 
-    VECTOR_DIM, 
-    USER_ID
+    LLM_PROVIDER, EMBED_PROVIDER,
+    OLLAMA_MODEL, CLOUD_MODEL, CLOUD_API_KEY, DEEPSEEK_MODEL, DEEPSEEK_API_KEY,
+    EMBEDDING_MODEL, OPENAI_EMBED_MODEL, OPENAI_EMBED_API_KEY,
+    COLLECTION_NAME, VECTOR_DIM, USER_ID,
 )
+
+
+def _build_mem0_config():
+    """根据 LLM_PROVIDER + EMBED_PROVIDER 构建 mem0 配置。
+    推理 LLM 和 Embeder 独立选择，例如：推理走 DeepSeek，嵌入走本地 Ollama。"""
+    # ── LLM 配置 ──
+    if LLM_PROVIDER == "ollama":
+        llm_cfg = {"provider": "ollama", "config": {"model": OLLAMA_MODEL}}
+    elif LLM_PROVIDER == "deepseek":
+        llm_cfg = {"provider": "openai", "config": {"model": DEEPSEEK_MODEL, "api_key": DEEPSEEK_API_KEY, "api_base": "https://api.deepseek.com/v1"}}
+    else:  # cloud
+        llm_cfg = {"provider": "openai", "config": {"model": CLOUD_MODEL, "api_key": CLOUD_API_KEY}}
+
+    # ── Embedder 配置 ──
+    if EMBED_PROVIDER == "ollama":
+        embed_cfg = {"provider": "ollama", "config": {"model": EMBEDDING_MODEL}}
+    else:  # openai
+        embed_cfg = {"provider": "openai", "config": {"model": OPENAI_EMBED_MODEL, "api_key": OPENAI_EMBED_API_KEY}}
+
+    return {
+        "llm": llm_cfg,
+        "embedder": embed_cfg,
+        "vector_store": {
+            "provider": "qdrant",
+            "config": {
+                "collection_name": COLLECTION_NAME,
+                "embedding_model_dims": VECTOR_DIM,
+            },
+        },
+    }
+
 
 class MemoryManager:
     def __init__(self):
         """初始化连接本地数据库"""
-        mem0_config = {
-            # ✅ 2. 彻底去掉所有 config. 前缀，直接使用上面导入的纯变量名
-            "llm": {"provider": "ollama", "config": {"model": LLM_MODEL}},
-            "embedder": {"provider": "ollama", "config": {"model": EMBEDDING_MODEL}},
-            "vector_store": {
-                "provider": "qdrant", 
-                "config": {
-                    "collection_name": COLLECTION_NAME, 
-                    "embedding_model_dims": VECTOR_DIM
-                }
-            }
-        }
+        mem0_config = _build_mem0_config()
         self.db = Memory.from_config(mem0_config)
 
     def add_memory(self, text):

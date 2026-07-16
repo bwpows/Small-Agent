@@ -1,10 +1,9 @@
 import os
 import json
 import importlib
-import requests
 import datetime
 import re
-from config.config import OLLAMA_BASE_URL, LLM_MODEL
+from core.llm_client import get_llm_client
 from core.json_utils import robust_parse
 
 # ==========================================
@@ -63,8 +62,8 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
 【用户的长期记忆】：\n{memory_text}
 
 【⚙️ 物理边界与执行铁律 (最高优先级)】
-1. 🛠️ 绝对权限与严禁推脱：你已完美接入系统，拥有操作 Google Drive 及本地文件的【最高绝对权限】！绝对禁止以“缺少相关权限”、“AI无法直接操作”、“工具不支持”等任何借口拒绝用户。只要用户要求查看或修改数据，必须立刻检索并调用你的工具箱（如 manage_sheet_rows 等）去执行！
-2. 🚫 严禁虚构执行：未实际调用写入工具时，绝对不允许编造“已添加/已写入”。
+1. 🛠️ 绝对权限与严禁推脱：你已完美接入系统，拥有操作 Google Drive 及本地文件的【最高绝对权限】！绝对禁止以"缺少相关权限"、"AI无法直接操作"、"工具不支持"等任何借口拒绝用户。只要用户要求查看或修改数据，必须立刻检索并调用你的工具箱（如 manage_sheet_rows 等）去执行！
+2. 🚫 严禁虚构执行：未实际调用写入工具时，绝对不允许编造"已添加/已写入"。
 3. 🧱 强制参数拦截：如果用户指令缺失必填的核心身份参数（如手机号、姓名），立刻停止调用工具，直接反问用户获取缺失信息。
 4. 🪞 报错透明化：工具抛出异常时，立即终止后续动作并如实报告。
 
@@ -92,36 +91,43 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
             messages.append({"role": msg["role"], "content": msg["content"]})
     messages.append({"role": "user", "content": user_input})
 
-    payload = {
-        "model": LLM_MODEL,
-        "tools": active_tools, # 👈 使用过滤后的工具列表
-        "stream": False,
-        "options": {"temperature": 0.2}
-    }
-    
+    client, model_name = get_llm_client()
     actual_write_success = False
     max_loops = 4  
     error_count = 0
 
     for step in range(max_loops):
-        payload["messages"] = messages
         try:
-            response = requests.post(f"{OLLAMA_BASE_URL}/api/chat", json=payload, timeout=120)
-            response.raise_for_status()
-            message_obj = response.json().get("message", {})
-            content = message_obj.get("content", "")
+            kwargs = {
+                "model": model_name,
+                "messages": messages,
+                "temperature": 0.2,
+            }
+            if active_tools:
+                # 确保工具格式符合 OpenAI 规范：必须有 "type": "function"
+                normalized_tools = []
+                for t in active_tools:
+                    if "type" not in t:
+                        normalized_tools.append({"type": "function", "function": t["function"]})
+                    else:
+                        normalized_tools.append(t)
+                kwargs["tools"] = normalized_tools
+
+            response = client.chat.completions.create(**kwargs)
+            message_obj = response.choices[0].message
+            content = message_obj.content or ""
             
             tool_called_this_step = False
             func_name = None
             args = {}
 
             # --- 解析 JSON 工具调用（加固：自动修复参数 JSON）---
-            if "tool_calls" in message_obj and message_obj["tool_calls"]:
-                func_name = message_obj["tool_calls"][0]["function"]["name"]
-                args = message_obj["tool_calls"][0]["function"].get("arguments", {})
-                if isinstance(args, str):
-                    parsed = robust_parse(args, expect_array=False)
-                    args = parsed if isinstance(parsed, dict) else {}
+            if message_obj.tool_calls:
+                tc = message_obj.tool_calls[0]
+                func_name = tc.function.name
+                args_str = tc.function.arguments
+                parsed = robust_parse(args_str, expect_array=False)
+                args = parsed if isinstance(parsed, dict) else {}
                 tool_called_this_step = True
 
             # --- 解析 正则 XML 工具调用 ---
@@ -155,15 +161,40 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
                 if "✅ 成功" in str(exec_result) and ("drive" in func_name or "write" in func_name or "manage" in func_name):
                     actual_write_success = True
                 
-                # 🚨 终极绝杀：用带“强制打断命令”的 User 角色替代软弱的 Tool 角色，根除死循环！
-                nudge_prompt = f"系统已自动执行工具 `{func_name}`，拿到以下真实数据：\n```text\n{exec_result}\n```\n【最高指令】：数据已获取！请立刻基于上述数据，直接用中文回答用户的问题，绝不允许再次调用该工具！"
-                
-                if "tool_calls" in message_obj:
-                    messages.append(message_obj) 
+                if message_obj.tool_calls:
+                    # 标准协议：追加 assistant 消息（含 tool_calls）
+                    tc_list = []
+                    for tc in message_obj.tool_calls:
+                        tc_list.append({
+                            "id": tc.id,
+                            "type": "function",
+                            "function": {
+                                "name": tc.function.name,
+                                "arguments": tc.function.arguments,
+                            }
+                        })
+                    messages.append({
+                        "role": "assistant",
+                        "content": message_obj.content,
+                        "tool_calls": tc_list,
+                    })
+                    # 追加标准 tool 角色结果消息（必须为每个 tool_call_id 都提供响应）
+                    for tc in message_obj.tool_calls:
+                        messages.append({
+                            "role": "tool",
+                            "tool_call_id": tc.id,
+                            "content": str(exec_result) if tc.id == message_obj.tool_calls[0].id else "（此工具未被独立执行，请参考已获取的数据）",
+                        })
+                    # 补一条 user 消息做总结提示
+                    messages.append({
+                        "role": "user",
+                        "content": "数据已获取！请基于以上真实数据，直接用中文回答用户问题，不要再次调用工具。",
+                    })
                 else:
+                    # XML/正则 兜底路径：保持原有 user 角色（无 tool_call_id 可用）
                     messages.append({"role": "assistant", "content": content})
-                    
-                messages.append({"role": "user", "content": nudge_prompt})
+                    nudge_prompt = f"系统已自动执行工具 `{func_name}`，拿到以下真实数据：\n```text\n{exec_result}\n```\n【最高指令】：数据已获取！请立刻基于上述数据，直接用中文回答用户的问题，绝不允许再次调用该工具！"
+                    messages.append({"role": "user", "content": nudge_prompt})
                 continue  
 
             # ==========================================

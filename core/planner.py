@@ -1,15 +1,8 @@
 import json
-import requests
 from core.retriever import retrieve_top_agents
 from core.json_utils import robust_parse, validate_task_list
 from core.tracing import trace_span, SpanKind
-
-# 兼容不同的配置导入路径
-try:
-    from config.env_config import OLLAMA_BASE_URL, LLM_MODEL
-except ImportError:
-    from config.config import OLLAMA_BASE_URL, LLM_MODEL
-    
+from core.llm_client import get_llm_client
 from core.llm_engine import get_tools_definition
 
 @trace_span("generate_plan", kind=SpanKind.PLANNER, capture_input=True)
@@ -101,28 +94,25 @@ def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: 
         {"role": "user", "content": f"拆解以下目标，返回 JSON：\n{user_goal}"}
     ]
 
-    # ==========================================
-    # 🌟 核心升级：启用 Ollama JSON mode
-    # ==========================================
-    payload = {
-        "model": LLM_MODEL,
-        "format": "json",            # 👈 关键：强制模型输出合法 JSON
-        "stream": False,
-        "options": {"temperature": 0.05}
-    }
+    client, model_name = get_llm_client()
 
     print("🧠 大脑 (Planner) 正在结合记忆、上下文并使用 RAG 检索拆解任务...")
-    
+
     # ==========================================
     # 🌟 带多层容错的请求循环
     # ==========================================
     max_retries = 3
     for attempt in range(max_retries):
-        payload["messages"] = messages
         try:
-            response = requests.post(f"{OLLAMA_BASE_URL}/api/chat", json=payload, timeout=60)
-            response.raise_for_status()
-            content = response.json().get("message", {}).get("content", "").strip()
+            kwargs = {
+                "model": model_name,
+                "messages": messages,
+                "temperature": 0.05,
+                "response_format": {"type": "json_object"},  # OpenAI 标准 JSON mode
+            }
+            response = client.chat.completions.create(**kwargs)
+            content = response.choices[0].message.content or ""
+            content = content.strip()
 
             # ── 防线 1：智能提取 + 自动修复 ──
             task_list = robust_parse(content, expect_array=False)

@@ -1,10 +1,9 @@
 # agents/base_agent.py
 import json
-import requests
 import datetime
 import re
 import traceback
-from config.config import OLLAMA_BASE_URL, LLM_MODEL
+from core.llm_client import get_llm_client
 from core.json_utils import robust_parse
 from core.tracing import trace_span, SpanKind, get_tracer
 
@@ -89,40 +88,47 @@ class BaseAgent:
         messages = [{"role": "system", "content": self._build_system_prompt(parsed_memories)}]
         messages.append({"role": "user", "content": full_instruction})
 
-        payload = {
-            "model": LLM_MODEL,
-            "tools": self.allowed_tools, # 👈 物理隔离生效点：只传授权的工具库
-            "stream": False,
-            "options": {"temperature": 0.2}
-        }
-        
+        client, model_name = get_llm_client()
         actual_tool_success = False
         called_tools: dict = {}          # 追踪已调用的工具，防止同一工具死循环
         max_loops = 6                   # 给多步工具链留足空间
         error_count = 0
 
         for step in range(max_loops):
-            payload["messages"] = messages
             try:
                 # 1. 呼叫大模型
                 with trace_span(f"llm_chat::{self.agent_name}", kind=SpanKind.LLM, capture_input=False) as llm_span:
-                    response = requests.post(f"{OLLAMA_BASE_URL}/api/chat", json=payload, timeout=120)
-                    response.raise_for_status()
-                    message_obj = response.json().get("message", {})
-                    content = message_obj.get("content", "")
-                    llm_span.set_output({"content_len": len(content), "has_tool_call": bool(message_obj.get("tool_calls"))})
+                    kwargs = {
+                        "model": model_name,
+                        "messages": messages,
+                        "temperature": 0.2,
+                    }
+                    if self.allowed_tools:
+                        # 确保工具格式符合 OpenAI 规范：必须有 "type": "function"
+                        normalized_tools = []
+                        for t in self.allowed_tools:
+                            if "type" not in t:
+                                normalized_tools.append({"type": "function", "function": t["function"]})
+                            else:
+                                normalized_tools.append(t)
+                        kwargs["tools"] = normalized_tools
+
+                    response = client.chat.completions.create(**kwargs)
+                    message_obj = response.choices[0].message
+                    content = message_obj.content or ""
+                    llm_span.set_output({"content_len": len(content), "has_tool_call": bool(message_obj.tool_calls)})
                 
                 tool_called_this_step = False
                 func_name = None
                 args = {}
 
                 # 2. 兼容解析 JSON 或 XML 格式的工具调用（加固：自动修复参数 JSON）
-                if "tool_calls" in message_obj and message_obj["tool_calls"]:
-                    func_name = message_obj["tool_calls"][0]["function"]["name"]
-                    args = message_obj["tool_calls"][0]["function"].get("arguments", {})
-                    if isinstance(args, str):
-                        parsed = robust_parse(args, expect_array=False)
-                        args = parsed if isinstance(parsed, dict) else {}
+                if message_obj.tool_calls:
+                    tc = message_obj.tool_calls[0]
+                    func_name = tc.function.name
+                    args_str = tc.function.arguments
+                    parsed = robust_parse(args_str, expect_array=False)
+                    args = parsed if isinstance(parsed, dict) else {}
                     tool_called_this_step = True
                 elif "<function=" in content or "<tool_call>" in content:
                     # (保留你原有的正则解析逻辑)
@@ -150,7 +156,8 @@ class BaseAgent:
                         if ui_status:
                             ui_status.write(f"🛑 [{self.agent_name}] 检测到 `{func_name}` 被重复调用 {called_tools[func_name]} 次，强制打断！")
                         nudge = f"🚨 你已经重复调用 `{func_name}` {called_tools[func_name]} 次！禁止再次调用它。请基于目前已获取的数据直接输出最终中文回答。"
-                        messages.append({"role": "assistant", "content": content} if content.strip() else {"role": "assistant", "content": f"调用了 {func_name}"})
+                        # 🔧 关键修复：拒绝调用时绝不保留 tool_calls，否则 DeepSeek 会报 "insufficient tool messages"
+                        messages.append({"role": "assistant", "content": content} if content.strip() else {"role": "assistant", "content": f"尝试调用 {func_name}（已被系统拦截）"})
                         messages.append({"role": "user", "content": nudge})
                         continue
 
@@ -166,20 +173,47 @@ class BaseAgent:
                     if "✅ 成功" in str(exec_result):
                         actual_tool_success = True
                     
-                    # 推送到文案：鼓励继续多步工具链，但禁止重复调同一个工具
-                    nudge_prompt = (
-                        f"系统已执行 `{func_name}`，返回数据：\n```text\n{exec_result}\n```\n"
-                        f"如果还需要调用**其他**工具才能完成任务，请继续调用；"
-                        f"如果数据已经足够，请直接输出最终的中文回答。"
-                        f"【重要】绝对禁止再次调用 `{func_name}`！"
-                    )
-                    
-                    if "tool_calls" in message_obj:
-                        messages.append(message_obj) 
+                    if message_obj.tool_calls:
+                        # 标准协议：追加 assistant 消息（含 tool_calls）
+                        tc_list = []
+                        for tc in message_obj.tool_calls:
+                            tc_list.append({
+                                "id": tc.id,
+                                "type": "function",
+                                "function": {
+                                    "name": tc.function.name,
+                                    "arguments": tc.function.arguments,
+                                }
+                            })
+                        messages.append({
+                            "role": "assistant",
+                            "content": message_obj.content,
+                            "tool_calls": tc_list,
+                        })
+                        # 追加标准 tool 角色结果消息（必须为每个 tool_call_id 都提供响应，否则 DeepSeek 报错）
+                        for tc in message_obj.tool_calls:
+                            messages.append({
+                                "role": "tool",
+                                "tool_call_id": tc.id,
+                                "content": str(exec_result) if tc.id == message_obj.tool_calls[0].id else "（此工具未被独立执行，请参考已获取的数据）",
+                            })
+                        # 补一条 user 消息做总结提示（鼓励多步工具链，但禁止重复）
+                        nudge_prompt = (
+                            f"如果还需要调用**其他**工具才能完成任务，请继续调用；"
+                            f"如果数据已经足够，请直接输出最终的中文回答。"
+                            f"【重要】绝对禁止再次调用 `{func_name}`！"
+                        )
+                        messages.append({"role": "user", "content": nudge_prompt})
                     else:
+                        # XML/正则 兜底路径
                         messages.append({"role": "assistant", "content": content})
-                        
-                    messages.append({"role": "user", "content": nudge_prompt})
+                        nudge_prompt = (
+                            f"系统已执行 `{func_name}`，返回数据：\n```text\n{exec_result}\n```\n"
+                            f"如果还需要调用**其他**工具才能完成任务，请继续调用；"
+                            f"如果数据已经足够，请直接输出最终的中文回答。"
+                            f"【重要】绝对禁止再次调用 `{func_name}`！"
+                        )
+                        messages.append({"role": "user", "content": nudge_prompt})
                     continue  
 
                 # 4. 🚨 防幻觉与虚假动作拦截
