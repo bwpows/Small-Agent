@@ -668,3 +668,75 @@ def finish_trace(trace: Trace = None):
 
 def current_trace() -> Optional[Trace]:
     return get_tracer().current_trace()
+
+
+# ═══════════════════════════════════════════════
+# 子线程安全的 Agent 独立 Trace
+# ═══════════════════════════════════════════════
+
+def start_agent_trace(agent_name: str, instruction: str, prior_context: str = "") -> Trace:
+    """
+    为 Agent（可能在子线程中执行）创建一个独立的 Trace。
+    
+    解决子线程中 contextvars 可能未正确传播的问题：
+    - 不依赖当前上下文中的 Trace
+    - 显式创建新 Trace 并直接返回 Trace 对象
+    - Agent 完成后调用 finish_agent_trace() 落盘
+    
+    使用方式:
+        agent_trace = start_agent_trace("GoogleDrive", instruction)
+        try:
+            with trace_span_on_trace(agent_trace, "agent::GoogleDrive", ...) as span:
+                result = do_work()
+                span.set_output(result)
+        finally:
+            finish_agent_trace(agent_trace)
+    """
+    tracer = get_tracer()
+    # 强制创建独立 Trace，不依赖 contextvars
+    trace = Trace(
+        trace_id=_short_id(),
+        user_input=instruction[:500],
+        start_time=time.time(),
+        metadata={
+            "agent_name": agent_name,
+            "prior_context": (prior_context or "")[:200],
+            "phase": "agent_execution",
+        },
+    )
+    _current_trace.set(trace)
+    _active_span.set(None)  # 清除可能残留的父 span，确保 agent span 是 root
+    return trace
+
+
+def finish_agent_trace(trace: Trace):
+    """结束 Agent 独立 Trace 并落盘"""
+    tracer = get_tracer()
+    if trace.end_time is None:
+        trace.end_time = time.time()
+    # 汇总状态
+    if trace.error_count() > 0:
+        trace.status = TraceStatus.ERROR
+    else:
+        trace.status = TraceStatus.OK
+    # 持久化（绕过 contextvars，直接保存）
+    if tracer.enabled:
+        tracer.storage.save(trace)
+    # 清理当前线程的上下文（如果存在）
+    try:
+        _current_trace.set(None)
+        _active_span.set(None)
+    except Exception:
+        pass
+
+
+def trace_span_on_trace(trace: Trace, name: str, kind: SpanKind = SpanKind.INTERNAL,
+                         inputs: Any = None, metadata: dict = None) -> trace_span:
+    """
+    在指定的 Trace 对象上创建 Span 的上下文管理器。
+    不依赖 contextvars，直接操作传入的 trace。
+    适用于子线程中 Agent 的独立 Trace。
+    """
+    # 将 trace 设为当前上下文
+    _current_trace.set(trace)
+    return trace_span(name=name, kind=kind, inputs=inputs, metadata=metadata, capture_input=inputs is None)

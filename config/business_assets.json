@@ -1,0 +1,45 @@
+[
+  {
+    "alias": "奖金表",
+    "type": "google_sheet",
+    "drive_file_id": "1GFd0dGO2ZSxBeKZ3JNVceGOpq55qHScmQAMr2QUprwA",
+    "columns": [
+      "行号",
+      "被邀请人",
+      "奖金金额",
+      "是否下单",
+      "邀请时间",
+      "发放时间",
+      "邀请状态",
+      "描述"
+    ],
+    "allowed_ops": [
+      "read",
+      "append",
+      "update",
+      "delete"
+    ],
+    "description": "被邀请人奖金发放记录，跟踪邀请转化与发放状态",
+    "confirmed": true
+  },
+  {
+    "alias": "邀约表",
+    "type": "google_sheet",
+    "drive_file_id": "18EcVE6yxYi-weA9kgWxFrlL2-Pb8bdG1_hc3AfYqdDE",
+    "columns": [
+      "微信ID",
+      "微信昵称",
+      "手机号",
+      "邀约时间",
+      "邀约状态"
+    ],
+    "allowed_ops": [
+      "read",
+      "append",
+      "update",
+      "delete"
+    ],
+    "description": "微信用户邀约记录，记录邀约时间和状态",
+    "confirmed": true
+  }
+]

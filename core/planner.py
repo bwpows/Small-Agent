@@ -4,6 +4,7 @@ from core.json_utils import robust_parse, validate_task_list
 from core.tracing import trace_span, SpanKind
 from core.llm_client import get_llm_client
 from core.llm_engine import get_tools_definition
+from business.business_layer import get_business_layer
 
 @trace_span("generate_plan", kind=SpanKind.PLANNER, capture_input=True)
 def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: list = None) -> list:
@@ -15,8 +16,18 @@ def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: 
     tool_descriptions = "\n".join([f"- **{t['function']['name']}**: {t['function']['description']}" for t in tools])
 
     # ==========================================
+    # 🌟 业务资产层注入（确定性定位，100% 正确）
+    # ==========================================
+    try:
+        business_layer = get_business_layer()
+        business_registry_prompt = business_layer.get_registry_prompt()
+    except Exception:
+        business_registry_prompt = "（业务资产注册表暂不可用）"
+
+    # ==========================================
     # 🌟 提取上下文与长期记忆
     # ==========================================
+
     history_text = "无近期对话。"
     if recent_history:
         history_text = "\n".join([f"{msg['role']}: {msg['content']}" for msg in recent_history[-5:]]) 
@@ -45,6 +56,9 @@ def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: 
 
 【🛠️ 可用的工具库】
 {tool_descriptions}
+
+【🏢 已登记的业务资产（直接使用 sheet_id 精确定位，绝不用名称搜索）】
+{business_registry_prompt}
 
 【⚙️ 专家路由规则（严格按职责分配，禁止跨领域指派）】
 - `researcher`：仅限"联网搜索、查找外部资料"类的任务。绝不可分派文件操作！

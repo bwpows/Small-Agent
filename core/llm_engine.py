@@ -38,12 +38,51 @@ def discover_and_load_tools():
 discover_and_load_tools()
 
 def get_tools_definition():
+    """返回 OpenAI function-calling 格式的工具定义列表"""
     return _TOOLS_DEFINITIONS
+
+
+def get_tools_as_mcp():
+    """
+    返回 MCP (Model Context Protocol) 格式的工具定义列表。
+    与 OpenAI 格式等价，可被任何 MCP 客户端（Claude Desktop / Cursor / GPT）直接消费。
+    
+    转换规则: parameters → inputSchema, 去掉外层 type/function 包裹
+    """
+    mcp_tools = []
+    for t in _TOOLS_DEFINITIONS:
+        func = t.get("function", t)  # 兼容两种嵌套格式
+        mcp_tools.append({
+            "name": func["name"],
+            "description": func.get("description", ""),
+            "inputSchema": func.get("parameters", {"type": "object", "properties": {}}),
+        })
+    return mcp_tools
+
+
+def export_tool_manifest(output_format: str = "openai"):
+    """
+    导出工具清单，支持两种格式:
+    - "openai": OpenAI function-calling 格式 (默认)
+    - "mcp":    MCP 标准 Tool 格式
+    返回 JSON 字符串
+    """
+    if output_format == "mcp":
+        return json.dumps({"tools": get_tools_as_mcp()}, ensure_ascii=False, indent=2)
+    else:
+        return json.dumps({"tools": get_tools_definition()}, ensure_ascii=False, indent=2)
 
 def execute_tool(tool_name, arguments):
     try:
+        # ── 安全参数规范化：LLM 可能传入字符串 "true"/"false" 代替布尔值 ──
+        safe_args = {}
+        for k, v in arguments.items():
+            if isinstance(v, str) and v.lower() in ("true", "false"):
+                safe_args[k] = v.lower() == "true"
+            else:
+                safe_args[k] = v
         if tool_name in _DYNAMIC_TOOLS:
-            result = _DYNAMIC_TOOLS[tool_name](**arguments)
+            result = _DYNAMIC_TOOLS[tool_name](**safe_args)
         else:
             result = f"❌ 未知工具: {tool_name}"
         return result

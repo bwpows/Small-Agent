@@ -7,6 +7,8 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
+from core.tracing import trace_span, SpanKind
+
 # ==========================================
 # 🌟 全局路径与权限配置
 # ==========================================
@@ -138,19 +140,31 @@ def auto_drive_manager(sheet_name, data_array=None):
 def manage_sheet_rows(sheet_name=None, action=None, sheet_id=None, row_index=None, new_data=None, confirmed=False):
     """表格高级编辑：支持读取、删除、清空、修改。
     支持通过 sheet_name 或 sheet_id 定位表格（sheet_id 优先，可跳过名称搜索直接定位）。"""
+    # ── 参数前置校验（在 API 调用之前，避免浪费网络请求）──
+    if not action:
+        return "❌ 缺少 action 参数。可选值：read、delete、clear、update。"
+    if action == 'delete' and not row_index:
+        return "❌ 删除操作缺少 row_index 参数。请指定要删除的行号（如 row_index=10）后重试。"
+    if action == 'update' and (not row_index or not new_data):
+        return "❌ 更新操作需要同时提供 row_index 和 new_data 参数。"
+
     try:
-        creds = authenticate_drive()
-        sheets_service = build('sheets', 'v4', credentials=creds)
-        drive_service = build('drive', 'v3', credentials=creds)
+        with trace_span("tool_drive::auth", kind=SpanKind.TOOL, capture_output=False):
+            creds = authenticate_drive()
+            sheets_service = build('sheets', 'v4', credentials=creds)
+            drive_service = build('drive', 'v3', credentials=creds)
         
         if not sheet_id:
             if not sheet_name:
                 return "❌ 必须提供 sheet_name 或 sheet_id 来进行定位。"
-            query = f"name='{sheet_name}' and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false"
-            files = drive_service.files().list(q=query).execute().get('files', [])
-            if not files: return f"❌ 找不到名为「{sheet_name}」的表格（或该文件不是 Google Sheets 格式）。"
-            sheet_id = files[0]['id']
-            sheet_name = sheet_name or files[0]['name']
+            with trace_span("tool_drive::find_sheet", kind=SpanKind.TOOL,
+                           inputs={"search_name": sheet_name},
+                           capture_output=False):
+                query = f"name='{sheet_name}' and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false"
+                files = drive_service.files().list(q=query).execute().get('files', [])
+                if not files: return f"❌ 找不到名为「{sheet_name}」的表格（或该文件不是 Google Sheets 格式）。"
+                sheet_id = files[0]['id']
+                sheet_name = sheet_name or files[0]['name']
         else:
             # 通过 ID 定位时，回填名称便于日志输出
             if not sheet_name:
@@ -162,41 +176,63 @@ def manage_sheet_rows(sheet_name=None, action=None, sheet_id=None, row_index=Non
 
         # 🌟 新增：读取整个表格内容的功能
         if action == 'read':
-            result = sheets_service.spreadsheets().values().get(spreadsheetId=sheet_id, range="A1:Z1000").execute()
-            values = result.get('values', [])
-            if not values: return f"📭 表格 {sheet_name} 是空的。"
-            
-            output = f"📊 表格【{sheet_name}】的数据如下：\n"
-            for i, row in enumerate(values):
-                output += f"第{i+1}行: {row}\n"
-            return output
+            with trace_span("tool_drive::read", kind=SpanKind.TOOL,
+                           inputs={"sheet": sheet_name, "sheet_id": sheet_id},
+                           capture_output=False) as read_span:
+                result = sheets_service.spreadsheets().values().get(spreadsheetId=sheet_id, range="A1:Z1000").execute()
+                values = result.get('values', [])
+                if not values: return f"📭 表格 {sheet_name} 是空的。"
+                
+                output = f"📊 表格【{sheet_name}】的数据如下：\n"
+                for i, row in enumerate(values):
+                    output += f"第{i+1}行: {row}\n"
+                read_span.set_output({"row_count": len(values), "sheet": sheet_name})
+                return output
 
         elif action == 'clear':
-            sheets_service.spreadsheets().values().clear(spreadsheetId=sheet_id, range="A1:Z1000").execute()
-            return f"✅ 表格 {sheet_name} 已清空。"
+            with trace_span("tool_drive::clear", kind=SpanKind.TOOL,
+                           inputs={"sheet": sheet_name, "sheet_id": sheet_id},
+                           capture_output=False):
+                sheets_service.spreadsheets().values().clear(spreadsheetId=sheet_id, range="A1:Z1000").execute()
+                return f"✅ 表格 {sheet_name} 已清空。"
         
-        elif action == 'delete' and row_index:
+        elif action == 'delete':
             # 🌟 关键修复：动态获取真实的 sheetId (工作表标签 ID)，干掉写死的 0
             spreadsheet_info = sheets_service.spreadsheets().get(spreadsheetId=sheet_id).execute()
             real_sheet_id = spreadsheet_info['sheets'][0]['properties']['sheetId']
             
             row_data = sheets_service.spreadsheets().values().get(spreadsheetId=sheet_id, range=f"A{row_index}:Z{row_index}").execute().get('values', [[]])[0]
             if not confirmed:
-                return f"⚠️ 警告：您准备删除第 {row_index} 行。\n数据为：{row_data}\n请重新下达指令并确认删除（传入 confirmed=True）。"
+                with trace_span("tool_drive::delete_preview", kind=SpanKind.TOOL,
+                               inputs={"sheet": sheet_name, "row": row_index, "data": str(row_data)[:200]},
+                               capture_output=False):
+                    return (
+                        f"⚠️ 确认删除：您准备删除第 {row_index} 行。\n"
+                        f"数据为：{row_data}\n"
+                        f"⏩ 请用相同参数再次调用，并传入 confirmed=True 即可执行删除。"
+                    )
             
-            # 使用获取到的 real_sheet_id 替换掉原来的 0
-            body = {"requests": [{"deleteDimension": {"range": {"sheetId": real_sheet_id, "dimension": "ROWS", "startIndex": row_index-1, "endIndex": row_index}}}]}
-            sheets_service.spreadsheets().batchUpdate(spreadsheetId=sheet_id, body=body).execute()
-            return f"✅ 已成功删除第 {row_index} 行数据。"
+            with trace_span("tool_drive::delete_exec", kind=SpanKind.TOOL,
+                           inputs={"sheet": sheet_name, "row": row_index, "confirmed": True},
+                           capture_output=False) as del_span:
+                # 使用获取到的 real_sheet_id 替换掉原来的 0
+                body = {"requests": [{"deleteDimension": {"range": {"sheetId": real_sheet_id, "dimension": "ROWS", "startIndex": row_index-1, "endIndex": row_index}}}]}
+                sheets_service.spreadsheets().batchUpdate(spreadsheetId=sheet_id, body=body).execute()
+                del_span.set_output({"sheet": sheet_name, "deleted_row": row_index})
+                return f"✅ 已成功删除第 {row_index} 行数据。"
             
-        elif action == 'update' and row_index and new_data:
-            range_to_update = f"A{row_index}"
-            body = {'values': [new_data]}
-            sheets_service.spreadsheets().values().update(
-                spreadsheetId=sheet_id, range=range_to_update, 
-                valueInputOption="USER_ENTERED", body=body
-            ).execute()
-            return f"✅ 已将第 {row_index} 行更新成功。"
+        elif action == 'update':
+            with trace_span("tool_drive::update", kind=SpanKind.TOOL,
+                           inputs={"sheet": sheet_name, "row": row_index, "new_data": str(new_data)[:200]},
+                           capture_output=False) as upd_span:
+                range_to_update = f"A{row_index}"
+                body = {'values': [new_data]}
+                sheets_service.spreadsheets().values().update(
+                    spreadsheetId=sheet_id, range=range_to_update, 
+                    valueInputOption="USER_ENTERED", body=body
+                ).execute()
+                upd_span.set_output({"sheet": sheet_name, "updated_row": row_index})
+                return f"✅ 已将第 {row_index} 行更新成功。"
             
         return "❌ 缺少必要参数或未知的 action。"
     except Exception as e:
@@ -282,7 +318,7 @@ REGISTER_TOOLS = [
             "type": "function",
             "function": {
                 "name": "manage_sheet_rows",
-                "description": "表格高级编辑工具。支持：读取内容(read)、删除行(delete)、清空表(clear)、修改行(update)。可通过 sheet_name 或 sheet_id 定位表格（sheet_id 可跳过搜索直接精确定位，当你知道文件 ID 时优先使用）。",
+                "description": "表格高级编辑工具。支持：读取(read)、删除(delete)、清空(clear)、更新(update)。⚠️ 删除需两步：第1次调用返回预览，第2次必须带 confirmed=True 才会真正删除。可通过 sheet_name 或 sheet_id 定位表格（sheet_id 优先）。",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -291,7 +327,7 @@ REGISTER_TOOLS = [
                         "action": {"type": "string", "enum": ["read", "delete", "clear", "update"]},
                         "row_index": {"type": "integer", "description": "目标行号 (read和clear模式下不需要)"},
                         "new_data": {"type": "array", "description": "修改模式下必填的新数据数组"},
-                        "confirmed": {"type": "boolean", "description": "删除确认标记"}
+                        "confirmed": {"type": "boolean", "description": "删除确认标记，首次调用预览数据，传入 True 执行真实删除"}
                     },
                     "required": ["action"]
                 }
