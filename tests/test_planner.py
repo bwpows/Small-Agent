@@ -2,11 +2,7 @@ import sys
 import os
 import json
 
-# 🌟 核心魔法：把项目的根目录强行加入 Python 的环境变量中
-# 这样它就能顺利找到外层的 core 文件夹了
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from core.planner import generate_plan
+from agent_engine.planner import generate_plan
 
 if __name__ == "__main__":
     # 🎯 这是一个极具挑战性的宏大目标（包含搜索、写表、发邮件三个跨维度的动作）

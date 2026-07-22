@@ -16,10 +16,7 @@ import json
 import tempfile
 import unittest
 
-# 确保项目根目录在 Python path 中
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from core.sandbox import (
+from agent_engine.sandbox import (
     SandboxConfig,
     SandboxedExecutor,
     FileOperationGuard,
@@ -203,7 +200,7 @@ class TestSandboxLevelDetection(unittest.TestCase):
 
     def test_env_var_override(self):
         os.environ["SANDBOX_LEVEL"] = "relaxed"
-        from core import sandbox
+        import agent_engine.sandbox as sandbox
         import importlib
         # 重置模块级缓存
         sandbox._global_executor = None

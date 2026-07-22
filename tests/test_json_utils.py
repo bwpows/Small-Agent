@@ -1,9 +1,5 @@
 """快速验证 json_utils 修复引擎（无需 LLM）"""
-import sys
-import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from core.json_utils import robust_parse, extract_json, validate_task_list
+from agent_engine.json_utils import robust_parse, extract_json, validate_task_list
 
 passed = 0
 failed = 0

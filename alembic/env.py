@@ -1,5 +1,4 @@
 import os
-import sys
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -7,17 +6,12 @@ from sqlalchemy import pool
 
 from alembic import context
 
-# ── 确保项目根目录在 sys.path，以便导入 server 模块 ──
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
-
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
 # ── 从 server/config.py 读取数据库路径，覆盖 .ini 中的默认值 ──
-from server.config import DB_PATH
+from app_server.config import DB_PATH
 config.set_main_option("sqlalchemy.url", f"sqlite:///{DB_PATH}")
 
 # Interpret the config file for Python logging.
@@ -25,8 +19,8 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # ── 导入所有模型（确保 Base.metadata 包含全部表） ──
-from server.db import Base
-from server.db import (     # noqa: F401 — 确保表被注册到 Base.metadata
+from app_server.db import Base
+from app_server.db import (     # noqa: F401 — 确保表被注册到 Base.metadata
     User, ApiKey, UserIdentity, Conversation, Message,
     Trace, UserDriveToken, DriveFile, BusinessAsset,
 )
