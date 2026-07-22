@@ -11,7 +11,7 @@
 
 ---
 
-> **DAG 任务拆解 · 工具权限隔离 · 防幻觉安全风控 · 可视化主控台 · 推理走云端 + 嵌入跑本地**
+> **DAG 任务拆解 · 工具权限隔离 · 防幻觉安全风控 · 推理走云端 + 嵌入跑本地**
 
 一个多引擎智能助理框架。**推理**默认走 DeepSeek 云端（国内直连、极低成本），也可切换 OpenAI 或本地 Ollama，**向量嵌入**跑硅基流动免费 BGE 模型，兼顾性能与成本。系统将宏观目标拆解为 DAG 任务拓扑，通过向量检索智能匹配专家 Agent，多线程并发执行，内置防幻觉、沙箱安全与人工审批机制。
 
@@ -123,11 +123,17 @@ SILICONFLOW_API_KEY=sk-你的key
 
 ### 5. 启动
 
+**后端 API 服务：**
 ```bash
-streamlit run app.py
+uvicorn server.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-浏览器打开 `http://localhost:8501`，输入一句复合指令，观察 Planner 拆解 → 风控审批 → Swarm 并发的完整流水线。
+**前端 Web 界面：**
+```bash
+cd web && npm install && npm run dev
+```
+
+浏览器打开 `http://localhost:3000`，注册登录后即可使用。API 文档见 `http://localhost:8000/docs`。
 
 ---
 
@@ -289,6 +295,15 @@ Small-Agent/
 │       ├── engine.py       #      Trace / Span / 上下文传播 / 存储
 │       └── agent.py        #      AgentTracer（审计日志 + span 管理）
 │
+├── server/                 # 🌐 FastAPI 后端服务
+│   ├── main.py             #   API 路由（认证 / 对话 / Drive / IM 渠道）
+│   ├── auth.py             #   鉴权系统（注册 / 登录 / API Key / Drive Token）
+│   ├── chat_service.py     #   对话服务（多租户 / 流式 / 渠道适配）
+│   └── ...
+│
+├── web/                    # 🖥️ React 前端界面
+│   └── src/                #   组件 / API 客户端 / 路由
+│
 ├── agent_workspace/        # 📁 工具操作目录（文件产物 + 追踪/审计日志）
 │
 ├── tools/                  # 🔌 热插拔工具库
@@ -304,9 +319,7 @@ Small-Agent/
 │   └── business_assets.json  # 业务资产注册数据
 │
 ├── .env                    # 🔑 API Key（gitignore 保护）
-├── app.py                  # 🖥️ Streamlit 主控台
 ├── chat_manager.py         # 💬 多会话管理 + AI 自动标题
-├── ui_components.py        # 🎨 侧边栏 UI 组件
 ├── tests/                  # 🧪 测试
 └── requirements.txt
 ```

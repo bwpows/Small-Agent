@@ -1,7 +1,9 @@
 import os
 import csv
 import json
+import threading
 from google.oauth2.credentials import Credentials
+from google.oauth2 import service_account
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
@@ -16,19 +18,133 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORKSPACE_DIR = os.path.join(PROJECT_ROOT, "agent_workspace")
 TOKEN_PATH = os.path.join(WORKSPACE_DIR, 'token.json')
 CREDS_PATH = os.path.join(WORKSPACE_DIR, 'credentials.json')
+SERVICE_ACCOUNT_PATH = os.path.join(WORKSPACE_DIR, 'service_account.json')
 SCOPES = [
     'https://www.googleapis.com/auth/drive.file',
+    'https://www.googleapis.com/auth/drive.metadata.readonly',
     'https://www.googleapis.com/auth/spreadsheets'
 ]
 
 # ==========================================
-# 🔐 认证模块 (带目录自愈功能)
+# 🔐 线程级 Drive 凭证存储（多租户支持）
 # ==========================================
-def authenticate_drive():
-    if not os.path.exists(WORKSPACE_DIR):
-        os.makedirs(WORKSPACE_DIR) 
+_thread_local = threading.local()
 
-    creds = None
+# ═══════════════════════════════════════════
+# Service Account 凭证缓存（全局单例，避免重复加载）
+# ═══════════════════════════════════════════
+_service_account_creds: Credentials | None = None
+_service_account_loaded: bool = False
+
+
+def _load_service_account_creds() -> Credentials | None:
+    """加载 Service Account 凭证（文件路径或 JSON 字符串"""
+    global _service_account_creds, _service_account_loaded
+    if _service_account_loaded:
+        return _service_account_creds
+    _service_account_loaded = True
+
+    # ── 方式1: 通过环境变量直接传入 JSON 字符串 ──
+    sa_json = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON", "")
+    if sa_json:
+        try:
+            info = json.loads(sa_json)
+            _service_account_creds = service_account.Credentials.from_service_account_info(
+                info, scopes=SCOPES
+            )
+            return _service_account_creds
+        except (json.JSONDecodeError, ValueError):
+            pass
+
+    # ── 方式2: 通过环境变量指定文件路径 ──
+    sa_file = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE", "")
+    if sa_file and os.path.isfile(sa_file):
+        try:
+            _service_account_creds = service_account.Credentials.from_service_account_file(
+                sa_file, scopes=SCOPES
+            )
+            return _service_account_creds
+        except (ValueError, IOError):
+            pass
+
+    # ── 方式3: 默认路径 agent_workspace/service_account.json ──
+    if os.path.isfile(SERVICE_ACCOUNT_PATH):
+        try:
+            _service_account_creds = service_account.Credentials.from_service_account_file(
+                SERVICE_ACCOUNT_PATH, scopes=SCOPES
+            )
+            return _service_account_creds
+        except (ValueError, IOError):
+            pass
+
+    return None
+
+
+def has_service_account() -> bool:
+    """检查是否配置了 Service Account（无需实际加载）"""
+    if os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON", ""):
+        return True
+    if os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE", ""):
+        return True
+    return os.path.isfile(SERVICE_ACCOUNT_PATH)
+
+
+def set_service_account_from_json(sa_json_str: str):
+    """从 JSON 字符串设置全局 Service Account 凭证"""
+    global _service_account_creds, _service_account_loaded
+    info = json.loads(sa_json_str)
+    _service_account_creds = service_account.Credentials.from_service_account_info(
+        info, scopes=SCOPES
+    )
+    _service_account_loaded = True
+
+
+def clear_service_account():
+    """清除全局 Service Account 凭证"""
+    global _service_account_creds, _service_account_loaded
+    _service_account_creds = None
+    _service_account_loaded = False
+
+
+def set_thread_drive_creds(token_json: str):
+    """从 token JSON 字符串创建并存储 Google Credentials 到线程本地。
+    由 server/chat_service.py 在调用 generate_answer() 前注入。"""
+    creds = Credentials.from_authorized_user_info(json.loads(token_json), SCOPES)
+    if creds and creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+    _thread_local.drive_creds = creds
+
+
+def clear_thread_drive_creds():
+    """清除线程本地的 Drive 凭证"""
+    _thread_local.drive_creds = None
+
+
+def authenticate_drive():
+    """认证 Google Drive — 优先级：
+    1. 线程级 OAuth 凭证（多租户，每个用户自己的 Drive）
+    2. 全局 Service Account（公共 Drive 共享访问）
+    3. 本地 OAuth token.json（开发环境）
+    """
+    # ── 优先级1：线程级 OAuth 凭证（多租户服务端）──
+    creds = getattr(_thread_local, 'drive_creds', None)
+    if creds is not None:
+        if creds.valid or (creds.expired and creds.refresh_token):
+            if creds.expired:
+                creds.refresh(Request())
+            return creds
+
+    # ── 优先级2：全局 Service Account（公共 Drive）──
+    sa_creds = _load_service_account_creds()
+    if sa_creds is not None:
+        if sa_creds.expired or not sa_creds.valid:
+            sa_creds.refresh(Request())
+        return sa_creds
+
+    # ── 优先级3：本地 OAuth token.json（开发环境）──
+    if not os.path.exists(WORKSPACE_DIR):
+        os.makedirs(WORKSPACE_DIR)
+
     if os.path.exists(TOKEN_PATH):
         creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
     
@@ -37,7 +153,13 @@ def authenticate_drive():
             creds.refresh(Request())
         else:
             if not os.path.exists(CREDS_PATH):
-                raise FileNotFoundError(f"❌ 找不到 Google 凭据！请将 credentials.json 放入 {WORKSPACE_DIR} 目录。")
+                raise FileNotFoundError(
+                    f"❌ 找不到 Google 凭据！请配置以下任一方式：\n"
+                    f"  1. 设置环境变量 GOOGLE_SERVICE_ACCOUNT_JSON（推荐，Service Account）\n"
+                    f"  2. 设置环境变量 GOOGLE_SERVICE_ACCOUNT_FILE 指向 Service Account JSON 文件\n"
+                    f"  3. 将 service_account.json 放入 {WORKSPACE_DIR} 目录\n"
+                    f"  4. 将 credentials.json 放入 {WORKSPACE_DIR} 目录（开发用 OAuth）"
+                )
             flow = InstalledAppFlow.from_client_secrets_file(CREDS_PATH, SCOPES)
             creds = flow.run_local_server(port=8080)
         

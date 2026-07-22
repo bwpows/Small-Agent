@@ -2,3 +2,18 @@ token.json
 credentials.json
 __pycache__/
 .env
+
+# 多租户数据（不提交）
+data/app.db
+agent_workspace/users/
+
+# Python
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# 前端
+web/node_modules/
+web/dist/
+web/
