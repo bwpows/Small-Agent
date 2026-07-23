@@ -21,6 +21,7 @@ from app_server.config import (
     JWT_SECRET, JWT_ALGORITHM, JWT_EXPIRE_HOURS,
     API_KEY_PREFIX, API_KEY_BYTES,
     TOKEN_ENCRYPTION_KEY, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
+    GOOGLE_LOGIN_CLIENT_ID, GOOGLE_LOGIN_CLIENT_SECRET,
 )
 from app_server.db import User, ApiKey, UserIdentity, utcnow
 
@@ -383,3 +384,130 @@ def drive_connection_status(session: Session, user_id: int) -> dict:
         "user_oauth": oauth_token is not None,
         "sa_email": get_drive_service_account_email() if sa_ready else None,
     }
+
+
+# ═══════════════════════════════════════════
+# Google OAuth 登录（OpenID Connect）
+# ═══════════════════════════════════════════
+
+def google_login_url(redirect_uri: str, state: str = "") -> str:
+    """生成 Google OAuth 登录授权 URL（openid + email + profile）"""
+    import urllib.parse
+    params = {
+        "client_id": GOOGLE_LOGIN_CLIENT_ID,
+        "redirect_uri": redirect_uri,
+        "response_type": "code",
+        "scope": "openid email profile",
+        "access_type": "online",
+        "state": state,
+    }
+    qs = urllib.parse.urlencode(params)
+    return f"https://accounts.google.com/o/oauth2/v2/auth?{qs}"
+
+
+def exchange_google_login_code(code: str, redirect_uri: str) -> Optional[dict]:
+    """
+    用 Google 授权码换取 id_token 并解析用户信息。
+    返回: {"sub": "...", "email": "...", "name": "...", "picture": "..."}
+    失败返回 None。
+    """
+    import requests
+    try:
+        # 1. 用 code 换 token
+        payload = {
+            "code": code,
+            "client_id": GOOGLE_LOGIN_CLIENT_ID,
+            "client_secret": GOOGLE_LOGIN_CLIENT_SECRET,
+            "redirect_uri": redirect_uri,
+            "grant_type": "authorization_code",
+        }
+        resp = requests.post("https://oauth2.googleapis.com/token", data=payload, timeout=15)
+        if resp.status_code != 200:
+            return None
+        data = resp.json()
+        id_token = data.get("id_token")
+        if not id_token:
+            return None
+
+        # 2. 解码 id_token 获取用户信息（不验证签名，Google 已签名）
+        # id_token 是 JWT，payload 包含 sub、email、name、picture 等
+        import base64 as _b64
+        try:
+            parts = id_token.split(".")
+            if len(parts) == 3:
+                # JWT payload 是 base64url 编码，补全 padding
+                padded = parts[1] + "=" * (4 - len(parts[1]) % 4)
+                claims = json.loads(_b64.urlsafe_b64decode(padded).decode("utf-8"))
+                return {
+                    "sub": claims.get("sub", ""),
+                    "email": claims.get("email", ""),
+                    "name": claims.get("name", ""),
+                    "picture": claims.get("picture", ""),
+                }
+        except Exception:
+            pass
+
+        # 3. 回退：用 access_token 调 userinfo 端点
+        access_token = data.get("access_token")
+        if not access_token:
+            return None
+        user_resp = requests.get(
+            "https://www.googleapis.com/oauth2/v3/userinfo",
+            headers={"Authorization": f"Bearer {access_token}"},
+            timeout=10,
+        )
+        if user_resp.status_code != 200:
+            return None
+        ui = user_resp.json()
+        return {
+            "sub": ui.get("sub", ""),
+            "email": ui.get("email", ""),
+            "name": ui.get("name", ""),
+            "picture": ui.get("picture", ""),
+        }
+    except Exception:
+        return None
+
+
+def find_or_create_google_user(session: Session, user_info: dict) -> User:
+    """
+    根据 Google 用户信息查找或创建本地用户。
+    user_info: {"sub": ..., "email": ..., "name": ..., "picture": ...}
+    """
+    google_sub = user_info.get("sub", "")
+    email = user_info.get("email", "")
+    name = user_info.get("name", "")
+
+    # 通过 channel 身份查找
+    existing_user = resolve_user_by_channel(session, "google", google_sub)
+    if existing_user:
+        # 更新信息（用户可能在 Google 改了名字/头像）
+        if name and existing_user.display_name != name:
+            existing_user.display_name = name
+        if email:
+            existing_user.email = email
+        if user_info.get("picture"):
+            existing_user.avatar_url = user_info.get("picture")
+        session.commit()
+        return existing_user
+
+    # 创建新用户
+    username = f"google_{google_sub}"
+    # 确保 username 唯一
+    existing = session.query(User).filter(User.username == username).first()
+    if existing:
+        username = f"google_{google_sub}_{secrets.token_hex(4)}"
+
+    user = User(
+        username=username,
+        display_name=name or email or username,
+        source="google",
+    )
+    session.add(user)
+    session.flush()  # 获取 user.id
+
+    # 绑定 Google 渠道身份
+    bind_channel_identity(session, user.id, "google", google_sub)
+    session.commit()
+    session.refresh(user)
+    return user

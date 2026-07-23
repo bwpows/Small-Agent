@@ -48,6 +48,10 @@ SERVER_BASE_URL = os.getenv("SERVER_BASE_URL", "http://localhost:8000")
 GOOGLE_CLIENT_ID     = os.getenv("GOOGLE_CLIENT_ID", "")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "")
 
+# ── Google OAuth 登录（OpenID Connect，Web application 类型） ──
+GOOGLE_LOGIN_CLIENT_ID     = os.getenv("GOOGLE_LOGIN_CLIENT_ID", "")
+GOOGLE_LOGIN_CLIENT_SECRET = os.getenv("GOOGLE_LOGIN_CLIENT_SECRET", "")
+
 # ── Google Service Account（Drive 公共访问，推荐） ──
 # 可通过环境变量 GOOGLE_SERVICE_ACCOUNT_JSON 直接传入 JSON 字符串
 # 或 GOOGLE_SERVICE_ACCOUNT_FILE 指定 Service Account JSON 文件路径

@@ -102,31 +102,31 @@ def jwt_user_id(
 # Auth 路由（JWT 会话，用于管理后台）
 # ═══════════════════════════════════════════
 
-@app.post("/auth/register", response_model=schemas.AuthResponse, tags=["Auth"])
-def api_register(body: schemas.RegisterRequest, session=Depends(get_db)):
-    """注册新用户，返回 JWT"""
-    try:
-        user = register_user(session, body.username, body.password)
-    except ValueError as e:
-        raise HTTPException(status_code=409, detail=str(e))
-    token = create_jwt(user.id, user.username)
-    return schemas.AuthResponse(
-        access_token=token, user_id=user.id, username=user.username,
-        role=user.role,
-    )
-
-
-@app.post("/auth/login", response_model=schemas.AuthResponse, tags=["Auth"])
-def api_login(body: schemas.LoginRequest, session=Depends(get_db)):
-    """登录，返回 JWT"""
-    user = authenticate_user(session, body.username, body.password)
-    if user is None:
-        raise HTTPException(status_code=401, detail="用户名或密码错误")
-    token = create_jwt(user.id, user.username)
-    return schemas.AuthResponse(
-        access_token=token, user_id=user.id, username=user.username,
-        role=user.role,
-    )
+# @app.post("/auth/register", response_model=schemas.AuthResponse, tags=["Auth"])
+# def api_register(body: schemas.RegisterRequest, session=Depends(get_db)):
+#     """注册新用户，返回 JWT"""
+#     try:
+#         user = register_user(session, body.username, body.password)
+#     except ValueError as e:
+#         raise HTTPException(status_code=409, detail=str(e))
+#     token = create_jwt(user.id, user.username)
+#     return schemas.AuthResponse(
+#         access_token=token, user_id=user.id, username=user.username,
+#         role=user.role,
+#     )
+#
+#
+# @app.post("/auth/login", response_model=schemas.AuthResponse, tags=["Auth"])
+# def api_login(body: schemas.LoginRequest, session=Depends(get_db)):
+#     """登录，返回 JWT"""
+#     user = authenticate_user(session, body.username, body.password)
+#     if user is None:
+#         raise HTTPException(status_code=401, detail="用户名或密码错误")
+#     token = create_jwt(user.id, user.username)
+#     return schemas.AuthResponse(
+#         access_token=token, user_id=user.id, username=user.username,
+#         role=user.role,
+#     )
 
 
 @app.get("/auth/me", response_model=schemas.UserInfo, tags=["Auth"])
@@ -612,6 +612,64 @@ async def feishu_callback(
         user_id=ctx.user_id,
         username=ctx.username,
     )
+
+
+# ═══════════════════════════════════════════
+# Google OAuth 登录（OpenID Connect）
+# ═══════════════════════════════════════════
+
+@app.get("/auth/google/login", tags=["Auth"])
+async def google_login(redirect: Optional[str] = None):
+    """
+    Google OAuth 登录入口。
+    前端传 redirect=/google-callback 则登录成功后回到前端页面。
+    注：Google 的 OAuth scope 为 openid+email+profile，与 Drive OAuth 不同。
+    """
+    from app_server.auth import google_login_url
+    from urllib.parse import urlencode
+
+    # redirect_uri 必须在 Google Cloud Console 中白名单注册
+    redirect_uri = f"{SERVER_BASE_URL.rstrip('/')}/api/auth/google/login-callback"
+    state = redirect.lstrip("/") if redirect else "google-callback"
+    auth_url = google_login_url(redirect_uri=redirect_uri, state=state)
+    return {"auth_url": auth_url}
+
+
+@app.get("/auth/google/login-callback", tags=["Auth"])
+async def google_login_callback(
+    code: str,
+    state: Optional[str] = None,
+    session=Depends(get_db),
+):
+    """
+    Google OAuth 登录回调。
+    用授权码换取用户身份，自动建号或登录，返回 JWT。
+    若携带 state 参数（前端页面路径，如 google-callback），
+    则登录成功后 302 跳转回该页面并附带 token。
+    """
+    from app_server.auth import exchange_google_login_code, find_or_create_google_user
+    from urllib.parse import urlencode
+
+    redirect_uri = f"{SERVER_BASE_URL.rstrip('/')}/api/auth/google/login-callback"
+    user_info = exchange_google_login_code(code, redirect_uri=redirect_uri)
+    if user_info is None:
+        raise HTTPException(status_code=400, detail="Google OAuth 授权失败")
+
+    user = find_or_create_google_user(session, user_info)
+    token = create_jwt(user.id, user.username)
+
+    # state 来自 login 时透传的前端跳转意图
+    target_path = (state or "google-callback").lstrip("/")
+    if "://" in target_path or target_path.startswith("//"):
+        raise HTTPException(status_code=400, detail="非法的跳转路径")
+    target = f"{FRONTEND_URL.rstrip('/')}/{target_path}"
+    sep = "&" if "?" in target else "?"
+    query = urlencode({
+        "access_token": token,
+        "user_id": user.id,
+        "username": user.username,
+    })
+    return RedirectResponse(url=f"{target}{sep}{query}")
 
 
 @app.post("/auth/bind/feishu", tags=["Auth"])
