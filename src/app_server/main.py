@@ -13,7 +13,7 @@ from fastapi import FastAPI, Depends, HTTPException, Request, Query, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
 
-from app_server.db import init_db, get_session, ApiKey, Conversation, User, UserIdentity
+from app_server.db import init_db, get_session, ApiKey, Conversation, Message, User, UserIdentity
 from app_server.auth import (
     register_user, authenticate_user, create_jwt, decode_jwt,
     create_api_key, resolve_api_key, bind_channel_identity,
@@ -780,7 +780,7 @@ def drive_status(
 
 # ── OAuth 个人授权（保留兼容，但已不推荐） ──
 
-@app.get("/auth/google/login", tags=["Auth"])
+@app.get("/auth/drive/login", tags=["Auth"])
 def google_login(user_id: int = Depends(jwt_user_id)):
     """
     [已废弃] Google Drive OAuth 登录入口。
@@ -837,6 +837,159 @@ def drive_revoke(
     from app_server.auth import revoke_drive_token
     revoke_drive_token(session, user_id)
     return {"detail": "Drive OAuth 授权已断开"}
+
+
+# ═══════════════════════════════════════════
+# Admin 路由（管理员权限）
+# ═══════════════════════════════════════════
+
+def admin_required(
+    user_id: int = Depends(jwt_user_id),
+    session=Depends(get_db),
+) -> User:
+    """鉴权 JWT + 管理员角色检查"""
+    user = session.get(User, user_id)
+    if user is None:
+        raise HTTPException(status_code=401, detail="用户不存在")
+    if user.role != "admin":
+        raise HTTPException(status_code=403, detail="需要管理员权限")
+    if not user.is_active:
+        raise HTTPException(status_code=403, detail="账号已停用")
+    return user
+
+
+@app.get("/admin/stats", response_model=schemas.AdminStats, tags=["Admin"])
+def admin_stats(
+    admin: User = Depends(admin_required),
+    session=Depends(get_db),
+):
+    """获取系统统计信息"""
+    from datetime import datetime as dt, timedelta
+    from sqlalchemy import func
+
+    today_start = dt.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+
+    total_users = session.query(func.count(User.id)).scalar() or 0
+    total_conversations = session.query(func.count(Conversation.id)).scalar() or 0
+    total_messages = session.query(func.count(Message.id)).scalar() or 0
+
+    active_users_today = session.query(func.count(func.distinct(Conversation.user_id))).filter(
+        Conversation.created_at >= today_start
+    ).scalar() or 0
+
+    conversations_today = session.query(func.count(Conversation.id)).filter(
+        Conversation.created_at >= today_start
+    ).scalar() or 0
+
+    messages_today = session.query(func.count(Message.id)).filter(
+        Message.created_at >= today_start
+    ).scalar() or 0
+
+    total_tokens = session.query(func.coalesce(func.sum(Message.total_tokens), 0)).scalar() or 0
+
+    source_counts = session.query(User.source, func.count(User.id)).group_by(User.source).all()
+    users_by_source = {src: cnt for src, cnt in source_counts}
+
+    return schemas.AdminStats(
+        total_users=total_users,
+        total_conversations=total_conversations,
+        total_messages=total_messages,
+        active_users_today=active_users_today,
+        total_tokens=total_tokens,
+        users_by_source=users_by_source,
+        conversations_today=conversations_today,
+        messages_today=messages_today,
+    )
+
+
+@app.get("/admin/users", response_model=schemas.AdminUserListResponse, tags=["Admin"])
+def admin_list_users(
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    search: Optional[str] = Query(None, description="搜索用户名/邮箱/显示名"),
+    admin: User = Depends(admin_required),
+    session=Depends(get_db),
+):
+    """列出所有用户"""
+    from sqlalchemy import func, or_
+
+    query = session.query(User)
+    if search:
+        query = query.filter(or_(
+            User.username.ilike(f"%{search}%"),
+            User.email.ilike(f"%{search}%"),
+            User.display_name.ilike(f"%{search}%"),
+        ))
+
+    total = query.count()
+    users = query.order_by(User.created_at.desc()).offset(
+        (page - 1) * page_size
+    ).limit(page_size).all()
+
+    user_items = []
+    for u in users:
+        api_key_count = session.query(func.count(ApiKey.id)).filter(
+            ApiKey.user_id == u.id
+        ).scalar() or 0
+        conversation_count = session.query(func.count(Conversation.id)).filter(
+            Conversation.user_id == u.id
+        ).scalar() or 0
+        user_items.append(schemas.AdminUserItem(
+            id=u.id,
+            username=u.username,
+            display_name=u.display_name,
+            email=u.email,
+            source=u.source,
+            role=u.role,
+            is_active=u.is_active,
+            created_at=u.created_at,
+            api_key_count=api_key_count,
+            conversation_count=conversation_count,
+        ))
+
+    return schemas.AdminUserListResponse(
+        users=user_items,
+        total=total,
+        page=page,
+        page_size=page_size,
+    )
+
+
+@app.patch("/admin/users/{user_id}/role", tags=["Admin"])
+def admin_update_user_role(
+    user_id: int,
+    body: schemas.AdminUpdateRoleRequest,
+    admin: User = Depends(admin_required),
+    session=Depends(get_db),
+):
+    """更新用户角色"""
+    user = session.get(User, user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    if user.id == admin.id:
+        raise HTTPException(status_code=400, detail="不能修改自己的角色")
+    user.role = body.role
+    session.commit()
+    return {"detail": f"用户 {user.username} 角色已更新为 {body.role}"}
+
+
+@app.patch("/admin/users/{user_id}/active", tags=["Admin"])
+def admin_toggle_user_active(
+    user_id: int,
+    body: schemas.AdminToggleActiveRequest,
+    admin: User = Depends(admin_required),
+    session=Depends(get_db),
+):
+    """启用/停用用户"""
+    user = session.get(User, user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    if user.id == admin.id:
+        raise HTTPException(status_code=400, detail="不能停用自己的账号")
+    user.is_active = body.is_active
+    session.commit()
+    status_text = "已启用" if body.is_active else "已停用"
+    return {"detail": f"用户 {user.username} {status_text}"}
 
 
 # ═══════════════════════════════════════════

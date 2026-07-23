@@ -152,3 +152,43 @@ class ChannelUserInfo(BaseModel):
     platform_union_id: Optional[str] = None
     display_name: Optional[str] = None
     avatar_url: Optional[str] = None
+
+
+# ── Admin ──
+class AdminStats(BaseModel):
+    total_users: int
+    total_conversations: int
+    total_messages: int
+    active_users_today: int
+    total_tokens: int
+    users_by_source: dict[str, int] = {}
+    conversations_today: int = 0
+    messages_today: int = 0
+
+
+class AdminUserItem(BaseModel):
+    id: int
+    username: str
+    display_name: Optional[str] = None
+    email: Optional[str] = None
+    source: str = "web"
+    role: str = "user"
+    is_active: bool = True
+    created_at: datetime
+    api_key_count: int = 0
+    conversation_count: int = 0
+
+
+class AdminUserListResponse(BaseModel):
+    users: list[AdminUserItem]
+    total: int
+    page: int
+    page_size: int
+
+
+class AdminUpdateRoleRequest(BaseModel):
+    role: str = Field(..., pattern="^(user|admin)$")
+
+
+class AdminToggleActiveRequest(BaseModel):
+    is_active: bool
