@@ -11,7 +11,7 @@ from typing import Optional
 
 from fastapi import FastAPI, Depends, HTTPException, Request, Query, Header
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
 
 from app_server.db import init_db, get_session, ApiKey, Conversation, User, UserIdentity
 from app_server.auth import (
@@ -29,7 +29,7 @@ from app_server.chat_service import (
     list_messages as svc_list_messages,
 )
 from app_server import schemas
-from app_server.config import SERVER_BASE_URL
+from app_server.config import SERVER_BASE_URL, FRONTEND_URL
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("main")
@@ -507,17 +507,27 @@ async def feishu_webhook(request: Request, session=Depends(get_db)):
 # ═══════════════════════════════════════════
 
 @app.get("/auth/feishu/login", tags=["Auth"])
-async def feishu_login():
+async def feishu_login(redirect: Optional[str] = None):
     """
     飞书 OAuth 登录入口。
-    前端跳转到飞书授权页，用户授权后回调 /auth/feishu/callback。
+    前端跳转到飞书授权页，用户授权后回调 redirect 指定的地址（默认后端回调）。
+    前端传 redirect=/feishu-callback 则飞书授权后回到前端页面，由前端 AJAX 调用回调接口。
     """
     from app_server.config import FEISHU_APP_ID
-    redirect_uri = f"{SERVER_BASE_URL}/auth/feishu/callback"
+    from urllib.parse import quote
+    if redirect:
+        # 让飞书先回调后端，后端登录成功后再 302 跳回前端页面
+        redirect_uri = (
+            f"{SERVER_BASE_URL.rstrip('/')}/auth/feishu/callback"
+            f"?redirect={quote(redirect.lstrip('/'))}"
+        )
+    else:
+        redirect_uri = f"{SERVER_BASE_URL}/auth/feishu/callback"
     auth_url = (
         f"https://open.feishu.cn/open-apis/authen/v1/authorize"
         f"?app_id={FEISHU_APP_ID}"
         f"&redirect_uri={redirect_uri}"
+        f"&scope=contact:user.email:readonly"
     )
     return {"auth_url": auth_url}
 
@@ -525,14 +535,18 @@ async def feishu_login():
 @app.get("/auth/feishu/callback", tags=["Auth"])
 async def feishu_callback(
     code: str,
+    redirect: Optional[str] = None,
     state: Optional[str] = None,
     session=Depends(get_db),
 ):
     """
     飞书 OAuth 回调。
     用授权码换取用户身份，自动建号或登录，返回 JWT。
+    若携带 redirect 参数（前端页面路径，如 /feishu-callback），
+    则登录成功后 302 跳转回该页面并附带 token，由前端读取并落库。
     """
-    from app_server.channels.feishu import exchange_oauth_code
+    from app_server.channels.feishu import exchange_oauth_code, get_user_info
+    from urllib.parse import urlencode
 
     user_info = exchange_oauth_code(code)
     if user_info is None:
@@ -542,6 +556,12 @@ async def feishu_callback(
     union_id = user_info.get("union_id", "")
     name = user_info.get("name", "")
     avatar_url = user_info.get("avatar_url", "")
+
+    # 尝试通过通讯录 API 获取邮箱（需要 contact:user.email:readonly 权限）
+    email = None
+    detail_info = get_user_info(open_id)
+    if detail_info:
+        email = detail_info.get("email", None)
 
     # 查找或创建用户
     ctx = resolve_channel_user(
@@ -553,15 +573,35 @@ async def feishu_callback(
         avatar_url=avatar_url,
     )
 
-    # 如果用 OAuth 拿到了用户名，更新 display_name
+    # 如果用 OAuth 拿到了用户名/邮箱，更新用户信息
     if name:
         user = session.get(User, ctx.user_id)
-        if user and not user.display_name:
-            user.display_name = name
-            user.avatar_url = avatar_url
+        if user:
+            if not user.display_name:
+                user.display_name = name
+            if avatar_url:
+                user.avatar_url = avatar_url
+            if email and not user.email:
+                user.email = email
             session.commit()
 
     token = create_jwt(ctx.user_id, ctx.username)
+
+    if redirect:
+        # 只允许相对路径，跳回前端页面（由 FRONTEND_URL 决定主机）。
+        # 这样本地（前端在 localhost:3000、后端走 ngrok）和线上（同域名）都能正确跳转。
+        path = redirect.lstrip("/")
+        if "://" in path or path.startswith("//"):
+            raise HTTPException(status_code=400, detail="非法的跳转路径")
+        target = f"{FRONTEND_URL.rstrip('/')}/{path}"
+        sep = "&" if "?" in target else "?"
+        query = urlencode({
+            "access_token": token,
+            "user_id": ctx.user_id,
+            "username": ctx.username,
+        })
+        return RedirectResponse(url=f"{target}{sep}{query}")
+
     return schemas.AuthResponse(
         access_token=token,
         user_id=ctx.user_id,

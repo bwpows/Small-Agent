@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  # ── Python 后端 ──
+  agent-backend:
+    build: .
+    container_name: small-agent-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # 持久化数据库和 Agent 工作区
+      - ./data:/app/data
+      # load_dotenv() 需要 .env 文件在容器内可读
+      - ./.env:/app/.env:ro
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=${JWT_SECRET:-change-me-in-production}
+      - SERVER_BASE_URL=${SERVER_BASE_URL:-https://agent.bwpow.com}
+      - FRONTEND_URL=${FRONTEND_URL:-https://agent.bwpow.com}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - agent-network
+
+  # ── Nginx 反向代理 + 前端静态服务 ──
+  nginx:
+    image: nginx:alpine
+    container_name: small-agent-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./dist:/usr/share/nginx/html:ro
+      # SSL 通配符证书
+      - ./deploy/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - agent-backend
+    networks:
+      - agent-network
+
+networks:
+  agent-network:
+    driver: bridge

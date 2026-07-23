@@ -22,7 +22,7 @@ from app_server.config import (
     API_KEY_PREFIX, API_KEY_BYTES,
     TOKEN_ENCRYPTION_KEY, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
 )
-from app_server.db import User, ApiKey, utcnow
+from app_server.db import User, ApiKey, UserIdentity, utcnow
 
 
 # ═══════════════════════════════════════════

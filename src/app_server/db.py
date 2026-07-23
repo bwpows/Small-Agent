@@ -52,6 +52,7 @@ class User(Base):
     password_hash = Column(String(255), nullable=True)   # IM 用户无密码
     display_name  = Column(String(128), nullable=True)   # 对外展示名
     avatar_url    = Column(String(512), nullable=True)
+    email         = Column(String(256), nullable=True)   # OAuth 获取的邮箱（飞书等）
     source        = Column(String(32), nullable=False, default="web")  # web / feishu / telegram / qq
     union_id      = Column(String(128), nullable=True, index=True)     # 跨应用统一 ID
     role          = Column(String(16), nullable=False, default="user")  # user / admin

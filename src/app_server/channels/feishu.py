@@ -285,6 +285,7 @@ def get_user_info(open_id: str) -> Optional[dict]:
             "union_id": user_data.get("union_id", ""),
             "name": user_data.get("name", ""),
             "avatar_url": user_data.get("avatar", {}).get("avatar_240", ""),
+            "email": user_data.get("email", None),
         }
     except Exception as e:
         logger.error(f"获取飞书用户信息异常: {e}")
