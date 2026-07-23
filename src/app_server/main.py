@@ -514,20 +514,23 @@ async def feishu_login(redirect: Optional[str] = None):
     前端传 redirect=/feishu-callback 则飞书授权后回到前端页面，由前端 AJAX 调用回调接口。
     """
     from app_server.config import FEISHU_APP_ID
-    from urllib.parse import quote
+    from urllib.parse import urlencode
+    # redirect_uri 必须与飞书后台“重定向 URL”完全匹配（不带额外 query），
+    # 否则飞书报 20029。必须带 /api 前缀：nginx 只代理 /api/*，
+    # 剥离后正好是后端路由 /auth/feishu/callback，飞书回调才能进后端。
+    # 前端要跳回的页面改用 state 透传。
+    redirect_uri = f"{SERVER_BASE_URL.rstrip('/')}/api/auth/feishu/callback"
+    params = {
+        "app_id": FEISHU_APP_ID,
+        "redirect_uri": redirect_uri,
+        "scope": "contact:user.email:readonly",
+    }
     if redirect:
-        # 让飞书先回调后端，后端登录成功后再 302 跳回前端页面
-        redirect_uri = (
-            f"{SERVER_BASE_URL.rstrip('/')}/auth/feishu/callback"
-            f"?redirect={quote(redirect.lstrip('/'))}"
-        )
-    else:
-        redirect_uri = f"{SERVER_BASE_URL}/auth/feishu/callback"
+        # state 不参与 redirect_uri 白名单匹配，可安全携带前端跳转意图
+        params["state"] = redirect.lstrip("/")
     auth_url = (
-        f"https://open.feishu.cn/open-apis/authen/v1/authorize"
-        f"?app_id={FEISHU_APP_ID}"
-        f"&redirect_uri={redirect_uri}"
-        f"&scope=contact:user.email:readonly"
+        "https://open.feishu.cn/open-apis/authen/v1/authorize"
+        f"?{urlencode(params)}"
     )
     return {"auth_url": auth_url}
 
@@ -587,10 +590,12 @@ async def feishu_callback(
 
     token = create_jwt(ctx.user_id, ctx.username)
 
-    if redirect:
+    # 优先用 state（来自 login 时透传的前端跳转意图），兼容旧 query 参数
+    target_redirect = redirect or state
+    if target_redirect:
         # 只允许相对路径，跳回前端页面（由 FRONTEND_URL 决定主机）。
         # 这样本地（前端在 localhost:3000、后端走 ngrok）和线上（同域名）都能正确跳转。
-        path = redirect.lstrip("/")
+        path = target_redirect.lstrip("/")
         if "://" in path or path.startswith("//"):
             raise HTTPException(status_code=400, detail="非法的跳转路径")
         target = f"{FRONTEND_URL.rstrip('/')}/{path}"

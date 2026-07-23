@@ -1,0 +1,44 @@
+# deploy/small-agent.service
+# systemd 服务文件 — 裸机部署用
+# 放到 /etc/systemd/system/small-agent.service 后执行：
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable small-agent
+#   sudo systemctl start small-agent
+
+[Unit]
+Description=Small Agent - Multi-Agent Swarm API Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+
+# 项目根目录
+WorkingDirectory=/opt/small-agent
+
+# 虚拟环境中的 uvicorn
+ExecStart=/opt/small-agent/venv/bin/uvicorn app_server.main:app \
+    --host 127.0.0.1 \
+    --port 8000 \
+    --workers 4 \
+    --log-level info
+
+# 环境变量
+EnvironmentFile=/opt/small-agent/.env
+
+# 自动重启
+Restart=always
+RestartSec=5
+
+# 日志
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=small-agent
+
+# 安全加固（可选）
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

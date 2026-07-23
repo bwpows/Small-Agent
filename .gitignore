@@ -14,8 +14,11 @@ venv/
 
 # 构建产物
 *.egg-info/
-dist/
+dist
 build/
+
+# SSL 证书（敏感，不提交）
+deploy/ssl/
 
 # 运行时数据（不提交）
 data/
