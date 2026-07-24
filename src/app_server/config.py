@@ -61,3 +61,6 @@ GOOGLE_SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE", "")
 
 # 前端地址（OAuth 回调后跳转用，默认开发端口 3000）
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
+# ── 本地开发登录（生产环境务必关闭） ──
+ENABLE_DEV_LOGIN = os.getenv("ENABLE_DEV_LOGIN", "false").lower() == "true"

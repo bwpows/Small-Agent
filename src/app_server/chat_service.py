@@ -388,6 +388,29 @@ def list_conversations(ctx: TenantContext) -> list:
         session.close()
 
 
+def delete_conversation(user_id: int, conv_id: int) -> bool:
+    """删除用户的一个会话及其所有消息。返回是否成功。"""
+    session = get_session()
+    try:
+        conv = (
+            session.query(Conversation)
+            .filter(Conversation.id == conv_id, Conversation.user_id == user_id)
+            .first()
+        )
+        if not conv:
+            return False
+        # 删除关联消息
+        session.query(Message).filter(Message.conversation_id == conv_id).delete()
+        session.delete(conv)
+        session.commit()
+        return True
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()
+
+
 def list_messages(ctx: TenantContext) -> list:
     """列出当前会话的所有消息"""
     if not ctx.conversation_id:

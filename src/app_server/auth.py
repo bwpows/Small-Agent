@@ -123,16 +123,16 @@ def register_user(session: Session, username: str, password: str) -> User:
     return user
 
 
-def authenticate_user(session: Session, username: str, password: str) -> Optional[User]:
-    user = session.query(User).filter(User.username == username).first()
-    if user is None or not user.is_active:
-        return None
-    # IM 用户无密码，不允许密码登录
-    if user.password_hash is None:
-        return None
-    if not verify_password(password, user.password_hash):
-        return None
-    return user
+# 密码登录已移除，authenticate_user 不再使用
+# def authenticate_user(session: Session, username: str, password: str) -> Optional[User]:
+#     user = session.query(User).filter(User.username == username).first()
+#     if user is None or not user.is_active:
+#         return None
+#     if user.password_hash is None:
+#         return None
+#     if not verify_password(password, user.password_hash):
+#         return None
+#     return user
 
 
 # ═══════════════════════════════════════════

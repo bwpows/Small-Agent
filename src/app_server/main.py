@@ -15,7 +15,7 @@ from fastapi.responses import JSONResponse, StreamingResponse, RedirectResponse
 
 from app_server.db import init_db, get_session, ApiKey, Conversation, Message, User, UserIdentity
 from app_server.auth import (
-    register_user, authenticate_user, create_jwt, decode_jwt,
+    register_user, create_jwt, decode_jwt,
     create_api_key, resolve_api_key, bind_channel_identity,
 )
 from app_server.deps import (
@@ -27,9 +27,10 @@ from app_server.chat_service import (
     chat_completion, chat_completion_channel, chat_completion_stream,
     list_conversations as svc_list_conversations,
     list_messages as svc_list_messages,
+    delete_conversation as svc_delete_conversation,
 )
 from app_server import schemas
-from app_server.config import SERVER_BASE_URL, FRONTEND_URL
+from app_server import config
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("main")
@@ -102,6 +103,8 @@ def jwt_user_id(
 # Auth 路由（JWT 会话，用于管理后台）
 # ═══════════════════════════════════════════
 
+# 本地开发不需要帐号密码注册/登录，以下接口已移除
+#
 # @app.post("/auth/register", response_model=schemas.AuthResponse, tags=["Auth"])
 # def api_register(body: schemas.RegisterRequest, session=Depends(get_db)):
 #     """注册新用户，返回 JWT"""
@@ -127,6 +130,32 @@ def jwt_user_id(
 #         access_token=token, user_id=user.id, username=user.username,
 #         role=user.role,
 #     )
+
+
+@app.post("/auth/dev-login", response_model=schemas.AuthResponse, tags=["Auth"])
+def api_dev_login(request: Request, session=Depends(get_db)):
+    """
+    本地开发登录：自动创建/使用 dev 管理员用户，返回 JWT。
+    仅在 ENABLE_DEV_LOGIN=true 且来源为本地环境时可用。
+    线上部署时 ENABLE_DEV_LOGIN 默认为 false，此接口完全不可用。
+    """
+    if not config.ENABLE_DEV_LOGIN:
+        raise HTTPException(status_code=404, detail="Not found")
+
+    client_host = request.client.host if request.client else ""
+    if client_host not in ("127.0.0.1", "::1", "localhost"):
+        raise HTTPException(status_code=403, detail="本地一键登录仅允许从本地环境访问")
+
+    user = session.query(User).filter(User.username == "dev").first()
+    if user is None:
+        user = register_user(session, "dev", "dev123456")
+        user.role = "admin"
+        session.commit()
+    token = create_jwt(user.id, user.username)
+    return schemas.AuthResponse(
+        access_token=token, user_id=user.id, username=user.username,
+        role=user.role,
+    )
 
 
 @app.get("/auth/me", response_model=schemas.UserInfo, tags=["Auth"])
@@ -328,6 +357,18 @@ def update_conversation(
     )
 
 
+@app.delete("/v1/conversations/{conv_id}", tags=["Conversations"])
+def delete_conversation(
+    conv_id: int,
+    ctx: TenantContext = Depends(get_tenant_context),
+):
+    """删除会话及其所有消息"""
+    ok = svc_delete_conversation(ctx.user_id, conv_id)
+    if not ok:
+        raise HTTPException(status_code=404, detail="会话不存在或无权访问")
+    return {"detail": "ok"}
+
+
 @app.post("/v1/conversations/generate-title", response_model=schemas.ConversationResponse, tags=["Conversations"])
 def generate_conversation_title(
     body: schemas.GenerateTitleRequest,
@@ -519,7 +560,7 @@ async def feishu_login(redirect: Optional[str] = None):
     # 否则飞书报 20029。必须带 /api 前缀：nginx 只代理 /api/*，
     # 剥离后正好是后端路由 /auth/feishu/callback，飞书回调才能进后端。
     # 前端要跳回的页面改用 state 透传。
-    redirect_uri = f"{SERVER_BASE_URL.rstrip('/')}/api/auth/feishu/callback"
+    redirect_uri = f"{config.SERVER_BASE_URL.rstrip('/')}/api/auth/feishu/callback"
     params = {
         "app_id": FEISHU_APP_ID,
         "redirect_uri": redirect_uri,
@@ -598,12 +639,16 @@ async def feishu_callback(
         path = target_redirect.lstrip("/")
         if "://" in path or path.startswith("//"):
             raise HTTPException(status_code=400, detail="非法的跳转路径")
-        target = f"{FRONTEND_URL.rstrip('/')}/{path}"
+        target = f"{config.FRONTEND_URL.rstrip('/')}/{path}"
         sep = "&" if "?" in target else "?"
+        user_json = json.dumps({
+            "id": ctx.user_id,
+            "username": ctx.username,
+            "email": ctx.email if hasattr(ctx, "email") else None,
+        })
         query = urlencode({
             "access_token": token,
-            "user_id": ctx.user_id,
-            "username": ctx.username,
+            "user": user_json,
         })
         return RedirectResponse(url=f"{target}{sep}{query}")
 
@@ -629,7 +674,7 @@ async def google_login(redirect: Optional[str] = None):
     from urllib.parse import urlencode
 
     # redirect_uri 必须在 Google Cloud Console 中白名单注册
-    redirect_uri = f"{SERVER_BASE_URL.rstrip('/')}/api/auth/google/login-callback"
+    redirect_uri = f"{config.SERVER_BASE_URL.rstrip('/')}/api/auth/google/login-callback"
     state = redirect.lstrip("/") if redirect else "google-callback"
     auth_url = google_login_url(redirect_uri=redirect_uri, state=state)
     return {"auth_url": auth_url}
@@ -650,7 +695,7 @@ async def google_login_callback(
     from app_server.auth import exchange_google_login_code, find_or_create_google_user
     from urllib.parse import urlencode
 
-    redirect_uri = f"{SERVER_BASE_URL.rstrip('/')}/api/auth/google/login-callback"
+    redirect_uri = f"{config.SERVER_BASE_URL.rstrip('/')}/api/auth/google/login-callback"
     user_info = exchange_google_login_code(code, redirect_uri=redirect_uri)
     if user_info is None:
         raise HTTPException(status_code=400, detail="Google OAuth 授权失败")
@@ -662,12 +707,16 @@ async def google_login_callback(
     target_path = (state or "google-callback").lstrip("/")
     if "://" in target_path or target_path.startswith("//"):
         raise HTTPException(status_code=400, detail="非法的跳转路径")
-    target = f"{FRONTEND_URL.rstrip('/')}/{target_path}"
+    target = f"{config.FRONTEND_URL.rstrip('/')}/{target_path}"
     sep = "&" if "?" in target else "?"
+    user_json = json.dumps({
+        "id": user.id,
+        "username": user.username,
+        "email": user_info.get("email") if user_info else None,
+    })
     query = urlencode({
         "access_token": token,
-        "user_id": user.id,
-        "username": user.username,
+        "user": user_json,
     })
     return RedirectResponse(url=f"{target}{sep}{query}")
 
@@ -787,7 +836,7 @@ def google_login(user_id: int = Depends(jwt_user_id)):
     推荐使用 Service Account（POST /auth/drive/service-account）。
     """
     from app_server.auth import google_oauth_url
-    redirect_uri = f"{SERVER_BASE_URL}/auth/google/callback"
+    redirect_uri = f"{config.SERVER_BASE_URL}/auth/google/callback"
     auth_url = google_oauth_url(redirect_uri)
     if "?" in auth_url:
         auth_url += f"&state={user_id}"
@@ -818,14 +867,14 @@ def google_callback(
     if user_id is None:
         raise HTTPException(status_code=400, detail="缺少 state 参数（user_id）")
 
-    token_info = exchange_google_code(code, redirect_uri=f"{SERVER_BASE_URL}/auth/google/callback")
+    token_info = exchange_google_code(code, redirect_uri=f"{config.SERVER_BASE_URL}/auth/google/callback")
     if token_info is None:
         raise HTTPException(status_code=400, detail="Google OAuth 授权失败，请重试")
 
     token_json = json.dumps(token_info)
     store_drive_token(session, user_id, token_json)
 
-    return RedirectResponse(url=f"{FRONTEND_URL}/chat?drive_linked=1")
+    return RedirectResponse(url=f"{config.FRONTEND_URL}/chat?drive_linked=1")
 
 
 @app.delete("/auth/drive", tags=["Auth"])
