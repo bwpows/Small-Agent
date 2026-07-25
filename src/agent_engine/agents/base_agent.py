@@ -3,12 +3,17 @@ import json
 import datetime
 import re
 import traceback
+from typing import TYPE_CHECKING
 from agent_engine.llm_client import get_llm_client
 from agent_engine.json_utils import robust_parse
 from agent_engine.tracing import AgentTracer
 
 # 兼容过渡：目前工具仍由 llm_engine 管理，后续可独立抽离为 tool_registry
 from agent_engine.llm_engine import get_tools_definition, execute_tool
+
+# 前向声明 TaskContext，避免循环导入
+if TYPE_CHECKING:
+    from agent_engine.workflow.context import TaskContext
 
 class BaseAgent:
     """
@@ -79,6 +84,70 @@ class BaseAgent:
         except Exception as e:
             self._tracer.finish(error=e)
             return f"❌ [{self.agent_name}] 执行崩溃:\n```python\n{traceback.format_exc()}\n```"
+
+    def execute_with_ctx(self, ctx: "TaskContext") -> dict:
+        """
+        🦾 DAG Runtime 接口 — 通过 TaskContext 执行任务。
+
+        这是 WorkflowRuntime 统一调用的入口。
+        内部将 TaskContext 的信息拆解后委托给 execute()，
+        保持与单 Agent 模式完全兼容。
+
+        :param ctx: TaskContext（包含全局引用 + 当前任务信息）
+        :return: {"output": str, "usage": dict, "error": str|None}
+        """
+        # 从 TaskContext 提取所需信息
+        instruction = ctx.instruction
+        prior_context = ctx.prior_context
+        # memories 从 TaskContext 委托属性读取
+        memories_text = ctx.memories
+
+        # 解析记忆文本为 parsed_memories 格式（与 execute() 兼容）
+        parsed_memories = []
+        if memories_text and memories_text != "无长期记忆。" and memories_text != "无":
+            parsed_memories = [{"text": memories_text}]
+
+        # 通过 monkey-patch 方式收集 token 用量
+        usage_collector: dict = {
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+        }
+        original_create = None
+
+        try:
+            client, _model_name = get_llm_client()
+            # 包装 client 以收集 usage
+            if hasattr(client, 'chat') and hasattr(client.chat, 'completions'):
+                original_create = client.chat.completions.create
+
+                def _wrapped_create(**kwargs):
+                    resp = original_create(**kwargs)
+                    if hasattr(resp, 'usage') and resp.usage:
+                        usage_collector["prompt_tokens"] += resp.usage.prompt_tokens or 0
+                        usage_collector["completion_tokens"] += resp.usage.completion_tokens or 0
+                        usage_collector["total_tokens"] += resp.usage.total_tokens or 0
+                    return resp
+
+                client.chat.completions.create = _wrapped_create
+
+            # 委托给经典的 execute 方法
+            output = self.execute(
+                instruction=instruction,
+                prior_context=prior_context,
+                parsed_memories=parsed_memories if parsed_memories else None,
+                ui_status=None,  # DAG Runtime 不使用流式 UI status
+            )
+            return {"output": output, "usage": usage_collector, "error": None}
+        except Exception as e:
+            return {
+                "output": f"执行失败: {str(e)}",
+                "usage": usage_collector,
+                "error": str(e),
+            }
+        finally:
+            if original_create:
+                client.chat.completions.create = original_create
 
     def _execute_impl(self, instruction: str, prior_context: str = "", parsed_memories: list = None, ui_status=None) -> str:
         """

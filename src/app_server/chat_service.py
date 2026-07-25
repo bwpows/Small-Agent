@@ -149,7 +149,24 @@ def chat_completion(
     # 注入 Drive 凭证（多租户）
     _inject_drive_creds(ctx)
 
-    # 调用引擎（计时）
+    # ── 尝试 DAG 多任务工作流 ──────────────────────────────
+    t0 = time.perf_counter()
+    dag_result = _try_dag_workflow(
+        user_input=user_input,
+        recent_history=recent_history,
+        parsed_memories=parsed_memories,
+    )
+    if dag_result is not None:
+        elapsed_ms = int((time.perf_counter() - t0) * 1000)
+        save_message(ctx, "assistant", dag_result["content"],
+                     usage=dag_result.get("usage", {}),
+                     duration_ms=elapsed_ms,
+                     thinking_count=dag_result.get("thinking_count", 0),
+                     reasoning_text=dag_result.get("reasoning", ""))
+        return dag_result
+
+    # ── 降级：单 Agent ReAct ───────────────────────────────
+    logger.info("DAG 工作流不可用，降级到单 Agent ReAct 模式")
     from agent_engine.llm_engine import generate_answer
     t0 = time.perf_counter()
     result = generate_answer(
@@ -204,10 +221,37 @@ async def chat_completion_stream(
     web_info = ""
     _inject_drive_creds(ctx)
 
-    from agent_engine.llm_engine import generate_answer_stream
-
     t0 = time.perf_counter()
     trace_id = uuid.uuid4().hex[:16]  # 16 位短 ID，每次请求唯一
+
+    # ── 尝试 DAG 多任务工作流 ──────────────────────────────
+    dag_result = _try_dag_workflow(
+        user_input=user_input,
+        recent_history=recent_history,
+        parsed_memories=parsed_memories,
+    )
+    if dag_result is not None:
+        elapsed_ms = int((time.perf_counter() - t0) * 1000)
+        # DAG 结果以 SSE done 事件返回
+        final_event = {
+            "type": "done",
+            "content": dag_result["content"],
+            "usage": dag_result.get("usage", {}),
+            "reasoning": dag_result.get("reasoning", ""),
+            "thinking_count": dag_result.get("thinking_count", 0),
+            "duration_ms": elapsed_ms,
+            "trace_id": trace_id,
+        }
+        yield f"event: done\ndata: {json.dumps(final_event, ensure_ascii=False)}\n\n"
+        save_message(ctx, "assistant", dag_result["content"],
+                     usage=dag_result.get("usage"),
+                     duration_ms=elapsed_ms,
+                     thinking_count=dag_result.get("thinking_count", 0),
+                     reasoning_text=dag_result.get("reasoning", ""))
+        return
+
+    # ── 降级：单 Agent 流式 ReAct ──────────────────────────
+    from agent_engine.llm_engine import generate_answer_stream
 
     # 收集指标
     final_content = ""
@@ -348,6 +392,19 @@ def chat_completion_channel(
     # 注入 Drive 凭证（多租户）
     _inject_drive_creds(ctx)
 
+    # ── 尝试 DAG 多任务工作流 ──────────────────────────────
+    dag_result = _try_dag_workflow(
+        user_input=user_input,
+        recent_history=recent_history,
+        parsed_memories=parsed_memories,
+    )
+    if dag_result is not None:
+        reply = dag_result["content"]
+        save_message(ctx, "assistant", reply)
+        return reply
+
+    # ── 降级：单 Agent ReAct ───────────────────────────────
+    logger.info("DAG 工作流不可用，降级到单 Agent ReAct 模式")
     from agent_engine.llm_engine import generate_answer
     result = generate_answer(
         user_input=user_input,
@@ -445,3 +502,116 @@ def list_messages(ctx: TenantContext) -> list:
         ]
     finally:
         session.close()
+
+
+# ══════════════════════════════════════════════════════════
+# DAG 多任务工作流
+# ══════════════════════════════════════════════════════════
+
+def _try_dag_workflow(
+    user_input: str,
+    recent_history: list,
+    parsed_memories: list,
+) -> "Optional[dict]":
+    """
+    尝试使用 DAG 多任务工作流执行用户请求。
+
+    流程:
+    1. 调用 Planner 生成任务计划
+    2. 检查是否为 DAG 计划（多任务且有依赖）
+    3. 是 → 创建 WorkflowPlan → WorkflowRuntime 执行
+    4. 否 → 返回 None（调用方降级到单 Agent 模式）
+
+    :return: 成功时返回 {"content": str, ...}，失败时返回 None
+    """
+    try:
+        # Step 1: Planner 生成任务计划
+        from agent_engine.planner import generate_plan
+        tasks_raw = generate_plan(
+            user_goal=user_input,
+            recent_history=recent_history,
+            parsed_memories=parsed_memories,
+        )
+
+        if not tasks_raw:
+            logger.info("Planner 未生成有效计划，跳过 DAG")
+            return None
+
+        # Step 2: 构建 WorkflowPlan
+        from agent_engine.workflow.plan import WorkflowPlan
+        plan = WorkflowPlan.from_planner_output(
+            {"plan_type": "dag", "tasks": tasks_raw}
+        )
+
+        if plan is None or not plan.is_dag:
+            logger.info(
+                f"计划不是 DAG 类型（任务数={len(tasks_raw)}），"
+                f"降级到单 Agent 模式"
+            )
+            return None
+
+        logger.info(f"DAG 计划生成成功: {plan.summary}")
+
+        # Step 3: 创建 AgentRegistry 和 WorkflowRuntime
+        from agent_engine.agents.registry import AgentRegistry
+        from agent_engine.workflow.runtime import WorkflowRuntime
+
+        registry = AgentRegistry(use_cache=True)
+
+        # 提取记忆文本
+        memories_text = ""
+        if parsed_memories:
+            memories_text = "\n".join(
+                f"- {m.get('text', m)}" if isinstance(m, dict) else f"- {m}"
+                for m in parsed_memories
+            )
+
+        # 提取历史对话文本
+        history_text = ""
+        if recent_history:
+            history_text = "\n".join(
+                f"{msg.get('role', 'unknown')}: {msg.get('content', '')}"
+                for msg in recent_history[-10:]
+            )
+
+        runtime = WorkflowRuntime(
+            plan=plan,
+            registry=registry,
+            user_query=user_input,
+            memories=memories_text,
+            history=history_text,
+            max_workers=4,
+            task_timeout=300.0,
+            max_retries=1,
+        )
+
+        # Step 4: 执行工作流
+        result = runtime.execute()
+
+        if not result.get("success"):
+            logger.warning("DAG 工作流部分任务失败，返回已有结果")
+        else:
+            logger.info("DAG 工作流全部成功")
+
+        content = result.get("summary", "")
+        if not content:
+            tasks_output = [
+                tr for tr in result.get("task_results", [])
+                if tr.get("status") == "SUCCEEDED"
+            ]
+            content = "\n\n".join(
+                t.get("output_preview", "") for t in tasks_output
+            )
+
+        return {
+            "content": content,
+            "usage": result.get("total_usage", {
+                "prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0,
+            }),
+            "reasoning": "",
+            "thinking_count": len(result.get("task_results", [])),
+        }
+
+    except Exception as e:
+        logger.error(f"DAG 工作流执行异常，降级: {e}", exc_info=True)
+        return None

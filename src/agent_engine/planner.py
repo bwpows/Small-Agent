@@ -91,6 +91,7 @@ def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: 
     "tasks": [
         {{
             "task_id": 1,
+            "title": "搜索AI最新动态",
             "action": "搜集数据",
             "agent_role": "researcher",
             "depends_on": [],
@@ -162,7 +163,8 @@ def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: 
             error_feedback = (
                 f"🚨 第{attempt+1}次输出被系统拒绝。错误: `{e}`。"
                 f"请确保输出严格合法的 JSON 对象，包含 'tasks' 数组，"
-                f"每个 task 必须含 task_id/action/agent_role/depends_on/instruction/risk_level/risk_details/expected_output。"
+                f"每个 task 必须含 task_id/title/action/agent_role/depends_on/"
+                f"instruction/risk_level/risk_details/expected_output。"
             )
             messages.append({"role": "assistant", "content": content[:2000]})
             messages.append({"role": "user", "content": error_feedback})
