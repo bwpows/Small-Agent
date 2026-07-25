@@ -8,9 +8,10 @@ from ddgs import DDGS
 from agent_engine.sandbox import get_network_guard
 
 
-def search_web(query: str, time_range: str = "anytime") -> str:
+def search_web(query: str, time_range: str = "anytime", region: str = "wt-wt") -> str:
     """
-    带时间过滤和域名安全守卫的高级搜索。
+    带时间过滤、区域偏好和域名安全守卫的高级搜索。
+    region 为可选的搜索区域偏好（如 "zh-cn" 偏中文、"wt-wt" 全球无偏好）。
     """
     try:
         time_map = {
@@ -26,7 +27,7 @@ def search_web(query: str, time_range: str = "anytime") -> str:
         results = []
 
         with DDGS() as ddgs:
-            for r in ddgs.text(query, timelimit=ddg_time, max_results=5):
+            for r in ddgs.text(query, region=region, timelimit=ddg_time, max_results=5):
                 # 域名安全检查：过滤掉黑名单/非白名单域名的结果
                 href = r.get("href", "")
                 if href and not guard.check_url(href):
@@ -67,6 +68,11 @@ TOOL_DEFINITION = {
                     "type": "string",
                     "enum": ["past_day", "past_week", "past_month", "past_year", "anytime"],
                     "description": "时间筛选条件。如果用户询问【今天、最新】选 past_day；【本周】选 past_week；【最近】选 past_month；如果是历史知识或无时间要求选 anytime。"
+                },
+                "region": {
+                    "type": "string",
+                    "enum": ["wt-wt", "zh-cn", "us-en", "jp-jp", "kr-kr"],
+                    "description": "搜索区域偏好。中文问题选 zh-cn，英文/代码/技术问题选 wt-wt 或 us-en，日文问题选 jp-jp，韩文问题选 kr-kr。默认 wt-wt。"
                 }
             },
             "required": ["query", "time_range"]

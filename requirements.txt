@@ -16,7 +16,7 @@ google-auth-httplib2>=0.1.1
 google-auth-oauthlib>=1.1.0
 
 # === 网页搜索组件 (视你底层实现而定) ===
-duckduckgo-search>=5.0.0
+ddgs>=5.0.0
 beautifulsoup4>=4.12.0
 
 # === API 服务层（server/）===

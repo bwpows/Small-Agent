@@ -5,6 +5,7 @@ P0：所有用户共享全局 LLM 配置；后续 P2 接入 user_llm_config 每�
 import os
 import time
 import json
+import uuid
 import datetime
 import logging
 from typing import List, Optional, Generator, AsyncGenerator
@@ -13,7 +14,6 @@ from app_server.deps import TenantContext
 from app_server.db import get_session, Conversation, Message, utcnow
 
 logger = logging.getLogger("chat_service")
-
 
 def _ensure_workspace(ctx: TenantContext):
     """确保用户的隔离工作目录存在"""
@@ -188,7 +188,7 @@ async def chat_completion_stream(
       data: {"name":"...","args":{...}}
 
       event: done
-      data: {"content":"...","usage":{...},"reasoning":"...","thinking_count":N,"duration_ms":N}
+      data: {"content":"...","usage":{...},"reasoning":"...","thinking_count":N,"duration_ms":N,"trace_id":"xxxx"}
     """
     _ensure_workspace(ctx)
     get_or_create_conversation(ctx)
@@ -207,6 +207,7 @@ async def chat_completion_stream(
     from agent_engine.llm_engine import generate_answer_stream
 
     t0 = time.perf_counter()
+    trace_id = uuid.uuid4().hex[:16]  # 16 位短 ID，每次请求唯一
 
     # 收集指标
     final_content = ""
@@ -228,6 +229,7 @@ async def chat_completion_stream(
                 final_thinking_count = event.get("thinking_count", 0)
                 elapsed_ms = int((time.perf_counter() - t0) * 1000)
                 event["duration_ms"] = elapsed_ms
+                event["trace_id"] = trace_id
             yield f"event: {event['type']}\ndata: {json.dumps(event, ensure_ascii=False)}\n\n"
     except Exception as e:
         logger.error(f"流式引擎错误: {e}", exc_info=True)

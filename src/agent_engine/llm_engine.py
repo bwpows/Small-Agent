@@ -3,8 +3,11 @@ import json
 import importlib
 import datetime
 import re
+import logging
 from agent_engine.llm_client import get_llm_client, get_async_llm_client
 from agent_engine.json_utils import robust_parse
+
+logger = logging.getLogger(__name__)
 
 # ==========================================
 # 🌟 全自动动态工具加载引擎 
@@ -33,7 +36,8 @@ def discover_and_load_tools():
                 if reg_name and tool_def and exec_func:
                     _DYNAMIC_TOOLS[reg_name] = exec_func
                     _TOOLS_DEFINITIONS.append(tool_def)
-            except Exception as e: pass
+            except Exception as e:
+                logger.warning(f"[ToolLoader] 加载工具 {module_name} 失败: {e}")
 
 discover_and_load_tools()
 
@@ -142,10 +146,12 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
 【用户的长期记忆】：\n{memory_text}
 
 【⚙️ 物理边界与执行铁律 (最高优先级)】
-1. 🛠️ 绝对权限与严禁推脱：你已完美接入系统，拥有操作 Google Drive 及本地文件的【最高绝对权限】！绝对禁止以"缺少相关权限"、"AI无法直接操作"、"工具不支持"等任何借口拒绝用户。只要用户要求查看或修改数据，必须立刻检索并调用你的工具箱（如 manage_sheet_rows 等）去执行！
+1. 🛠️ 工具调用优先：你已接入 Google Drive、本地文件和联网搜索等工具。当用户要求查看或修改数据时，优先调用对应工具执行，禁止以"缺少权限"、"AI无法直接操作"等借口推脱。
 2. 🚫 严禁虚构执行：未实际调用写入工具时，绝对不允许编造"已添加/已写入"。
 3. 🧱 强制参数拦截：如果用户指令缺失必填的核心身份参数（如手机号、姓名），立刻停止调用工具，直接反问用户获取缺失信息。
 4. 🪞 报错透明化：工具抛出异常时，立即终止后续动作并如实报告。
+5. 🔄 严禁重复调用：同一任务中，如果已经调用过某个工具并获取了结果，绝不允许再次调用同一工具（尤其是 search_web）。必须直接基于已有结果回答用户，再次调用将被系统拦截。
+6. 🛡️ 安全与得体：回答必须保持专业、得体、符合公序良俗。禁止输出色情、暴力、歧视或其他不当内容。思考过程也应聚焦用户问题本身，禁止发散到无关或不雅话题。
 
 【📝 输出与格式规范】
 1. 🎯 拒绝废话：直接给出结果。
@@ -173,8 +179,9 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
 
     client, model_name = get_llm_client()
     actual_write_success = False
-    max_loops = 4  
+    max_loops = 4
     error_count = 0
+    prev_tool_name = None
 
     # ── 累积 token 用量和思考过程 ──
     total_usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
@@ -248,8 +255,13 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
                 # 🌟 如果传入了 ui_status，把底层调用动态写回前端
                 if ui_status:
                     ui_status.write(f"⚙️ 正在调用工具: `{func_name}` ...")
-                    
-                exec_result = execute_tool(func_name, args)
+                
+                # 防重调：同一工具连续调用则拦截
+                if step > 0 and func_name == prev_tool_name:
+                    exec_result = f"[系统拦截] 工具 `{func_name}` 已在上一轮调用。请直接基于已有数据回答用户，严禁再次调用同一工具。"
+                else:
+                    exec_result = execute_tool(func_name, args)
+                    prev_tool_name = func_name
                 
                 if "✅ 成功" in str(exec_result) and ("drive" in func_name or "write" in func_name or "manage" in func_name):
                     actual_write_success = True
@@ -281,7 +293,7 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
                     # 补一条 user 消息做总结提示
                     messages.append({
                         "role": "user",
-                        "content": "数据已获取！请基于以上真实数据，直接用中文回答用户问题，不要再次调用工具。",
+                        "content": "数据已获取！请基于以上真实数据，直接用中文回答用户问题。再次调用同一工具将被系统拦截，请勿重复调用。",
                     })
                 else:
                     # XML/正则 兜底路径：保持原有 user 角色（无 tool_call_id 可用）
@@ -359,10 +371,12 @@ async def generate_answer_stream(user_input, recent_history, parsed_memories, we
 【用户的长期记忆】：\n{memory_text}
 
 【⚙️ 物理边界与执行铁律 (最高优先级)】
-1. 🛠️ 绝对权限与严禁推脱：你已完美接入系统，拥有操作 Google Drive 及本地文件的【最高绝对权限】！绝对禁止以"缺少相关权限"、"AI无法直接操作"、"工具不支持"等任何借口拒绝用户。只要用户要求查看或修改数据，必须立刻检索并调用你的工具箱（如 manage_sheet_rows 等）去执行！
+1. 🛠️ 工具调用优先：你已接入 Google Drive、本地文件和联网搜索等工具。当用户要求查看或修改数据时，优先调用对应工具执行，禁止以"缺少权限"、"AI无法直接操作"等借口推脱。
 2. 🚫 严禁虚构执行：未实际调用写入工具时，绝对不允许编造"已添加/已写入"。
 3. 🧱 强制参数拦截：如果用户指令缺失必填的核心身份参数（如手机号、姓名），立刻停止调用工具，直接反问用户获取缺失信息。
 4. 🪞 报错透明化：工具抛出异常时，立即终止后续动作并如实报告。
+5. 🔄 严禁重复调用：同一任务中，如果已经调用过某个工具并获取了结果，绝不允许再次调用同一工具（尤其是 search_web）。必须直接基于已有结果回答用户，再次调用将被系统拦截。
+6. 🛡️ 安全与得体：回答必须保持专业、得体、符合公序良俗。禁止输出色情、暴力、歧视或其他不当内容。思考过程也应聚焦用户问题本身，禁止发散到无关或不雅话题。
 
 【📝 输出与格式规范】
 1. 🎯 拒绝废话：直接给出结果。
@@ -391,6 +405,7 @@ async def generate_answer_stream(user_input, recent_history, parsed_memories, we
     actual_write_success = False
     max_loops = 4
     error_count = 0
+    prev_tool_name = None
 
     total_usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
     all_reasoning_parts = []
@@ -472,7 +487,12 @@ async def generate_answer_stream(user_input, recent_history, parsed_memories, we
 
                 yield {"type": "tool_call", "name": func_name, "args": args}
 
-                exec_result = execute_tool(func_name, args)
+                # 防重调：同一工具连续调用则拦截
+                if step > 0 and func_name == prev_tool_name:
+                    exec_result = f"[系统拦截] 工具 `{func_name}` 已在上一轮调用。请直接基于已有数据回答用户，严禁再次调用同一工具。"
+                else:
+                    exec_result = execute_tool(func_name, args)
+                    prev_tool_name = func_name
 
                 if "✅ 成功" in str(exec_result) and ("drive" in func_name or "write" in func_name or "manage" in func_name):
                     actual_write_success = True
