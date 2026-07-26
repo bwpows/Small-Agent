@@ -65,19 +65,27 @@ async def rate_limit_middleware(request: Request, call_next):
             raw_key = auth_header.removeprefix("Bearer ").strip()
             session = get_session()
             try:
+                # 优先尝试 API Key，失败则降级到 JWT
                 api_key = resolve_api_key(session, raw_key)
                 if api_key:
                     allowed, wait = get_limiter().is_allowed(api_key.id)
-                    if not allowed:
-                        return JSONResponse(
-                            status_code=429,
-                            content={
-                                "error": {
-                                    "message": f"请求过于频繁，请 {wait} 秒后重试",
-                                    "type": "rate_limit_exceeded",
-                                }
-                            },
-                        )
+                else:
+                    payload = decode_jwt(raw_key)
+                    if payload:
+                        user_id = int(payload["sub"])
+                        allowed, wait = get_limiter().is_allowed_by_user(user_id)
+                    else:
+                        allowed = True
+                if not allowed:
+                    return JSONResponse(
+                        status_code=429,
+                        content={
+                            "error": {
+                                "message": f"请求过于频繁，请 {wait} 秒后重试",
+                                "type": "rate_limit_exceeded",
+                            }
+                        },
+                    )
             finally:
                 session.close()
     return await call_next(request)

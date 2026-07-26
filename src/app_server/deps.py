@@ -8,7 +8,7 @@ from fastapi import Depends, HTTPException, Header
 from sqlalchemy.orm import Session
 
 from app_server.db import get_session, ApiKey, Conversation, User, UserIdentity, utcnow
-from app_server.auth import resolve_api_key
+from app_server.auth import resolve_api_key, decode_jwt
 
 
 @dataclass
@@ -61,16 +61,28 @@ def get_tenant_context(
         raise HTTPException(status_code=401, detail="缺少 API Key")
 
     api_key = resolve_api_key(session, raw_key)
-    if api_key is None:
-        raise HTTPException(status_code=401, detail="无效或已吊销的 API Key")
+    if api_key is not None:
+        user = session.get(User, api_key.user_id)
+        username = user.username if user else "unknown"
+        return TenantContext(
+            user_id=api_key.user_id,
+            api_key_id=api_key.id,
+            username=username,
+        )
 
-    user = session.get(User, api_key.user_id)
-    username = user.username if user else "unknown"
+    # API Key 未命中 → JWT 降级（Web 端可直接用 JWT 调用聊天 API）
+    payload = decode_jwt(raw_key)
+    if payload is None:
+        raise HTTPException(status_code=401, detail="无效或已吊销的认证凭据")
+
+    user_id = int(payload["sub"])
+    user = session.get(User, user_id)
+    if user is None or not user.is_active:
+        raise HTTPException(status_code=401, detail="用户不存在或已停用")
 
     return TenantContext(
-        user_id=api_key.user_id,
-        api_key_id=api_key.id,
-        username=username,
+        user_id=user_id,
+        username=user.username,
     )
 
 
