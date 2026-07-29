@@ -150,7 +150,7 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
 2. 🚫 严禁虚构执行：未实际调用写入工具时，绝对不允许编造"已添加/已写入"。
 3. 🧱 强制参数拦截：如果用户指令缺失必填的核心身份参数（如手机号、姓名），立刻停止调用工具，直接反问用户获取缺失信息。
 4. 🪞 报错透明化：工具抛出异常时，立即终止后续动作并如实报告。
-5. 🔄 严禁重复调用：同一任务中，如果已经调用过某个工具并获取了结果，绝不允许再次调用同一工具（尤其是 search_web）。必须直接基于已有结果回答用户，再次调用将被系统拦截。
+5. 🔄 严禁重复调用同一动作：同一任务中，同一个工具的同一个动作已调用并拿到结果后，绝不允许再次调用该动作（尤其是 search_web 反复搜索）。必须直接基于已有结果回答用户；但同一工具的不同动作（如表格工具先 read 再 update 再 read 验证）是允许的。
 6. 🛡️ 安全与得体：回答必须保持专业、得体、符合公序良俗。禁止输出色情、暴力、歧视或其他不当内容。思考过程也应聚焦用户问题本身，禁止发散到无关或不雅话题。
 
 【📝 输出与格式规范】
@@ -179,9 +179,9 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
 
     client, model_name = get_llm_client()
     actual_write_success = False
-    max_loops = 4
+    max_loops = 8
     error_count = 0
-    prev_tool_name = None
+    prev_tool_key = None
 
     # ── 累积 token 用量和思考过程 ──
     total_usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
@@ -256,12 +256,14 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
                 if ui_status:
                     ui_status.write(f"⚙️ 正在调用工具: `{func_name}` ...")
                 
-                # 防重调：同一工具连续调用则拦截
-                if step > 0 and func_name == prev_tool_name:
-                    exec_result = f"[系统拦截] 工具 `{func_name}` 已在上一轮调用。请直接基于已有数据回答用户，严禁再次调用同一工具。"
+                # 防重调：同一工具 + 同一动作 连续调用才拦截（允许 read→update→read 同一表格工具）
+                action = args.get("action", "")
+                tool_key = (func_name, action)
+                if step > 0 and tool_key == prev_tool_key:
+                    exec_result = f"[系统拦截] 工具 `{func_name}`（动作 `{action or '默认'}`）已在上一轮调用。请直接基于已有数据回答用户，严禁再次调用同一工具。"
                 else:
                     exec_result = execute_tool(func_name, args)
-                    prev_tool_name = func_name
+                    prev_tool_key = tool_key
                 
                 if "✅ 成功" in str(exec_result) and ("drive" in func_name or "write" in func_name or "manage" in func_name):
                     actual_write_success = True
@@ -375,7 +377,7 @@ async def generate_answer_stream(user_input, recent_history, parsed_memories, we
 2. 🚫 严禁虚构执行：未实际调用写入工具时，绝对不允许编造"已添加/已写入"。
 3. 🧱 强制参数拦截：如果用户指令缺失必填的核心身份参数（如手机号、姓名），立刻停止调用工具，直接反问用户获取缺失信息。
 4. 🪞 报错透明化：工具抛出异常时，立即终止后续动作并如实报告。
-5. 🔄 严禁重复调用：同一任务中，如果已经调用过某个工具并获取了结果，绝不允许再次调用同一工具（尤其是 search_web）。必须直接基于已有结果回答用户，再次调用将被系统拦截。
+5. 🔄 严禁重复调用同一动作：同一任务中，同一个工具的同一个动作已调用并拿到结果后，绝不允许再次调用该动作（尤其是 search_web 反复搜索）。必须直接基于已有结果回答用户；但同一工具的不同动作（如表格工具先 read 再 update 再 read 验证）是允许的。
 6. 🛡️ 安全与得体：回答必须保持专业、得体、符合公序良俗。禁止输出色情、暴力、歧视或其他不当内容。思考过程也应聚焦用户问题本身，禁止发散到无关或不雅话题。
 
 【📝 输出与格式规范】
@@ -403,7 +405,7 @@ async def generate_answer_stream(user_input, recent_history, parsed_memories, we
 
     client, model_name = get_async_llm_client()
     actual_write_success = False
-    max_loops = 4
+    max_loops = 8
     error_count = 0
     prev_tool_name = None
 
@@ -470,10 +472,12 @@ async def generate_answer_stream(user_input, recent_history, parsed_memories, we
                     total_usage = _accumulate_usage(total_usage, _extract_usage(chunk))
 
             # ── 流结束，判断是否有工具调用 ──
+            step_reasoning = ""
             if reasoning_parts:
                 reasoning_text = "".join(reasoning_parts).strip()
                 if reasoning_text:
                     all_reasoning_parts.append(f"--- 回合 {step+1} 思考 ---\n{reasoning_text}")
+                    step_reasoning = reasoning_text
 
             step_content = "".join(collected_content_parts)
 
@@ -485,14 +489,19 @@ async def generate_answer_stream(user_input, recent_history, parsed_memories, we
                 parsed_args = robust_parse(raw_args, expect_array=False)
                 args = parsed_args if isinstance(parsed_args, dict) else {}
 
+                if step_reasoning:
+                    yield {"type": "thinking", "content": step_reasoning, "round": step + 1}
+
                 yield {"type": "tool_call", "name": func_name, "args": args}
 
-                # 防重调：同一工具连续调用则拦截
-                if step > 0 and func_name == prev_tool_name:
-                    exec_result = f"[系统拦截] 工具 `{func_name}` 已在上一轮调用。请直接基于已有数据回答用户，严禁再次调用同一工具。"
+                # 防重调：同一工具 + 同一动作 连续调用才拦截（允许 read→update→read 同一表格工具）
+                action = args.get("action", "")
+                tool_key = (func_name, action)
+                if step > 0 and tool_key == prev_tool_key:
+                    exec_result = f"[系统拦截] 工具 `{func_name}`（动作 `{action or '默认'}`）已在上一轮调用。请直接基于已有数据回答用户，严禁再次调用同一工具。"
                 else:
                     exec_result = execute_tool(func_name, args)
-                    prev_tool_name = func_name
+                    prev_tool_key = tool_key
 
                 if "✅ 成功" in str(exec_result) and ("drive" in func_name or "write" in func_name or "manage" in func_name):
                     actual_write_success = True
