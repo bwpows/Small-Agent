@@ -31,8 +31,8 @@ TOKEN_ENCRYPTION_KEY = os.getenv(
 WORKSPACE_DIR = os.path.join(_REPO_ROOT, "data", "workspace")
 
 # ── 限流 ──
-RATE_LIMIT_PER_KEY  = 10   # 每 Key 每分钟最大请求数
-RATE_LIMIT_WINDOW   = 60   # 窗口秒数
+RATE_LIMIT_PER_KEY  = int(os.getenv("RATE_LIMIT_PER_KEY", "30"))   # 每 Key/用户 每分钟最大请求数
+RATE_LIMIT_WINDOW   = int(os.getenv("RATE_LIMIT_WINDOW", "60"))    # 窗口秒数
 
 # ── 飞书 ──
 FEISHU_APP_ID       = os.getenv("FEISHU_APP_ID", "")

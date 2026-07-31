@@ -61,7 +61,7 @@ def generate_plan(user_goal: str, recent_history: list = None, parsed_memories: 
 {business_registry_prompt}
 
 【⚙️ 专家路由规则（严格按职责分配，禁止跨领域指派）】
-- `researcher`：仅限"联网搜索、查找外部资料"类的任务。绝不可分派文件操作！
+- `researcher`：负责"联网搜索、查找外部资料、查询股票行情/股价"类的任务。绝不可分派文件操作！
 - `coder`：负责"本地工作区文件读写/列表/删除、执行代码、发送邮件"等落地执行操作。绝不可操作 Google Drive 云端数据！
 - `googledrive`：负责**所有** Google Drive 相关操作，包括但不限于：查找云端文件、读取 Google Sheets 表格内容、向表格写入数据、上传文件到云端、删除云端文件等。
 - 不匹配以上时填 "general"。

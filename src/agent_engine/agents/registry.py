@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 AGENT_ROSTER = {
     "researcher": {
         "class_name": "ResearcherAgent",
-        "desc": "调研专家。专精：联网搜索新闻、查阅资料、搜集全网情报。无本地修改权限。"
+        "desc": "调研专家。专精：联网搜索新闻、查阅资料、搜集全网情报、查询股票行情与股价。无本地修改权限。"
     },
     "coder": {
         "class_name": "CoderAgent",
@@ -51,11 +51,11 @@ def _build_default_cards() -> Dict[str, "AgentCard"]:
         "researcher": AgentCard(
             role_id="researcher",
             display_name="情报研究员",
-            description="联网搜索、查阅外部资料并输出脱水情报",
+            description="联网搜索、查阅外部资料、查询股票行情与股价，并输出脱水情报",
             agent_class=ResearcherAgent,
             risk_profile="low",
             max_concurrent=2,
-            tags=["search", "web", "research", "情报", "搜索"],
+            tags=["search", "web", "research", "情报", "搜索", "股票", "行情", "股价", "finance", "stock"],
         ),
         "coder": AgentCard(
             role_id="coder",
