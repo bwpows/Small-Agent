@@ -13,12 +13,15 @@ from typing import Optional, List, Dict
 class BusinessAsset:
     """一条业务资产记录"""
     alias: str                          # 业务别名（如 "奖金表"、"邀约表"）
-    type: str = "google_sheet"          # 资源类型：google_sheet / google_doc / local_file / db_table
+    type: str = "google_sheet"          # 资源类型：google_sheet / google_doc / local_file / db_table / web_corpus
     drive_file_id: Optional[str] = None # Google Drive 文件 ID（精确直达）
     columns: List[str] = field(default_factory=list)   # 表结构列名
     allowed_ops: List[str] = field(default_factory=lambda: ["read", "append", "update"])  # 允许的操作
     description: str = ""               # 业务描述
     confirmed: bool = True              # 是否已确认（自动同步的默认 False）
+    # —— 网页语料业务专用 ——
+    crawler_config: dict = field(default_factory=dict)   # {start_urls, selectors, interval}
+    vector_ns: Optional[str] = None                      # 向量命名空间，默认=alias
 
     def to_dict(self) -> dict:
         return asdict(self)

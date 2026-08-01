@@ -1,0 +1,48 @@
+{
+  "success": false,
+  "method": "",
+  "data": [],
+  "webpack": {
+    "webpackFound": true,
+    "cryptoModules": [],
+    "webpackJsonp_type": "object"
+  },
+  "bypass": [
+    {
+      "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+      "has_encStr": true,
+      "encStr_len": 2220
+    },
+    {
+      "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+      "has_encStr": true,
+      "encStr_len": 4504
+    },
+    {
+      "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+      "has_encStr": true,
+      "encStr_len": 4480
+    },
+    {
+      "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+      "has_encStr": true,
+      "encStr_len": 2220
+    },
+    {
+      "url": "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature",
+      "has_encStr": true,
+      "encStr_len": 280
+    },
+    {
+      "url": "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+      "has_encStr": true,
+      "encStr_len": 533504
+    },
+    {
+      "url": "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+      "has_encStr": true,
+      "encStr_len": 129984
+    }
+  ],
+  "exposed_functions": {}
+}

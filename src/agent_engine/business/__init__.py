@@ -14,6 +14,7 @@ from agent_engine.business.business_layer import (
     BusinessNotFoundError,
     get_business_layer,
 )
+from agent_engine.business import business_vector_store
 
 __all__ = [
     "AssetRegistry",
@@ -24,4 +25,5 @@ __all__ = [
     "BusinessLayer",
     "BusinessNotFoundError",
     "get_business_layer",
+    "business_vector_store",
 ]

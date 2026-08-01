@@ -68,11 +68,18 @@ class BusinessLayer:
         for a in assets:
             ops = ", ".join(a.allowed_ops)
             confirmed = "✅" if a.confirmed else "⚠️待确认"
-            cols = ", ".join(a.columns) if a.columns else "未定义"
-            lines.append(
-                f"- {confirmed} **{a.alias}** | sheet_id=`{a.drive_file_id}` "
-                f"| 列: [{cols}] | 操作: {ops} | {a.description}"
-            )
+
+            if a.type == "web_corpus":
+                lines.append(
+                    f"- {confirmed} **{a.alias}** | 类型=web_corpus | 描述: {a.description} "
+                    f"| 操作: {ops} | 使用 retrieve('{a.alias}', query) 检索语料"
+                )
+            else:
+                cols = ", ".join(a.columns) if a.columns else "未定义"
+                lines.append(
+                    f"- {confirmed} **{a.alias}** | sheet_id=`{a.drive_file_id}` "
+                    f"| 列: [{cols}] | 操作: {ops} | {a.description}"
+                )
         lines.append("⚠️ 以上业务表请直接使用 sheet_id 精确定位，不要用 sheet_name 搜索！")
         return "\n".join(lines)
 
@@ -85,6 +92,8 @@ class BusinessLayer:
     def read(self, biz_name: str) -> str:
         """读取业务表全部数据"""
         asset = self.resolve(biz_name)
+        if asset.type == "web_corpus":
+            return self.retrieve(biz_name, query="全部内容", top_k=100)
         from agent_engine.tools.tool_drive import manage_sheet_rows
         return manage_sheet_rows(
             sheet_name=asset.alias,
@@ -92,9 +101,54 @@ class BusinessLayer:
             action="read",
         )
 
+    def retrieve(self, biz_name: str, query: str, top_k: int = 5) -> List[Dict]:
+        """
+        检索 web_corpus 业务资产的语料内容。
+        对 LLM 有用，返回 Top-K 相关片段。
+        """
+        asset = self.resolve(biz_name)
+        if asset.type != "web_corpus":
+            raise ValueError(f"业务 '{biz_name}' 类型为 {asset.type}，不是 web_corpus，无法检索")
+        from agent_engine.business import business_vector_store
+        ns = asset.vector_ns or asset.alias
+        return business_vector_store.retrieve(ns, query, top_k)
+
+    def crawl(self, biz_name: str) -> str:
+        """
+        重新抓取 web_corpus 业务资产的数据并更新向量库。
+        """
+        asset = self.resolve(biz_name)
+        if asset.type != "web_corpus":
+            raise ValueError(f"业务 '{biz_name}' 类型为 {asset.type}，不是 web_corpus，无法抓取")
+        from agent_engine.tools.tool_crawler import crawl_to_chunks
+        from agent_engine.business import business_vector_store
+
+        config = asset.crawler_config or {}
+        chunks = crawl_to_chunks(config)
+        ns = asset.vector_ns or asset.alias
+
+        # 清空旧数据
+        cleared = business_vector_store.clear_ns(ns)
+        print(f"🗑️  已清空 '{ns}' 旧数据: {cleared} 条")
+
+        # 写入新数据
+        from agent_engine.business.business_vector_store import Chunk
+        store_chunks = [Chunk(
+            text=c["text"],
+            url=c.get("url", ""),
+            title=c.get("title", ""),
+            model=c.get("model", ""),
+            date=c.get("date", ""),
+        ) for c in chunks]
+
+        inserted = business_vector_store.upsert(ns, store_chunks)
+        return f"抓取完成: 共 {len(chunks)} 条片段，写入 {inserted} 条到向量库 '{ns}'"
+
     def append(self, biz_name: str, data_array: list) -> str:
         """向业务表追加数据"""
         asset = self.resolve(biz_name)
+        if asset.type == "web_corpus":
+            return self.crawl(biz_name)
         from agent_engine.tools.tool_drive import auto_drive_manager
         return auto_drive_manager(
             sheet_name=asset.alias,
@@ -104,6 +158,8 @@ class BusinessLayer:
     def update_row(self, biz_name: str, row_index: int, new_data: list) -> str:
         """更新业务表指定行"""
         asset = self.resolve(biz_name)
+        if asset.type == "web_corpus":
+            raise ValueError(f"web_corpus 业务不支持 update_row，请使用 crawl() 重新抓取")
         from agent_engine.tools.tool_drive import manage_sheet_rows
         return manage_sheet_rows(
             sheet_name=asset.alias,
@@ -116,6 +172,8 @@ class BusinessLayer:
     def delete_row(self, biz_name: str, row_index: int, confirmed: bool = False) -> str:
         """删除业务表指定行"""
         asset = self.resolve(biz_name)
+        if asset.type == "web_corpus":
+            raise ValueError(f"web_corpus 业务不支持 delete_row")
         from agent_engine.tools.tool_drive import manage_sheet_rows
         return manage_sheet_rows(
             sheet_name=asset.alias,
@@ -127,9 +185,10 @@ class BusinessLayer:
 
     # ── 业务管理 ──
 
-    def register_business(self, alias: str, drive_file_id: str,
+    def register_business(self, alias: str, drive_file_id: str = None,
                           columns: list = None, description: str = "",
-                          type: str = "google_sheet") -> BusinessAsset:
+                          type: str = "google_sheet", crawler_config: dict = None,
+                          vector_ns: str = None) -> BusinessAsset:
         """手动登记业务资产"""
         asset = BusinessAsset(
             alias=alias,
@@ -138,6 +197,8 @@ class BusinessLayer:
             columns=columns or [],
             description=description,
             confirmed=True,
+            crawler_config=crawler_config or {},
+            vector_ns=vector_ns,
         )
         self.registry.register(asset)
         return asset

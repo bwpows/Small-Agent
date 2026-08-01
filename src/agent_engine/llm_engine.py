@@ -158,9 +158,14 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
 2. 📊 结构化呈现：多条数据必须使用 Markdown 表格或无序列表。
 3. 🧊 情绪克制：保持专业、冷静、极简的专家语气。
 """
+    if web_info and web_info.strip():
+        system_prompt += f"""
+【🔍 业务语料检索结果（仅供回答参考，禁止编造库外信息）】
+{web_info}
+"""
 
     messages = [{"role": "system", "content": system_prompt}]
-    
+
     # 🌟 显式工具路由拦截：如果传入了 forced_tools，在提示词里加上最高权重指令
     all_tools = get_tools_definition()
     active_tools = []
@@ -384,6 +389,11 @@ async def generate_answer_stream(user_input, recent_history, parsed_memories, we
 1. 🎯 拒绝废话：直接给出结果。
 2. 📊 结构化呈现：多条数据必须使用 Markdown 表格或无序列表。
 3. 🧊 情绪克制：保持专业、冷静、极简的专家语气。
+"""
+    if web_info and web_info.strip():
+        system_prompt += f"""
+【🔍 业务语料检索结果（仅供回答参考，禁止编造库外信息）】
+{web_info}
 """
 
     messages = [{"role": "system", "content": system_prompt}]

@@ -15,6 +15,46 @@ from app_server.db import get_session, Conversation, Message, utcnow
 
 logger = logging.getLogger("chat_service")
 
+
+def _auto_retrieve_web_corpus(user_input: str) -> str:
+    """
+    自动检索所有 web_corpus 类型业务，把命中的语料拼成可读文本注入给 LLM。
+    仅当问题中包含业务别名（如「深蓝」）时才检索，避免无关问题污染上下文。
+    """
+    try:
+        from agent_engine.business import get_business_layer
+        layer = get_business_layer()
+        blocks = []
+        for asset in layer.registry.list_all():
+            if asset.type != "web_corpus":
+                continue
+            # 业务别名命中才检索（避免无关注入）
+            if asset.alias not in user_input:
+                continue
+            try:
+                hits = layer.retrieve(asset.alias, user_input, top_k=5)
+            except Exception as e:
+                logger.warning(f"检索业务 '{asset.alias}' 失败: {e}")
+                continue
+            if not hits:
+                continue
+            lines = [f"### 来源：{asset.alias}（{asset.description}）"]
+            for i, h in enumerate(hits, 1):
+                title = h.get("title") or h.get("model") or "（无标题）"
+                date = h.get("date") or ""
+                url = h.get("url") or ""
+                text = (h.get("text") or "").strip()
+                lines.append(f"\n**片段 {i}**：{title}{(' | ' + date) if date else ''}")
+                if url:
+                    lines.append(f"来源链接：{url}")
+                lines.append(text)
+            blocks.append("\n".join(lines))
+        return "\n\n".join(blocks)
+    except Exception as e:
+        logger.warning(f"web_corpus 自动检索异常: {e}")
+        return ""
+
+
 def _ensure_workspace(ctx: TenantContext):
     """确保用户的隔离工作目录存在"""
     os.makedirs(ctx.workspace_root, exist_ok=True)
@@ -144,7 +184,8 @@ def chat_completion(
 
     # 暂时不放长期记忆和搜索（P0 跑通基础链路）
     parsed_memories = []
-    web_info = ""
+    # 自动检索 web_corpus 业务语料（如「深蓝」）注入回答参考
+    web_info = _auto_retrieve_web_corpus(user_input)
 
     # 注入 Drive 凭证（多租户）
     _inject_drive_creds(ctx)
@@ -218,7 +259,8 @@ async def chat_completion_stream(
     recent_history = history[:-1] if len(history) > 1 else []
 
     parsed_memories = []
-    web_info = ""
+    # 自动检索 web_corpus 业务语料（如「深蓝」）注入回答参考
+    web_info = _auto_retrieve_web_corpus(user_input)
     _inject_drive_creds(ctx)
 
     t0 = time.perf_counter()
@@ -387,7 +429,8 @@ def chat_completion_channel(
     recent_history = history[:-1] if len(history) > 1 else []
 
     parsed_memories = []
-    web_info = ""
+    # 自动检索 web_corpus 业务语料（如「深蓝」）注入回答参考
+    web_info = _auto_retrieve_web_corpus(user_input)
 
     # 注入 Drive 凭证（多租户）
     _inject_drive_creds(ctx)

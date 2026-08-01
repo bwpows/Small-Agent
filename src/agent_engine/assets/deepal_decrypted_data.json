@@ -1,0 +1,741 @@
+{
+  "scan_time": "2026-07-31T22:54:06.956842",
+  "decrypted_apis": {
+    "all_responses": [
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "139b6da2d337597c37a6879c7daf5a71-14b4a3f3aaa53a6a3dc7765ec3018d32",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "00000000000000000000000000000000",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "9",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "4",
+          "date": "Fri, 31 Jul 2026 14:54:08 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9087sz1JFpi5Mha2JYv+49FcTyxUf60aFaTi31Hp3aZzliwAI+F4+QH+f3ukfiWy63+zplHMkJ9nfvrvwXjWqfXe3qPdL+8Un+u6B+FdRGvUGsW0WMADrVTc7xOsbCdiEUs8bUg/WvKaeFrou1DA4n3vnCgyBRt2xmZsY93GMMhKzgVqMBdT9/ZMoKTtiMqLmAzjkApyEfgYg",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "139b6da2d337597c37a6879c7daf5a71-994fe8e735ef4200e8d317075f826fa8",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "31b4f6cfb1016d80564b58a7b817d326",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "8",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "10",
+          "date": "Fri, 31 Jul 2026 14:54:08 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS90ajtJ22y0itp0nAS1plFTMB28CWvwXrJkpr4THjLOgww7b20SEC9X11ZLmrG3Vinfu/OV6+w7g7c0VUDr9AW698PFr1Rh7v4G764BFUKJo0NhbL0qYiaI56M5tBNPUBvqOPJUw2htMDp/jyOZ1ny66cE5cVExCrlq9HvpojFosjBpFoM+WvKFQCULFUCXB/JkXVJfQB+w812",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "51a132027b2d6654890c850f0bfe7ada-fcf42ad45d62316773b22dfaa596fbea",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "8ee1bb8560a0fc8dffb89562df8dd6de",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "11",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "8",
+          "date": "Fri, 31 Jul 2026 14:54:08 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS994EKUj8AyQO/gSNQlj1Q3xkeeLv6QahTK1X4BcRoC3qWRZsC0SrzyCTjmSLPQIVGMTWwUmt5+EOft/0oAq0bh3lDqPlvJBmxiLrMXCDboxkv3wkQuHb6q7Qig/I5ipXCPqIe/+s2VG04LFeojQKGSPQBe4mvT/LDXT2blfXfw+XqudEAfTbkpdv329MFv/LnVkf+KbBu9ir+",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature",
+        "method": "POST",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "68d141e324b34835c5eabbb6f1097434-4612fca670103ed885621a087a38ee6f",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "60b52043d9f7e8f7d08c4706660c5ba3",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "12",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "11",
+          "date": "Fri, 31 Jul 2026 14:54:08 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"wxobe0DQGM34tP42nrAhOmGlsKkTevDQKjueZyj+DDGJveeiNZDgiCfqEIrrtDsiOwK9rkjTviH73EVBF+SIfEhLSXl9sOk2dy/Qab0j7+HkLBDvJ5kk0sFKP/jR+RrvNyVNnUFQjpcRTGkBSuwFyRHfh07xVNo0Zw5/l6QDewfooujT2fykvqOkSXrpmjVBuVrC27HfSBkyAUTLpscJdm9GHLKjjlsoJBLdf0dAINaTMdqjO9bEw/+3tdse6i0V7Af+CfjVsaBFdnY5UYiZDw==\"}",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "6ece9286b9e42a33323399f0eb5b66be-309bdbeb020bbee090805f60727b34bd",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "8e2466bd383c0082f6d1dae1816d820e",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "12",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "4",
+          "date": "Fri, 31 Jul 2026 14:54:08 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS90LxzD5iZxuM+ETPhxdYvmK4WcpwnEAqjjl1jndVQziZJjNHW5IXw+wBEh6g3loL9LZKnNRMADqYI3SGj7blL+IBXLzBZ9kriv85iBbpe/hXnoXJILW5bPUFGMeWo62dasfZelQkGI4CAs8ftJLsExLS2VQH0oJCzgaqGKMmO6H5KnLoPwHQaXcFyPtd0We5jdedl3/fWbSg8",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/firstPageConfig/configDetail",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "c56453f17e6d4c3df0aa4df27d20b736-13c5df6cc766f6811466ca0a4a6bc339",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "78f781f194cd7fde365cf42f84c297f8",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "23",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "10",
+          "date": "Fri, 31 Jul 2026 14:54:08 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS98+gYTmWIBlSGrb8V5zUAUtWk74ZeQGGO1Lmu289lKik3/6HRXVhm6mkhcn8WUg82nApnzD9yRm+xEFlO/8steK7zegdP7+7HgqXekjZsua/aI2tPKAir6dHS/0/dmKtLTwstZqeDSxDQDRQO4BnatXxnOCrLU7JBzsswqpANiie8+D1PTf4PYW9woKMxTcOnYXnbePQwHQmY",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "8a5372e9881a54fea3fe177d93f6b0b4-abfceb57df3b09bbc270a50fddc17a9d",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "8d62eed741913e27c2ec541012358ba5",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "33",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "4",
+          "date": "Fri, 31 Jul 2026 14:54:08 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9wQJV6TAVsb00G4zg+/e4ufQVp2AZH1sLOQ42BwpbYUlRjv6AX4lsdLNcx+s3IW4H2+RrYqZiBBSalCGUH7i4pNBsr7+BDdmqB6XcBdDzwOC1J08NfojM1RMu8jRD7QpJt2aIPWK1aYdGtXKVWw2Xmk1C8zXSKE38CFRPrqgMHcQJy8WvnlddNZ9fsTk1T2DJDUdiWTUpMdsZ",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/version/appapi/v1/grayRelease/findLastVersion",
+        "method": "POST",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "8a5372e9881a54fea3fe177d93f6b0b4-2e7146589b48c8ad7f1f59a707740b37",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "3dda814024da3da6069f5c6be963f24e",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "10",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "5",
+          "date": "Fri, 31 Jul 2026 14:54:08 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS96QgJLPS+OVngmmjixyXMWm6U7pHdn5D6xqo7m7CgeuaxlA4b1SbV2mHGItw0tkiog8lRRgT8a9DFR2mWq1yZDzgsIC2GdsKl4f6GYyzIcsziVTzBB3yZdyzAbkn+hAZg5eiF6th18WCZLxbz9oGyt7C9eR8S8muCGcLx7qtv22rUgxMpaQySAxAaB9S4tALGDcHXUgjC+l9e",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+        "method": "POST",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "8a5372e9881a54fea3fe177d93f6b0b4-235a05d02edd34db2ee13d5200dbc56e",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "00000000000000000000000000000000",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "1314",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "11",
+          "date": "Fri, 31 Jul 2026 14:54:09 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9y/rqjW71l5mauQ+OeTdWAnZgDjmuyImLSln8VHj4oE8z4A7Juz8dd6GdRyf5zqeCO9DG3So48POSTrcTE83UJDAscV01OLZTzRN6TBjh8RWAjI+9UM+T6FUw9Nw3d5nSFKOhWtY+eJph5Pg8+r//CykOZmrWBHWsGA2hKgNVzD72gmLeXftRmiafF90RSs2RZWcIEfDk7pC8",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "b4ae10b2cdb8f8bf50f1c8a009a002bc-e3ff8f4042b4182f745e251fc90e8c15",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "5c3c1f48d9805a572fec4c95d699285e",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "8",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "12",
+          "date": "Fri, 31 Jul 2026 14:54:24 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS984NYrxbqXgJTa42ptSMjR6IbvVW00fLSLNCdUrvF1ULhPDPCtg++Cy+4V4m8VonmdKRvLogAjZhffwTpALOYNjxXA6z9iva3jPErZ/fJbtu7R3o58n9CCPdXlOCfAYSm58iwNDrBEr47Kcrt7CI5ZZxLBzcMTdZNoxsi1H5Cj2BgUZIFwJD09fRXofOVicyjocmCsUa2QWo/",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "16958b7676d78b816b61b5ed6b52d469-5ed815d0f622715970026da4df7afa33",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "1f8dc9ec2900b89130daa5587c73be4a",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "11",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "5",
+          "date": "Fri, 31 Jul 2026 14:54:24 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS92UVg4wD57xhIPj1L5hCDTNhdHO9r1mw4zIP5rmVpzT966vspFzSmaALyTcZ+ATyg7TXkd9s1Zk3cOfd0hOJ3H0giBn/4fhbQg7LZpqMhAF3r8XJs/SWWp7U+ozb8Zb9ew5mQiHqgE0mKvH1eskB68gx4vZNkpIHg+AVZuezR8DjYQtmkxfw/W+izF76NUSku0OlXZtNCkwZm",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "16958b7676d78b816b61b5ed6b52d469-1f41cfc965847584f1787d6dd2128b99",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "3ab2b310d6696854c1d58ed97caf2ad7",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "15",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "4",
+          "date": "Fri, 31 Jul 2026 14:54:24 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS985VnHLyeZ2GXs9+L2YskCPDlVrKrnmv1C6f8wjiO0P9mXV2tUWfQ0cdTTYN73UJNBhZumshZf30xN1OAQ1nzNPP33Y2PSj9dLZcfr9pBH6ppXUvDQCmSEUYb3ppW55KxqwK43ykuxfUzZCR/11kNfEiXsK8CMBnXE0bHZiCeuROYiymX0m+H14CC3NT+dNCVOK09PlMnfdKT",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "1b792cb07c013e3b52d66cef6c83ea1d-530971c8741dda6c71dc14a8f519c768",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "00000000000000000000000000000000",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "7",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "8",
+          "date": "Fri, 31 Jul 2026 14:54:24 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS99mf2ZyDk/rnO+j49Sg0sSvRwKElP9dLfYnyXyKskWjYmS31q44Qgtkz8O66T4lsmLrrNUXlbQZvoL3/iNaKKjOnsIRpf+fP+dAZrWfeGhZr7pb+AnS63zuy2BmY6QtyubTLu44pRyaYGYjpLHEp/QAYl3Txs3aRm5EeYinsX9WTpy4Mvu6LvZ9WPmi+Xy4rbjQkx2DwhtP0b",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature",
+        "method": "POST",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "122ddc4aaff94c5dc8e2aa3635638077-73021565c522578a44365763d219c3f9",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "00000000000000000000000000000000",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "13",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "11",
+          "date": "Fri, 31 Jul 2026 14:54:24 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"wxobe0DQGM34tP42nrAhOmGlsKkTevDQKjueZyj+DDGJveeiNZDgiCfqEIrrtDsiL+kiqabzZYk4f28LfSkZaD1c5L8FxKBH0LZlVPUZBTllGgX2cOkAafl2WK6cNyNOh+OQ/w4VVKt46+d25bHVudKOJ/2l0cHNqI8MLpM91vGNN5wV2jcbaBwF3tIe5xgIpKPioIM8yx6rbOcE6mFEAk6vabQfLzVN3ajn4eWBj37PcT9GEY/AhiK1vb/iwW4U2+gEPU4ciXfEPCAK7uLaPA==\"}",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+        "method": "POST",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "122ddc4aaff94c5dc8e2aa3635638077-a585324eddc5732417435ee1abb2932d",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "124e05dd4a1e3ad429c40d563a8611c8",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "1302",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "8",
+          "date": "Fri, 31 Jul 2026 14:54:25 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9+CRp4S8yqju7XtnbhSByT8Wr86VSQ4+J5Z3uCOVlrPQdUMS1X4INN2B5sAtyPYbP1/kF6cGDDok9LS/SnwCjt06EUshq+/GwEbSTlot6lqCIirC3O9w5nRzHOu4t8YB5zG6dFqCQVE4e5XbjRjQPl6N23C7bLdN2WqP945S/loRCbEa7IrhI+5a9xurCw4rhEZ22U8RcTQJ5",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "ac1bbc930d5cb7c38a7ee7d2a8d31309-5cd980df201d59c3227644d3dac87384",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "2787838d6b5683279e9b0fed8b7a3bd2",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "46",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "5",
+          "date": "Fri, 31 Jul 2026 14:54:26 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9zsjNIE2J2vO3axyKEoQNc142q65Z9iMwKbjqTz7bnnTv/vNjBtFyjDwJFpySm3A/OhsRN9Qwz4T6obdDL558D9Zw0fS1zDHM6cJiV2k8PAvN7O9x5bJa0HV5yMJxgGPJmAG5cY3eym02m9t3TTK23v98XCJO76lHRmZlBiO6rNcAKliByNNgGrSDN1dgK50QPtbseLirRsbu",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "16f9b55a75c57e27730910350afe847b-d8a3ca459db024f3775325b50eeb5e88",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "7fb28d9dd3c7b022e20b54a10289f650",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "9",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "12",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS99cyKHXCb+Up9T7yXEAeMqC+pM9qVKy2XvrB5eI/Y2AQi0Y9rHkBcD1+Ee1TtDShlOm9PRC+aLny15xtMd+QPnmxqMfar3i/gRDbmYkw6Wuyx9u2PyQ3GfnM50zyCRMpGzMCoryt3/YB/T2XHBupC/K3U9adgNTW0OzTWOIiw0N9vO+qMkcns4SapHbNcj7wXeuoOP0iu2IVF",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "68e186d34f0cace623407d04c8420162-47066c7d2da365424228e9c9cc8b22ad",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "9bf9a31728f879e379e7d3893e055814",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "14",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "10",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS935Jzk5//f/0hTVuPIed3nCOQaECyOJzW01/C9drRjO2Iozi5kNNSd8lU/7nd4bIzPq/TeqeEgMMTwFNRLf/+j8QOelZNJjUjnmyJBS2r5cEzekKZaX6NoXULheQ7d++++Ak/uJtuFslH62DV+KvCmOVhz3aJ8ZIFEd8s3c8N1GSSnSjG71I/6hwcEhq5Ilyx385vMkUXaLPS",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "68e186d34f0cace623407d04c8420162-82dc983a8cd12731028e9ff16336218c",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "00000000000000000000000000000000",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "17",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "7",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS935Jzk5//f/0hTVuPIed3nBoZqAFJJnFI0oe0rpAXvaXsOcOZ0s6GroC0QGMiBoRLPfgCQBWawhgL7XVv9O4WILcZpsMdjl/bFnKyWwn0ekCuwwIdcafbcTgXDED37Z7sG4ssa1hpxsOFHbo1YOSSKTzLIcXetZkED6Iza2pJtu/UtMgCF2gtkTI6dJ1dGLd6yfLuPSiIxAmU",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "19c5f01a54f9ad13772fe76607814f65-a1f54e7542b803605b79f46e0a573c16",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "5463c1b13de4da673ae05c271da7689b",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "6",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "7",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9xI0r4zYXQVDojNKCOBnUETOyoS5dPJkLYfJvReBWqesV4qZ87H3tsuHAPgWUZbv06emZoUiFpzoSomJQD6iVsR65FFfGmr+/LIldCgB8FMCHUueAv+xtZHe6RaIq8f9KnuoRWmoLp69NDxK2TBnS/C7mBoDFKKHkKK+D1S5Mj27z+AYTa6udmRIGHwAPs3XjtRkbFofU4oxt",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature",
+        "method": "POST",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "d763cd4449efe8ef1289d8e8fb9b04b3-06c257951cd926435c36f9882cb59909",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "4b2657d2af4bb9919fdf8af9d5530f00",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "13",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "9",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"wxobe0DQGM34tP42nrAhOmGlsKkTevDQKjueZyj+DDGJveeiNZDgiCfqEIrrtDsiyYvoiO9+SZLH7dbH429hsdU0ljW7auhDjad/5hwF1U1IA8jd+BZizRMLat1WJbFyQPZ6XPIWQ9g/M4S04JJ4jMuwFPI6SBbPMVHyPvq3vTT9BEcn0ZdEz5pxRbkTjDe39vEHaJmW0eUVz296YVfuC+8xUyab1rxMBJFfWtzz4EcsqBuEBevYE+fE5JlwHo12qGQYhGA9qanp1LuWUJOFSl9Ef50rfnlVp",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "a16877d8d559d061820e613e607bf684-9e0cf8749186b3f01c6174d2d1ab30b1",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "508042ac4aab1b68327f38db8f0bacbc",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "8",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "3",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS95tnxgkvjI+2GZQcStiJ9vsBdt271zUSxhWdVuEQtpdUPaiPO4k3tynn286v6g3HS/BYNcqOJ6UZXHYdgNGwD25mRQ+SghXc/CC8zjNT0RYN9LF2wIQ5q/L2ThRTFX6keXegIGFYZrHIaOs9htJrP6aB9vet08fKYP00WA8CA/cNXozBQijXgWlwvwU9PedtiY8rQxcc8o4zL",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "a16877d8d559d061820e613e607bf684-67db9c63c31435adc7cd8e435d098b6f",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "6affe99b2cc5b4fd12ff5c030f3b3eee",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "12",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "7",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS96Nq/EdhUgss6YW0bWTeQipGhiIIFgNcCDKchZ2jlY9O7Fsp9EhhrQIg1KZSSooj0OzZ0i0OgZncS0pL9eA+bxT1gOb3iEaeYykbmweDu/v0QJ7tT9xBAVrOiwN1oWKgwfqdRHkzUFC0ZYtIOyKSzPTjvra5F01xASkaPS6iFzVLfdE5zjXEjxC4s5Ifv4paRzMRdPnNXHv8A",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature",
+        "method": "POST",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "a60faf0248d2040da0cbfa2b7d7ff33c-ee329fcb339b7f0be55c1155679142e3",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "c45673ec1502c544a72e573d33ef58c5",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "13",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "8",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"wxobe0DQGM34tP42nrAhOmGlsKkTevDQKjueZyj+DDGJveeiNZDgiCfqEIrrtDsiA2KUzKqjg1azkbBKDtPrJZhLpDA1tvytH6xgXcwpf5J0rDmfBFg9lXp84Qi/IQE2Ez2jsDX9TwXgBKxc90IksC/mp/+jgip/Hx4JbDJTbX8VXk8lYLTktyCABpaspVma9QwnZu6cLRW3T/5gSulvwg6ZC3mBWhvzf7upX3NM9KJIPl5Ov205LJPH6ujw24oKkWrxFi/UbWtkOlsGF8bWjg==\"}",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "a60faf0248d2040da0cbfa2b7d7ff33c-67f38e0d6cf737252908db99b0a5e243",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "8704da61ab71ab77cab1fb3ef73373cb",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "19",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "8",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS90V222BGkPzPR6gsncw57OF81DBNAqjlqEI3HPlneu9AhCYhPORcpoKcPmPCGpRK3xcvROQ6OzJk2VkIrGoLk19d67z0fYpnpJscEWJH0PWS7O6g3GgnV/yhVx/gAGVSYNuOHSUV1FtU4TdnWTD7VrSt0ZdT14wbiUlO8rphvmDzIkibxba/d2T24+Pg8tQrX87ZseOAIHDYN",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/firstPageConfig/configDetail",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "a60faf0248d2040da0cbfa2b7d7ff33c-503a5546d1fdc2ad0f0bf2e03a77d870",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "19547c2ed44aa4b319c7cab815cb5aec",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "18",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "12",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9722J3K4ES3vMLYj3P3SkWlXIUMStfF98V79PH6mhhMsOeENnmLNdGCUrYMb9I7XVCNf9owfI17ldB+Y+t9IgtJ17T64C0T7xH0kXXelYvMkPvVPQvm1rlV9jgRWTdAtvRJQVFS8aMnPWydVtJOlOK+aoYVxrsvrOrJ4lt4XVyHFm+1PSiSaAipH7DD9MkNIXgqKaJlae62Cr",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/version/appapi/v1/grayRelease/findLastVersion",
+        "method": "POST",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "52acae5143acd9eb8ede3b4b23059c33-b17ce2b8b2ee975f5f908f144f440161",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "00000000000000000000000000000000",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "12",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "3",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS91HxTlUdcgSCPHXx3F2cTcbPpGDuici6RX1EdEuNSKD3L+snhE+UTFYsOne+lrfb8lfANeOx4CAxjBF8H4ffaEibDcwafoxP6QtQ/cRdblMR6bn2ODd2ayAbu3Q3n361nCsw9bN6CGoEkfmrn2h8Ohydojbg6iJ10zt7wl3kl0i9rGc31FZ7a2T3RR9XvdecZ37+/Z7ridKIn",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+        "method": "GET",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "52acae5143acd9eb8ede3b4b23059c33-0ccd2718a00e88c1273bfdbe5e5516f6",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "cec82acb2842c8370e1ed4c35b3c099c",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "32",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "3",
+          "date": "Fri, 31 Jul 2026 14:54:37 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS98SS80Xk26a8u98s+VckZ7wdEOEvTK4+1yNGzJqD0bXvNWnivimuOscHPYusplh+GFjGxoFhtxwq15V7WW5pnUDFb+YEg+mk3z8Tr+8+qu+HevhLiKQ/nWAzFfZNJU4Xh/XTdq6oJsBNGzfyaUEa+D8Hxxec+BTWzA0P3kt9bwGUfNfNIeaKClIH56zDy95yp3WtxeSSQgcJ0",
+        "is_encrypted": true
+      },
+      {
+        "url": "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+        "method": "POST",
+        "status": 200,
+        "response_headers": {
+          "x-waf-uuid": "52acae5143acd9eb8ede3b4b23059c33-3e334f54a58f13fbd8cbcb215c2fff36",
+          "access-control-expose-headers": "*",
+          "x-sl-ag-sf-72a1f3c8": "true",
+          "webtype": "h5",
+          "access-control-allow-credentials": "true",
+          "x-trace-id": "8f1614c73e8207f64cf6fe232308c0a7",
+          "via": "kong/2.5.1",
+          "x-kong-upstream-latency": "1336",
+          "access-control-allow-origin": "https://deepal.com.cn",
+          "x-kong-proxy-latency": "12",
+          "date": "Fri, 31 Jul 2026 14:54:38 GMT",
+          "content-type": "application/json",
+          "vary": "Origin",
+          "x-sl-ag-gf-1e3d5c7b": "true"
+        },
+        "raw_body_preview": "{\"encStr\":\"9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9+VORWOUAPPrly5xxBxoQODxQT9EZBl2jyNVTBSEP1iC8Lutzu072vKYjeWnEojrz+Ra+pw4+X6aZyQrf3XVmtl37eITHnffQpexkufn65EmGOFVkzqKaPpQyU3t7dqGdLDE50edcL8T555J1qnr0tDxOcr08xhw/S4EI+Yk9UfzT2YUcKqdZRELZlBwAnvTKA8pGufciORvt",
+        "is_encrypted": true
+      }
+    ],
+    "intercepted": []
+  },
+  "page_text": {
+    "首页": "  车系 品牌 资讯 门店 招商加盟 预约体验  全新深蓝S05 全球时尚激光智能SUV 全新搭载激光雷达+一段式端到端算法智能驾驶辅助系统；焕新升级3款时尚内饰色彩，新增星云紫；全新搭载FSD+HRS高阶可变自适应悬架。 了解全新深蓝S05 预约体验 深蓝L06 公路磁悬浮 智能老司机 驾控之王：搭载300万法拉利同款磁流变悬架，飞坡不跳，过弯不偏；智能驾驶辅助黑马：一段式端到端算法，全系标配激光雷达； 座舱新贵：百万内唯一3nm车规级座舱芯片，车机如旗舰手机般丝滑 了解L06 预约体验 深蓝S05全球超长续航版 多彩生活记录者 年轻就该多彩，随时记录分享 了解S05 预约体验 全新深蓝S07 科技智能中型SUV 科技，以生活为本。深蓝探索未来科技，驱动美好生活 冲破认知束缚，踏上全新旅程，缔造与众不同的驾乘体验 了解S07 预约体验 深蓝 S09 家庭大六座智慧旗舰SUV 左手深蓝超级增程，右手华为乾崑智能 了解S09 预约体验 深蓝 L07 科技智享中型轿车 左手深蓝超级增程，右手华为乾崑智能 了解L07 预约体验 深蓝 G318 无忧穿越版 科技新硬派SUV 深蓝以科技赋能，重塑硬派风格，升级驾乘享受 给用户多行1公里的美好，全场景舒适尽享，全路况驾驭无忧 了解G318 预约体验 深蓝 SL03 年轻人的第一台运动轿跑 好看好开好智能 专享运动科技，专属驾趣体验 了解SL03 预约体验 科技深蓝 先达未来   了解更多 资讯中心 了解更多深蓝资讯  官方公告升级 | 葡萄牙队进1球 深蓝送1车 2026-06-15 废旧电池回收网点名单公布 2026-05-13 深蓝汽车2月海外销量同比提升85%！深蓝S05累计销量超18万辆！ 2026-03-03 2025深蓝全球销量破33万！12月销量30999辆！ 2026-01-01 深蓝汽车取得L3级自动驾驶车型产品准入许可，天枢智能构建闭环安全堡垒 2025-12-15 门店信息   查询附近的门店 深蓝汽车 登录小程序或下载App即刻预订 深蓝汽车App 深蓝汽车小程序 “本图文所涉及的外观、内饰、功能和配置，并不代表实车搭载承诺，车辆实际外观、内饰、功能和配置以官方正式发布的产品配置表为准。 深蓝官网隐私政策 深蓝汽车管家中心 951998 用户投诉电话 951998 Copyright © 2026 深蓝汽车科技有限公司 版权所有 渝ICP备2022004492号-2  渝公网安备 50010502003218 营业执照 打开抖音，扫一扫  打开微信，扫一扫 打开微信，扫一扫    ",
+    "新闻资讯": "  车系 品牌 资讯 门店 招商加盟 预约体验  资讯中心  官方公告升级 | 葡萄牙队进1球 深蓝送1车 2026-06-15 废旧电池回收网点名单公布 2026-05-13 深蓝汽车2月海外销量同比提升85%！深蓝S05累计销量超18万辆！ 2026-03-03 2025深蓝全球销量破33万！12月销量30999辆！ 2026-01-01 深蓝汽车取得L3级自动驾驶车型产品准入许可，天枢智能构建闭环安全堡垒 2025-12-15 年轻人的新选择！深蓝L06正式预售，预售价13.99万元起 2025-11-04 深蓝汽车10月全球销量36792辆 2025-11-01 深蓝汽车9月全球销量33626辆 2025-10-02 深蓝汽车南京数智工厂挂牌 全新深蓝S07正式上市交付 2025-09-22 五款产品上新 深蓝汽车秋季发布会展现强劲品牌势能 2025-09-08 深蓝L06正式亮相 重塑新时代智能轿跑新标杆 2025-09-08 深蓝汽车2025年8月交付28235辆 2025-09-02 全新深蓝S07亮相成都车展 豪华、舒适、智能、续航全面越级 2025-08-29 深蓝汽车携手斯达 合资组建安达半导体投产 2025-08-20 2026款深蓝L07上市  全系标配华为乾崑智驾13.59万元起 2025-08-14 深蓝汽车2025年7月交付27169辆 2025-08-01 中国长安汽车集团有限公司成立大会在渝举行 袁家军张玉卓讲话并揭牌 胡衡华陈建文出席 2025-07-30 深蓝汽车2025年6月全系交付29893辆 2025-07-01 深蓝汽车2025年5月全系交付25521辆 2025-06-04 2025深蓝用户日完美收官 见证深蓝与用户深度链接 2025-05-28 深蓝汽车部分专利群向全社会免费开源 2025-05-27 2025深蓝汽车品牌之夜暨深蓝S09上市交付仪式圆满完成 2025-05-23 深蓝S05右舵版泰国开启交付 定义东南亚市场出行新范式 2025-05-17 深蓝汽车2025年4月全系交付20138辆 2025-05-01 家庭大六座智慧旗舰SUV   深蓝S09预订火热开启 2025-04-23 深蓝汽车携手演员赵今麦 智驾启航 2025-04-03 深蓝汽车2025年3月全系交付24371辆 2025-04-01 25年新春购车0压力！ 2025-01-10 定了！深蓝G318将于6月13日正式上市 2024-06-11 为中国新能源汽车事业而奋斗！ 2024-03-18 深蓝G318 每一眼 皆为心动！ 2024-01-31 你好，深蓝G318 2024-01-12 深蓝汽车2023年订单中心招商启动！ 2023-08-19 超感驾趣电动SUV  深蓝S7现已启程发布 2023-06-29 深蓝汽车SL03 OTA升级公告 2023-06-20 喜报｜深蓝SL03荣获德国红点“2023年产品设计奖” 2023-05-13 加速电动时代 深蓝汽车品牌首次亮相上海车展 2023-04-20 深蓝品牌周年庆，客户服务再升级 2023-04-01 长安深蓝SL03购车补贴来袭！ 2023-03-15 权益焕新  三电质保享终身 2022-12-31 关于长安深蓝SL03价格调整的说明 2022-12-31 关于长安深蓝SL03价格调整的通知 2022-12-11 品质深蓝 下定权益再升级 2022-12-02 品质深蓝 长安深蓝车主礼遇再延续 2022-11-20 品质深蓝  长安深蓝升级车主专属礼遇 2022-11-11 未来初见，请多关照 2022-05-23 预见深蓝·先达未来 长安深蓝发布全球首款全电数字平台 2022-05-20 深蓝官网隐私政策 深蓝汽车管家中心 951998 用户投诉电话 951998 Copyright © 2026 深蓝汽车科技有限公司 版权所有 渝ICP备2022004492号-2  渝公网安备 50010502003218 营业执照 打开抖音，扫一扫  打开微信，扫一扫 打开微信，扫一扫    ",
+    "车型系列": "  车系 品牌 资讯 门店 招商加盟 预约体验  全新深蓝S05 全球时尚激光智能SUV 全新搭载激光雷达+一段式端到端算法智能驾驶辅助系统；焕新升级3款时尚内饰色彩，新增星云紫；全新搭载FSD+HRS高阶可变自适应悬架。 了解全新深蓝S05 预约体验 深蓝L06 公路磁悬浮 智能老司机 驾控之王：搭载300万法拉利同款磁流变悬架，飞坡不跳，过弯不偏；智能驾驶辅助黑马：一段式端到端算法，全系标配激光雷达； 座舱新贵：百万内唯一3nm车规级座舱芯片，车机如旗舰手机般丝滑 了解L06 预约体验 深蓝S05全球超长续航版 多彩生活记录者 年轻就该多彩，随时记录分享 了解S05 预约体验 全新深蓝S07 科技智能中型SUV 科技，以生活为本。深蓝探索未来科技，驱动美好生活 冲破认知束缚，踏上全新旅程，缔造与众不同的驾乘体验 了解S07 预约体验 深蓝 S09 家庭大六座智慧旗舰SUV 左手深蓝超级增程，右手华为乾崑智能 了解S09 预约体验 深蓝 L07 科技智享中型轿车 左手深蓝超级增程，右手华为乾崑智能 了解L07 预约体验 深蓝 G318 无忧穿越版 科技新硬派SUV 深蓝以科技赋能，重塑硬派风格，升级驾乘享受 给用户多行1公里的美好，全场景舒适尽享，全路况驾驭无忧 了解G318 预约体验 深蓝 SL03 年轻人的第一台运动轿跑 好看好开好智能 专享运动科技，专属驾趣体验 了解SL03 预约体验 科技深蓝 先达未来   了解更多 资讯中心 了解更多深蓝资讯  官方公告升级 | 葡萄牙队进1球 深蓝送1车 2026-06-15 废旧电池回收网点名单公布 2026-05-13 深蓝汽车2月海外销量同比提升85%！深蓝S05累计销量超18万辆！ 2026-03-03 2025深蓝全球销量破33万！12月销量30999辆！ 2026-01-01 深蓝汽车取得L3级自动驾驶车型产品准入许可，天枢智能构建闭环安全堡垒 2025-12-15 门店信息   查询附近的门店 深蓝汽车 登录小程序或下载App即刻预订 深蓝汽车App 深蓝汽车小程序 “本图文所涉及的外观、内饰、功能和配置，并不代表实车搭载承诺，车辆实际外观、内饰、功能和配置以官方正式发布的产品配置表为准。 深蓝官网隐私政策 深蓝汽车管家中心 951998 用户投诉电话 951998 Copyright © 2026 深蓝汽车科技有限公司 版权所有 渝ICP备2022004492号-2  渝公网安备 50010502003218 营业执照 打开抖音，扫一扫  打开微信，扫一扫 打开微信，扫一扫    "
+  },
+  "encryption_clues": {
+    "首页": {
+      "component_data": {
+        "type": "unknown"
+      },
+      "window_keys": {
+        "oncontentvisibilityautostatechange": "[object]",
+        "oncontextrestored": "[object]",
+        "onpopstate": "[object]",
+        "crypto": "[object]",
+        "fence": "[object]"
+      }
+    },
+    "新闻资讯": {
+      "component_data": {
+        "type": "unknown"
+      },
+      "window_keys": {
+        "oncontentvisibilityautostatechange": "[object]",
+        "oncontextrestored": "[object]",
+        "onpopstate": "[object]",
+        "crypto": "[object]",
+        "fence": "[object]"
+      }
+    },
+    "车型系列": {
+      "component_data": {
+        "type": "unknown"
+      },
+      "window_keys": {
+        "oncontentvisibilityautostatechange": "[object]",
+        "oncontextrestored": "[object]",
+        "onpopstate": "[object]",
+        "crypto": "[object]",
+        "fence": "[object]"
+      }
+    },
+    "script_info": {
+      "total_scripts": 18,
+      "script_srcs": [
+        "https://assets.giocdn.com/sdk/cdp/gio.js",
+        "https://deepal.com.cn/20260715149/env.js",
+        "https://deepal.com.cn/20260715149/wrappers.6d9c5c13.async.js",
+        "https://deepal.com.cn/20260715149/0.00935063.async.js",
+        "https://deepal.com.cn/20260715149/1.d161fcbe.async.js",
+        "https://deepal.com.cn/20260715149/3.4355fef0.async.js",
+        "https://deepal.com.cn/20260715149/layouts__index~p__car-series__index~p__store__index.56611aeb.async.js",
+        "https://deepal.com.cn/20260715149/layouts__index.7edd6b4c.async.js",
+        "https://deepal.com.cn/20260715149/vendors~p__car-series__index~p__index__index.1ec044fa.async.js",
+        "https://deepal.com.cn/20260715149/p__car-series__index.703cdd27.async.js",
+        "https://deepal.com.cn/20260715149/2.210db80a.async.js",
+        "https://deepal.com.cn/20260715149/5.f3fe798e.async.js",
+        "https://deepal.com.cn/20260715149/10.da8afa2e.async.js",
+        "https://deepal.com.cn/20260715149/32.021ba066.async.js",
+        "https://deepal.com.cn/20260715149/p__index__index.ff8073d3.async.js",
+        "https://deepal.com.cn/20260715149/31.04603f83.async.js",
+        "https://res.wx.qq.com/open/js/jweixin-1.2.0.js",
+        "https://deepal.com.cn/20260715149/umi.1ae910b2.js"
+      ]
+    }
+  }
+}

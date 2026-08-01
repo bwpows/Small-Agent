@@ -18,6 +18,10 @@ google-auth-oauthlib>=1.1.0
 # === 网页搜索组件 (视你底层实现而定) ===
 ddgs>=5.0.0
 beautifulsoup4>=4.12.0
+playwright>=1.40.0
+
+# === 定时调度组件 ===
+apscheduler>=3.10.0
 
 # === API 服务层（server/）===
 fastapi>=0.110.0

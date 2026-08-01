@@ -1,0 +1,2036 @@
+{
+  "scan_time": "2026-07-31T22:51:40.580768",
+  "target": "deepal.com.cn",
+  "pages": {
+    "首页": {
+      "url": "https://deepal.com.cn/",
+      "api_requests": [
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "b4812573a608e6d9a890b9d10bb5553c-c8f1922640f168f0bfd79ffec736394d",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "3e21593b5fdaf552e1efb36eac940737",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "6",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "11",
+            "date": "Fri, 31 Jul 2026 14:51:44 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS91zJngxK45yHpcB6F96acLpPpix084AP+fMZQrAQ84hbF6M2jJv9ryg3p/ywXnpT5O0XfSnP6GWyBKaVXL0ALHoRMUdJHjH85E3njtyBMPx5lHTXQ8Xs..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "0cbf3b56b62d5d96472da766abd28712-ad6e6f4cd1ac353e010c3f1c62cb30bb",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "00000000000000000000000000000000",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "12",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "12",
+            "date": "Fri, 31 Jul 2026 14:51:43 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS93s3IuXxBN+nXFanBbDMmIMcfGPLFACSSAf+BRItuZ6TfaN/qsyQ9KQetJjULgvYQ2wECKllQgEC6y7MqfGTph3b7SYdleUeeVOGWmU3NeBEcV4PYAgP..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "0c88e70a911d48785abf4806286267ea-2f5d569d22eed30697879fc7395b8fc8",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "946283fbe7a6bcff01451f3ddb75793c",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "9",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "5",
+            "date": "Fri, 31 Jul 2026 14:51:43 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS92t+y1yWLHR9JmERdzicb9C1IF5HOj+aF67bxsxDbP5wT3pONFCMD6LNkvC7AOK1nMirUAyZIt9VHFalQiWcHB8A9vjYdNjlJsB1foSN+nsZ98tzVrx5..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"TX5ML+k/syRtjRCaMkKPuCS6lOrxUwWCuTSzN6DF+KIDsFgMNnFExL5RBx86iqwy\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "235800a104f34e35b27b61994acac0dc-42999a72be3ad1def8be3a2bc67514fe",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "182565f9577f232170c587e02d8341f2",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "14",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "8",
+            "date": "Fri, 31 Jul 2026 14:51:44 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "wxobe0DQGM34tP42nrAhOmGlsKkTevDQKjueZyj+DDGJveeiNZDgiCfqEIrrtDsin2diy6f5CPTFo4wYfe7oiVLo0wN0qfmQikbU/dKDHhqbIUDoGvnErd9Q/6BMYZn7iRmeo89kK///I1FdXkXuT0d2nGZ+mu6iuzhma/1/wdIFgol9lzb3RnAbbHSMzNGPM6jnGBKU..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/firstPageConfig/configDetail",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "ee56c11a962c39414ff46f22c8ea2b5a-659cd4f1f0b68029680f5a8a943bb0ed",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "ae6c8278a6eab0cdc7f44e236d8558e9",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "19",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "3",
+            "date": "Fri, 31 Jul 2026 14:51:44 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS92MrOhwJWL8W4lt9JKiMPGOroILUENRjFu0ZbbXW1PRMpOLYeEftQjA4dbOzSa9CkAsmH7VqXUsQGcS2uq1Oht2lYeGWXnXZeJjNN3pR0mRkNLbL6rb6..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/version/appapi/v1/grayRelease/findLastVersion",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"i/VJGby3ANLFW1eu/K8PQpabSi5Y5bWcnbm0uf++Vxq4OPdGnm/jm9vF64h9Bxso\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "4d7394292b924ecaad7bd017d37f986e-b087e83c568946457a650a3892c4fe12",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "fb0497e4232df10ad25d3abc18997699",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "11",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "4",
+            "date": "Fri, 31 Jul 2026 14:51:45 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS90lYbS6esmlkCWi6/GqJjSIJqMtqG68XE94Nk1LpHSUZeZfd4t33Uty0w4i8bzKmN6Wn2XqgV8IYN2hABKvENL8Gy3gICZlv7fo2y2ILdwgfKbARpLOI..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "923e49365950aac879070f44e15d0531-70852da54be8b407c3ab7a411837e5c2",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "00000000000000000000000000000000",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "28",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "5",
+            "date": "Fri, 31 Jul 2026 14:51:45 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9xaxHPPurEr/P6q8QZIvVHUReO4ilHp3QzHWhb0aVcp290JP0UP7DQIY6xPN/GRDDqsNRpmweWeeSuqoL5AIDA6kM4d+s9pXPkfI73yPfddEPY0ZT0Lb..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"nYtM95Aeo4pcg61wKpKVWt64BdZOj/OXDsk/fXrTsTo5gQym7zeS21baMZonnfhTHvdI2IVWydLja9AN4Hhf8Q==\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "923e49365950aac879070f44e15d0531-db730dc80786207949e38e58c1d1bdeb",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "dc2aec09b1a367b6930e4e0b15901abd",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "1380",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "4",
+            "date": "Fri, 31 Jul 2026 14:51:46 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS91cTXnUCyMlAY1BEIasyJvlV5o4Chyu6thu7an6SFB0nn+Ix6RtcuWQQCEqm0xHloONoWQlUxWT52is1WsEyYneoEp02BrdDMNYNPEIsNwFyuPWh0DAQ..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        }
+      ],
+      "count": 8
+    },
+    "新闻资讯": {
+      "url": "https://deepal.com.cn/news",
+      "api_requests": [
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "e070b1b2ba1a44bc1ad7babf7ee7bd1e-2ceb13fe8d2a115391edaa8a617d7be8",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "63a4312ce8f3563dfa3872a64a3cf4be",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "8",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "3",
+            "date": "Fri, 31 Jul 2026 14:51:59 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS98RBil55++FfQ7GUYbtyOLxJOFZGMhG1W2UUIM2wpP1wJi/Apuf9bqH0g0yEvH3H9cF+NpLC1r1+9sNndh/Gty/Z5G+LtTfCqZ2Pk/AtUMXKVh5pdpVT..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "0794fc2d0718c025d2721859bc5d0b45-8a416b34e677c93bc99e87124442799c",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "00000000000000000000000000000000",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "12",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "3",
+            "date": "Fri, 31 Jul 2026 14:51:59 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9z/rRLcaFLV+1rS2ZepOFbq9hTY+yz8uPr9zaGmEALMpVI7zm2Z4ULjFhRcrdrXLCHWfiI4tl0SPObKdQRukd41ga0qewgpo9S43GpGHSQwDU1ClGmOu..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "0794fc2d0718c025d2721859bc5d0b45-80c4cac06b751c2961815712f6cdcd97",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "b5548791cce743baddf1b8d9ff55064d",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "15",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "3",
+            "date": "Fri, 31 Jul 2026 14:51:59 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS96an1yaExqhesJhKGT+6DbLfCFkVpkIJLV9WURkKDaC0ZvB7Qrrn2EZa81HaoD74ZtLCsd8bJUIb2s3d9PS0Ra+ypJJff6DdfId9Cv7EfxTZn5WAU0+F..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"TX5ML+k/syRtjRCaMkKPuFM7aQmo1xlYXMdvPDG/37ispQPWbXYJmlx+66xNlAAY\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "224e65b1b5adbfdcb496a616c6958a01-96e4d63384f84fa05cd6a7b710413a4c",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "5daaf74d52212035727fd4be75fe12a9",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "12",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "12",
+            "date": "Fri, 31 Jul 2026 14:52:00 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "wxobe0DQGM34tP42nrAhOmGlsKkTevDQKjueZyj+DDGJveeiNZDgiCfqEIrrtDsiS/55+8RLkve7fOJW78zfKyqfW4crti7HimxcvgwtLA7IBQX8dtBovG7pxVGkjMDGud1tcN4Ruk7Dr+fR94tOhho+tX0iBXKmPNpyNRWmoqLN2AWFDBa3rwbP8ezGff/uDPzsw3Fm..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"nYtM95Aeo4pcg61wKpKVWt64BdZOj/OXDsk/fXrTsTo5gQym7zeS21baMZonnfhTHvdI2IVWydLja9AN4Hhf8Q==\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "224e65b1b5adbfdcb496a616c6958a01-2d41ff248e12889d08f43e433d3c9d73",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "27d60ec8a22fad1648d9640ddd068989",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "1291",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "10",
+            "date": "Fri, 31 Jul 2026 14:52:01 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS99v2eaLoRxy1zXFAauFcydXKAtcSnIKKExNINddSqUHmgwCez57sgw2bswXHVqAjAysrju327YEx5yiLPpExs8cBMzoK2XlSKhLMO+RD3qv1hfLWhwM/..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "f8a3a6650cba68364f5adda06bd499a9-5ad33ac86ff1e2b78b82ca1170261648",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "00000000000000000000000000000000",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "34",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "13",
+            "date": "Fri, 31 Jul 2026 14:52:01 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9zDwl4n+tAQjtz8unnPQaajBbu/GS1rai3vSeeASxu9VToy3t2RQoq5iZPAmaNvTnqey0zF/ayPmbXf3QjXq4pS7iJ9vSo931eklG6aBygRaj31s2Tpz..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        }
+      ],
+      "count": 6
+    },
+    "车型系列": {
+      "url": "https://deepal.com.cn/car-series",
+      "api_requests": [
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "d69bc1fb0f1ccbe8573ece0d40ee70c3-78844f7f9f2941e2231fce6942ed2350",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "9a360a42d175be1f0900804d5949cf09",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "7",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "7",
+            "date": "Fri, 31 Jul 2026 14:52:13 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS95aenNAyez56zeuq+1TitK4RTQqw0DfWZLPU1NVV00Hnyt27UAyBaW73THmo3k32s6pRUcr45RslJiRWpB00hf/KRc2Htw9EilOOmvkm9j68wrkMEdpK..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "ba4c982aa939355b9666699c3d66ff17-b7a0e33773a912f6194976a57b305f93",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "5788024e11731bbaf94574f351d75a31",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "13",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "7",
+            "date": "Fri, 31 Jul 2026 14:52:13 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9xF470WzOEhipInRJppckMXrmmETxRdqiEjovXNOVhNHiIrXFQ9ddY3iMZZutoixs7E0vzydXCvKn7XVm8O38XWRdeuqTvcDhxrUHGVd/MlcH0A2TrUy..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "edc156726945ebbbf20738977af59713-2119d69bd5032b7d1fd0efab71b02e71",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "488d8c31cfe86cb3a22c5fc270d85e9f",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "12",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "7",
+            "date": "Fri, 31 Jul 2026 14:52:13 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9zcswlrRp7n8h4xyiX2W3+czYnu3oEGh2ipSY5t3plNPjUztCh2sX7GtUV3VvpsfBWfLhkt/EfE7yJJCDK9hQwUDb8fgXvbRtxojV+toVtgKHwKAyb7w..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"TX5ML+k/syRtjRCaMkKPuCS6lOrxUwWCuTSzN6DF+KIDsFgMNnFExL5RBx86iqwy\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "3e8f927abcd369a7c2f5677b58ff498a-87c59b997842f89e47cbf67e57c33ff6",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "02c27c827799269b9baec68cadb0ba92",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "14",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "9",
+            "date": "Fri, 31 Jul 2026 14:52:13 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "wxobe0DQGM34tP42nrAhOmGlsKkTevDQKjueZyj+DDGJveeiNZDgiCfqEIrrtDsiukwKslMzXoO14plsvFeZAsMngyRLNyBnJo/Rb85A1a+4wnxqbkXWhXBuXhBTeXY/2pp95i6E0tdTeOOMnPtrJE83xZUcMypP0X88nJSeqoqPrbrgZnUl5vFh6iGK4uWSe81lZck8..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/firstPageConfig/configDetail",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "d69bc1fb0f1ccbe8573ece0d40ee70c3-5cc38e4cb9ae62f3080e09b2b396a8c1",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "0322499d1dcbb780819cf310791d1cc4",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "18",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "3",
+            "date": "Fri, 31 Jul 2026 14:52:13 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS93VcWdkMVW8FTPf76ZV+wpV2NRyAsQ/5utxiiy0awPAYquYbMWoUFBw2ekOK/5GXmTDyqytfplwRTky1/by+gy8ApeNZlVvmFN48avr76s3U41AoEVb7..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/version/appapi/v1/grayRelease/findLastVersion",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"i/VJGby3ANLFW1eu/K8PQpabSi5Y5bWcnbm0uf++Vxq4OPdGnm/jm9vF64h9Bxso\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "61ec9f9b288c13b0126a858ddfda750b-30cb604d83c2c72035cfcaf982adf9db",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "5ce12b08dcbcc99d3325f9fc13f94285",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "13",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "10",
+            "date": "Fri, 31 Jul 2026 14:52:13 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS94ji6oDFHncxBTmXHioL8HdEGjfV4yOQFasbelon05VGdVNtR7VOFMASl1HuTAnTvvzOSmrOZY0Ep9W/bJdXmczaNTrufWx6H3jaoXTtSjeBxw10Tk96..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "f42ff03174d6a04fba7c9c1b20a6d99d-ab86e5dc8e2d6dd74b62d5dfc83ab5ca",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "510ee1ccbbe52ac2695d91e38adcbaed",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "34",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "12",
+            "date": "Fri, 31 Jul 2026 14:52:13 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS96w7LFC+y0H8MpMH4i7s/Zz5kgkHwwBM5oDYmvIB6VK1h6YkBsTjq+msCcAqlpfMN/bSzOFcSjhimZvIgmUENGPWOho5CkfKoNkVJvP/1+JkI5Ktj4cz..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"nYtM95Aeo4pcg61wKpKVWt64BdZOj/OXDsk/fXrTsTo5gQym7zeS21baMZonnfhTHvdI2IVWydLja9AN4Hhf8Q==\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "61ec9f9b288c13b0126a858ddfda750b-295e065c8f066ab67a96d775a144c9a4",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "70b24464ce7597a660f72daf50f93fe9",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "1344",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "4",
+            "date": "Fri, 31 Jul 2026 14:52:14 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9yqejUwrjsAHLgdxsRYoX/7wYcwiLBKmD/H6+YIurfeWZybErDdXawIO5o38hxWTFRwV2OKle7kCy328i7JrNmqRK4O9sZzSNu+kslvYp2UHYQLqGpvP..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        }
+      ],
+      "count": 8
+    },
+    "车型配置": {
+      "url": "https://deepal.com.cn/configuration",
+      "api_requests": [
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "de1cf291c7f9c48293849ebac319e34d-34118e6c3c55e6355e55e2bf80211bdf",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "e57f8ce87942e67fe1c9b66e6719fd11",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "6",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "8",
+            "date": "Fri, 31 Jul 2026 14:52:22 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS93JbBu3EtISPSMQkzTDX0gbgC3N1t621E2Pm5ZL/jTnov8Q80Pwh22DjQkQPvARWmWSdiu43Xtrxdg/429MoUxiinZd763va1QKW0UTpA5RMpvVftU98..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "b51978df1995b439fd44ee90985ac292-4b74fe04ca4fe87fdadceb4a1cce80d2",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "00000000000000000000000000000000",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "6",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "8",
+            "date": "Fri, 31 Jul 2026 14:52:22 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS94zWDDjCGyeBX1nv9N45vgNnIZobiA8Fzfnjxs55yuAWyvYVV2Cd8UZ8ovNyLUdxiiEAizWPrC8hzS4bBX9/CrzHC/pSP2U7ZbBp7iTbEv7Hv3AcYSZK..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "b51978df1995b439fd44ee90985ac292-89abf220a73aa98991248e25e217aaad",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "b79b8bffdb56d1be11b78bc027213935",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "7",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "4",
+            "date": "Fri, 31 Jul 2026 14:52:22 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9wclznNd1kzIDZq5PxiwZd499qnEMtENY9PKmu1NQ0g+iiopwqPlNS53PiOCU5L8LvSDpUdGDWTo+blZVJ9DTHYPCY7q+tysz231K/x1vHYNCpJATnRr..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/firstPageConfig/configDetail",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "5b89856cf959df9c2b6069a199a49e04-2877f5e7e225678e4b96cf0ffb4d8aaa",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "00000000000000000000000000000000",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "13",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "6",
+            "date": "Fri, 31 Jul 2026 14:52:22 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS98C9LhVAOIM+zbi14tR4efPCQdhwadIDazauBTN+YKmGC6eXqJQg3IsQBYRYAnPADMs4pDnjoFL4nPtPLPJjSVdvNcXzxqEGhhyrHIQ/iMphdMD9wCxO..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"TX5ML+k/syRtjRCaMkKPuCS6lOrxUwWCuTSzN6DF+KIDsFgMNnFExL5RBx86iqwy\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "de1cf291c7f9c48293849ebac319e34d-15e7c72a8db087c13793b7d580bf9e37",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "a4cac4c67a027c92f2c5e7261cdc556d",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "11",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "8",
+            "date": "Fri, 31 Jul 2026 14:52:22 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "wxobe0DQGM34tP42nrAhOmGlsKkTevDQKjueZyj+DDGJveeiNZDgiCfqEIrrtDsi2EVC0Frd1W2XL2uswn+bBalLmGqq1hMQR/Xp3usRQnOlIVsuUwKKD0Ocf90s9qt/MxGjF8vwgorl8snioEUt6vD21nrsBBOfVUumU3oZ1VoS9ukYdmrr+4YNG/CeAnyks2SSZjxw..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/version/appapi/v1/grayRelease/findLastVersion",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"i/VJGby3ANLFW1eu/K8PQpabSi5Y5bWcnbm0uf++Vxq4OPdGnm/jm9vF64h9Bxso\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "f5b1b9a15530cb69fc15b24b56d2e237-eaa46a540037bd07bbf406bb96ea0d34",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "cd444b9ad8b33c567776a4a6aa67597c",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "11",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "10",
+            "date": "Fri, 31 Jul 2026 14:52:22 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS94WICZqlPbF2LnLTmi1Pnyl+iYSqiHiL82jUrV/KUdnQrfOVn4ZjDHPixB7eOrer/8vZI8Mg+WJ+uxxoFKsGFv6HPNrWIDKxIsuoEmuQEGrelT51K1E5..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "f5b1b9a15530cb69fc15b24b56d2e237-b9ab9b1cdfa1541fa3bdca1c92c70a9d",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "43afef1dc954e16a8853c40de68dd9f8",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "23",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "5",
+            "date": "Fri, 31 Jul 2026 14:52:22 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS94zlcia8dMGiSMaVzPZ3OX/ygA8Z1MN6ic8J8UY8/PcYfyYmJUifCDI2/pPsC5RKAkEqHv4j4zT54KfDdL5aNBjPdb2Ut5Gmmn1tHONeIADNr4krScfE..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"nYtM95Aeo4pcg61wKpKVWt64BdZOj/OXDsk/fXrTsTo5gQym7zeS21baMZonnfhTHvdI2IVWydLja9AN4Hhf8Q==\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "566f235457d7c46fd1f4f4b393ededda-c16b046b83b449ea8415bf7bda69d7ad",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "00000000000000000000000000000000",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "1303",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "11",
+            "date": "Fri, 31 Jul 2026 14:52:23 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS90iwSePOL6w9Pk6PAxLLwJi6xlil8C/NDOZEWq/XWq/czO4DDBUqR1E+eXnIgA74rhhGjb07TW+mtdTo4QtorQF+6Mnnw6WZjRwYPj08ZYdSpRjdB4Bi..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        }
+      ],
+      "count": 8
+    },
+    "关于深蓝": {
+      "url": "https://deepal.com.cn/about",
+      "api_requests": [
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "a926cc0b36035e8fdac3b16e9ac22259-1120fde3eddf84b236ea16da3916ed92",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "7f475d3eb52a49f85754c37c52ae50c9",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "6",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "8",
+            "date": "Fri, 31 Jul 2026 14:52:31 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS97NvPFi41VKuXmvqNl1JGC3mxn+QbSsU4zp/Ht2oHYD7oz1GuT7JV8Qmy4h4XW8RY3eJo1iFUcnupDE83gMW3OGkjSiHmmlXFelpxqnYbe9cJpn9P/jx..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "184aa30174aadc3233bb329d9ae7e895-27429ea0bc95a951387c7348b209b886",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "00000000000000000000000000000000",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "12",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "8",
+            "date": "Fri, 31 Jul 2026 14:52:31 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS974sQykWtGWRJ7rGoWREBbRmnpG5Geq2xwHB+NVaJMKXIw43TjrQNTOx6phZuT71sYZSbwoLc2MPf5PeUUmnSI85yiyMwNWGaXnaRo+x7P5fm+OvzjKz..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "e23f1e833adf0bbf4e05fa2146656544-d80d47f79ce32ab28a80c918d092e84b",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "dcf6ae964391fcef3c3894d4a31aa517",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "14",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "2",
+            "date": "Fri, 31 Jul 2026 14:52:31 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS94UfVyY+jL1vWH+nyV68USfDJYQ/HHshgbPUbGUYhztxb0rouOJa8Mey/akvhdpnmb3YSYWgbw6XAEI/qwMyEMe8DQXkpTkRSpOenhpGgK3fXrl9n7yQ..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/firstPageConfig/configDetail",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "e23f1e833adf0bbf4e05fa2146656544-feed72c511d4fd5e669bdccc093e3977",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "47cfe9566511309dd2ac38ae579a1abc",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "16",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "5",
+            "date": "Fri, 31 Jul 2026 14:52:31 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9yqy909y3M7YaP7xQEkbko4EdvMwyv3Vbbd9VbR00bkEun38S8lowmLBdyTrP2GG5MZPZyqxLErpRVflPXWXcNxlwj31EJf7+6g1OHyd4TkOPehvWtWi..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"TX5ML+k/syRtjRCaMkKPuCS6lOrxUwWCuTSzN6DF+KIDsFgMNnFExL5RBx86iqwy\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "02d3da0d64556864eda61eba117f1cb3-97a9fb85a4958a1fb4dfbad8eb710912",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "2d2a6381d3459ccea9f87057e3b599f8",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "12",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "4",
+            "date": "Fri, 31 Jul 2026 14:52:31 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "wxobe0DQGM34tP42nrAhOmGlsKkTevDQKjueZyj+DDGJveeiNZDgiCfqEIrrtDsiGl9en4l/+KbDOVyg5L3jA0DpWD+VYAtoW52PdypATQTsGd8yONLnPb7gGU23NTK8ZXhicupbyiPsuwOOEg8UHRepeFl3GhT6QdFpNVX5UH7SfIvg9gL0EImjMRmI/+3I4sKzr/1f..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/version/appapi/v1/grayRelease/findLastVersion",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"i/VJGby3ANLFW1eu/K8PQpabSi5Y5bWcnbm0uf++Vxq4OPdGnm/jm9vF64h9Bxso\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "6efe7aff63e49c14ea2913926a18adb5-1d8f406341e68bd51cfb049ab93d8530",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "dd663b07a2c182e1319f3f33e4ef4484",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "13",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "6",
+            "date": "Fri, 31 Jul 2026 14:52:31 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS90CdepFoFEjkDWeT/vIDHffQPM72UiYVpjxjpmXEyKy9CzQq+uaWerYySIs/xI4Gi5dQKr+Qwcn4VVA4PkcmdJJEs8qw+bj0ciMFoCcpb6w9JaFZ4tuO..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "f21ee211af101b5530c0d5812eb503ca-a4562fda1987a828a68d38e253d2d3b9",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "795475bbb0e5ec1ea4abdd80c4555ea3",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "54",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "11",
+            "date": "Fri, 31 Jul 2026 14:52:31 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9z70AOqd59TGUDKpa3M7wjKuFp+jCxzuz4k+TRRvigJx4C/BloI11QDU52yEjYGnxyIxH/K1F0fiX4lda7Fn1fGkg8lTbs04+AZ1uuTHp+oWeB+luXgJ..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"nYtM95Aeo4pcg61wKpKVWt64BdZOj/OXDsk/fXrTsTo5gQym7zeS21baMZonnfhTHvdI2IVWydLja9AN4Hhf8Q==\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "6efe7aff63e49c14ea2913926a18adb5-96c993303bdbfa1ac55d7a84f33f2146",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "24d7cc4789be9a4a4682ca4ce65cdfd5",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "1340",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "11",
+            "date": "Fri, 31 Jul 2026 14:52:32 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS99KByDLd6GFNOIXVoCO1jnwE7D3B3+7e0z3khLXQLmsKMa5K2vJNHNFx5BNfSfTlv30/qOlIH/WETa7p+EuiVZEWtLwrRM5PFAn7QfU2kuqSWoqDfo+y..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        }
+      ],
+      "count": 8
+    },
+    "联系我们": {
+      "url": "https://deepal.com.cn/contact",
+      "api_requests": [
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "f23092b82c280c1c11a25cb75b65ecfe-29e9da2986d170ef8d2660da35b7b98e",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "c57ccd1a2372fb03af5048dfa05292cd",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "6",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "8",
+            "date": "Fri, 31 Jul 2026 14:52:40 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS94QFsSLJKR7oPAaSYImJbDmMWnKVu3BD3Lof8dqHv1Ekg6rb0RKVpGJqgXgduBmhZc8cwjBMfzYtC4J+5++tyTvhD+w594eiFKbc6cJRA2lcyHYk6hND..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "c5abc16acea4bfe0cf4dd51f40d77519-100014d3e5aedda46c7d3e1d67484492",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "1b9ad7c75cbe271d9b194fc991c14552",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "8",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "2",
+            "date": "Fri, 31 Jul 2026 14:52:40 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS9+a7tISt3o8XghhNFeKKGtGu0Snc5ZmpmtgjRVeM7K6n8BpG32YGt+1t4DwQimuk9TazuNiyV1D2RWJQhtx8xwvD0MYycLkznGjdf4+N9FQHvg6CGJXp..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "c5abc16acea4bfe0cf4dd51f40d77519-422b64e3bc1f0915e96858a769acda3a",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "7adf8cc8fa97d9d479c1c61f4c2da630",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "21",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "4",
+            "date": "Fri, 31 Jul 2026 14:52:40 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS998TAHVraWCAFJg7Erx3aaHWT7xzoXtbPi2+xS7ArgCbcQUIeRuiXuDt9vo8BChrdb2YuFmaAvoAcVSVS4O6iJaQz1PCF0fLlsjQ9D3MjZXNPxTwIbfN..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"TX5ML+k/syRtjRCaMkKPuCS6lOrxUwWCuTSzN6DF+KIDsFgMNnFExL5RBx86iqwy\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "e5f8f8a15d447004741b5dd430d858e4-86580fabb3ea56a463716a3ba6730c0b",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "cd8f1acee1c5071ef38ecb2ddf08d584",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "13",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "4",
+            "date": "Fri, 31 Jul 2026 14:52:40 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "wxobe0DQGM34tP42nrAhOmGlsKkTevDQKjueZyj+DDGJveeiNZDgiCfqEIrrtDsicZGBdzCMLNbiftlkLax+sgWFcVnw0kc19wmvFQl+puDeTlIKqpWpSR2JqGx8ihiyROsYP6BVR/I+nmtYWvU/x/JLPYHrbYAiUMcEpVnmRB2GzE+ujBGQhp64n5bcLEHQ16JOWGRq..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/firstPageConfig/configDetail",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "f23092b82c280c1c11a25cb75b65ecfe-eec6554a5b0c54e8c82cfdbf2ead91ac",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "d752c36423c679a604605576d7e4f02d",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "13",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "4",
+            "date": "Fri, 31 Jul 2026 14:52:40 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS94QFsSLJKR7oPAaSYImJbDl/5NLkyN+pXaC1m/pOMC8rqYRemLJYHo+7asJCf4B7VtXxryYuq2AnWCtROBsTNU31yGC+lHBY1B0TdPPgg4TXR151wGmi..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/version/appapi/v1/grayRelease/findLastVersion",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"i/VJGby3ANLFW1eu/K8PQpabSi5Y5bWcnbm0uf++Vxq4OPdGnm/jm9vF64h9Bxso\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "5e8acc9d84f78bfb405891d85e117fd1-cf78a63ad1745fec8849d9597e02df84",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "cc0f2a2086e6db7deb5d0144f852d8b6",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "10",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "5",
+            "date": "Fri, 31 Jul 2026 14:52:40 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS90OTY+KQh5LXkRv6Or9zL+oADN+iTgE0etrbBdgE2MkecWn85tpXNDOm7keYIUDufeMF//rRMfHG3I/ZCkxD6yV9mLztMk194Sa/mf9smddwWt6dQQ/8..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+          "method": "GET",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": null,
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "eb7d8a1413e90f4f22ebb1f37d590ccc-5412c57c1a3494138033b0b53e5eaab6",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "0e92ea2d67944b6efe4c9db726271eb6",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "29",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "5",
+            "date": "Fri, 31 Jul 2026 14:52:40 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS91BK58pb1neYy9aWQ+Om6xz8wDbfdw77gpNyBbqXfDXITiBA8klM0SQbXhmeiWYdlOmFgJcX7kPqR09sZJlPp1ATmREtnIcQNRuZwKIPlTIsg+XRtAVY..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        },
+        {
+          "url": "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+          "method": "POST",
+          "resource_type": "xhr",
+          "request_headers": {
+            "sec-ch-ua-platform": "\"macOS\"",
+            "referer": "https://deepal.com.cn/",
+            "fingerprint": "f6ce31d0e4783179cd88fde3b6a5c885",
+            "sec-ch-ua": "\"HeadlessChrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "webtype": "h5",
+            "sec-ch-ua-mobile": "?0",
+            "apptype": "android",
+            "x-sl-ag-qf-5b689ecc": "true",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+          },
+          "post_data": "{\"encStr\":\"nYtM95Aeo4pcg61wKpKVWt64BdZOj/OXDsk/fXrTsTo5gQym7zeS21baMZonnfhTHvdI2IVWydLja9AN4Hhf8Q==\"}",
+          "status": 200,
+          "response_headers": {
+            "x-waf-uuid": "5e8acc9d84f78bfb405891d85e117fd1-6b02df8c11afbb59b3b04f2f610095fc",
+            "access-control-expose-headers": "*",
+            "x-sl-ag-sf-72a1f3c8": "true",
+            "webtype": "h5",
+            "access-control-allow-credentials": "true",
+            "x-trace-id": "0f2304992cdb519ac0de66ec246ae8f8",
+            "via": "kong/2.5.1",
+            "x-kong-upstream-latency": "1350",
+            "access-control-allow-origin": "https://deepal.com.cn",
+            "x-kong-proxy-latency": "2",
+            "date": "Fri, 31 Jul 2026 14:52:41 GMT",
+            "content-type": "application/json",
+            "vary": "Origin",
+            "x-sl-ag-gf-1e3d5c7b": "true"
+          },
+          "response_is_json": true,
+          "response_sample": {
+            "encStr": "9xN4P6ujSKt/VtAewcKViU+l6W5UhB5YOiAV+mUjIr7ZTC8nNEFGoojKuWSrXT+5msjNtYBo7AakzMl0STyS90GC6rwcZvM1ksN8gp6Kchkk+ewYunQugNjuc2/T1V1YK2t4vB/r0K0FetymOBDDx0MtX75lcinF2R66rcgpj5VJQgjY03fFvr6tcsET4TxwUFHa0cIA..."
+          },
+          "response_keys": [
+            "encStr"
+          ]
+        }
+      ],
+      "count": 8
+    }
+  },
+  "chunks": [
+    {
+      "chunk_url": "https://deepal.com.cn/20260715149/p__news__index.async.js",
+      "api_urls": [],
+      "base_urls": [],
+      "request_paths": []
+    },
+    {
+      "chunk_url": "https://deepal.com.cn/20260715149/p__car-series__index.async.js",
+      "api_urls": [],
+      "base_urls": [],
+      "request_paths": []
+    },
+    {
+      "chunk_url": "https://deepal.com.cn/20260715149/p__configuration__index.async.js",
+      "api_urls": [],
+      "base_urls": [],
+      "request_paths": []
+    }
+  ],
+  "summary": {
+    "total_api_requests": 46,
+    "unique_api_urls": [
+      "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+      "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+      "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+      "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/firstPageConfig/configDetail",
+      "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+      "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+      "https://app-api.deepal.com.cn/version/appapi/v1/grayRelease/findLastVersion",
+      "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature"
+    ],
+    "by_domain": {
+      "app-api.deepal.com.cn": [
+        "https://app-api.deepal.com.cn/appapi/v1/m_app/article/listWeb",
+        "https://app-api.deepal.com.cn/cms/appapi/v1/agreement/getNewCmsAgreement/unlogin/webPrivacyAgreement",
+        "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/carSeriesTab",
+        "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/firstPageConfig/configDetail",
+        "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=Htaph2BbcegIZlXuQzLdAhoQg%252Fbcy5YRtL8VKbsV3K0%253D",
+        "https://app-api.deepal.com.cn/cms/appapi/v1/cmsow/universal/investmentDetail?encStr=oxhoXlIadrw875XHRbAu84UfTS98SzH5TDCoxCb96cA%253D",
+        "https://app-api.deepal.com.cn/version/appapi/v1/grayRelease/findLastVersion",
+        "https://app-api.deepal.com.cn/wechat/appapi/v1/jsapi/urlSignature"
+      ]
+    }
+  }
+}
