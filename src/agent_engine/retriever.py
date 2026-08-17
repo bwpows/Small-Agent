@@ -1,19 +1,21 @@
 import math
+import logging
 
 from agent_engine.llm_client import get_embedding_client
 from agent_engine.agents.registry import AGENT_ROSTER
 
+logger = logging.getLogger("retriever")
+
 _AGENT_VECTOR_CACHE = {} 
 
 def get_embedding(text: str) -> list:
-    """调用嵌入服务获取文本的向量表示（自动适配 本地 Ollama / 云端 OpenAI）"""
-    try:
-        client, model_name = get_embedding_client()
-        response = client.embeddings.create(model=model_name, input=text)
-        return response.data[0].embedding
-    except Exception as e:
-        print(f"⚠️ 向量化失败: {e}")
-        return []
+    """调用嵌入服务获取文本的向量表示（自动适配 本地 Ollama / 云端 OpenAI）
+
+    失败则抛出异常（不再静默返回空列表），便于上层 upsert 感知并重试/跳过。
+    """
+    client, model_name = get_embedding_client()
+    response = client.embeddings.create(model=model_name, input=text)
+    return response.data[0].embedding
     
 def cosine_similarity(v1: list, v2: list) -> float:
     """纯 Python 实现的余弦相似度计算 (零外部依赖)"""
@@ -31,7 +33,7 @@ def retrieve_top_agents(user_goal: str, top_k: int = 3) -> dict:
     
     # 1. 启动时：初始化所有专家的向量缓存
     if not _AGENT_VECTOR_CACHE:
-        print("🧠 [RAG] 正在初始化专家向量库缓存...")
+        logger.info("[RAG] 正在初始化专家向量库缓存...")
         for role_id, info in AGENT_ROSTER.items():
             # 将“角色名 + 描述”组合起来生成向量，命中率更高
             text_to_embed = f"{role_id} {info['desc']}"
@@ -54,8 +56,8 @@ def retrieve_top_agents(user_goal: str, top_k: int = 3) -> dict:
     # 4. 组装中标名单
     matched_agents = {role: AGENT_ROSTER[role] for role in sorted_roles}
     
-    print(f"🎯 [RAG] 智能检索完毕。匹配得分：")
+    logger.info(f"[RAG] 智能检索完毕，命中 Top{top_k}：{', '.join(sorted_roles)}")
     for r in sorted_roles:
-        print(f"   - {r}: {scores[r]:.4f}")
+        logger.debug(f"   - {r}: {scores[r]:.4f}")
         
     return matched_agents

@@ -3,7 +3,10 @@ import json
 import datetime
 import re
 import traceback
+import logging
 from typing import TYPE_CHECKING
+
+logger = logging.getLogger("agents.base_agent")
 from agent_engine.llm_client import get_llm_client
 from agent_engine.json_utils import robust_parse
 from agent_engine.tracing import AgentTracer
@@ -45,7 +48,7 @@ class BaseAgent:
             # 严格按照白名单过滤工具，没授权的工具在内存里根本不存在
             self.allowed_tools = [t for t in all_tools if t["function"]["name"] in allowed_tool_names]
             
-        print(f"✅ 专家 [{self.agent_name}] 注册完毕，已挂载 {len(self.allowed_tools)} 个专属工具。")
+        logger.info(f"专家 [{self.agent_name}] 注册完毕，已挂载 {len(self.allowed_tools)} 个专属工具。")
 
     def _build_system_prompt(self, parsed_memories: list) -> str:
         """构建融合了长期记忆与专家设定的系统提示词"""
@@ -229,7 +232,8 @@ class BaseAgent:
                                 tool_data = json.loads(match2.group(1).strip())
                                 func_name = tool_data.get("name")
                                 args = tool_data.get("arguments", {})
-                            except: pass
+                            except (json.JSONDecodeError, AttributeError) as e:
+                                logger.debug(f"解析工具调用 JSON 失败: {e}")
                     if func_name:
                         tool_called_this_step = True
                         self._tracer.log_tool_call(func_name, args)

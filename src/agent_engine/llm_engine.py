@@ -137,7 +137,7 @@ def _make_result(content, usage=None, reasoning="", thinking_count=0):
     }
 
 
-def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_status=None, forced_tools=None):
+def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_status=None, forced_tools=None, blocked_tools=None):
     current_time = datetime.datetime.now().strftime("%Y年%m月%d日 %H:%M")
     memory_text = "\n".join([f"- {m['text']}" for m in parsed_memories]) if parsed_memories else "无相关长期记忆。"
     
@@ -176,6 +176,12 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
         messages.append({"role": "system", "content": f"🚨 用户已强制指定使用以下工具：【{tool_names}】。请优先使用这些工具来完成任务！"})
     else:
         active_tools = all_tools
+
+    # 🚫 业务语料命中时，屏蔽联网搜索等外部工具，强制使用已注入语料
+    if blocked_tools and len(blocked_tools) > 0:
+        active_tools = [t for t in active_tools if t["function"]["name"] not in blocked_tools]
+        blocked_names = ", ".join(blocked_tools)
+        messages.append({"role": "system", "content": f"🚫 禁止调用以下工具：【{blocked_names}】。已为你注入「业务语料检索结果」，请仅基于该语料回答，不要联网搜索或编造库外信息。"})
 
     if recent_history:
         for msg in recent_history:
@@ -250,12 +256,13 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
                             tool_data = json.loads(match2.group(1).strip())
                             func_name = tool_data.get("name")
                             args = tool_data.get("arguments", {})
-                        except: pass
+                        except (json.JSONDecodeError, AttributeError) as e:
+                            logger.debug(f"解析工具调用 JSON 失败: {e}")
                 if func_name: tool_called_this_step = True
 
             # 🌟 工具执行逻辑 🌟
             if tool_called_this_step and func_name:
-                print(f"⚙️ [循环回合 {step+1}] 执行工具: {func_name}, 参数: {args}")
+                logger.info(f"[循环回合 {step+1}] 执行工具: {func_name}, 参数: {args}")
                 
                 # 🌟 如果传入了 ui_status，把底层调用动态写回前端
                 if ui_status:
@@ -317,7 +324,7 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
                 ai_claims_fake_write = any(kw in content for kw in fake_write_claims)
                 
                 if ai_claims_fake_write and not actual_write_success:
-                    print(f"🚨 [第{step+1}回合] 拦截虚假写入！准备打回重做...")
+                    logger.warning(f"[第{step+1}回合] 拦截虚假写入！准备打回重做...")
                     if ui_status:
                         ui_status.write("🚨 拦截到虚假操作，正在强制重试...")
                     error_count += 1 
@@ -360,7 +367,7 @@ def generate_answer(user_input, recent_history, parsed_memories, web_info, ui_st
 # ==========================================
 # 🔄 SSE 流式版本 — 异步 generator
 # ==========================================
-async def generate_answer_stream(user_input, recent_history, parsed_memories, web_info, ui_status=None, forced_tools=None):
+async def generate_answer_stream(user_input, recent_history, parsed_memories, web_info, ui_status=None, forced_tools=None, blocked_tools=None):
     """
     流式版 `generate_answer`：异步 generator，逐 token 输出 SSE 事件。
     yield 格式:
@@ -407,6 +414,12 @@ async def generate_answer_stream(user_input, recent_history, parsed_memories, we
         messages.append({"role": "system", "content": f"🚨 用户已强制指定使用以下工具：【{tool_names}】。请优先使用这些工具来完成任务！"})
     else:
         active_tools = all_tools
+
+    # 🚫 业务语料命中时，屏蔽联网搜索等外部工具，强制使用已注入语料
+    if blocked_tools and len(blocked_tools) > 0:
+        active_tools = [t for t in active_tools if t["function"]["name"] not in blocked_tools]
+        blocked_names = ", ".join(blocked_tools)
+        messages.append({"role": "system", "content": f"🚫 禁止调用以下工具：【{blocked_names}】。已为你注入「业务语料检索结果」，请仅基于该语料回答，不要联网搜索或编造库外信息。"})
 
     if recent_history:
         for msg in recent_history:

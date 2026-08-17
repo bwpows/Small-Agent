@@ -391,7 +391,25 @@ def list_drive_files(limit=10, query=None):
 # ==========================================
 # 🚀 4. 传：文件上传工具
 # ==========================================
-def upload_file_to_drive(local_file_path, drive_filename=None):
+def _find_drive_file_id(service, filename, parent_folder_id=None):
+    """按文件名查找已有文件 ID（用于覆盖更新）。"""
+    q = f"name='{filename}' and trashed=false"
+    if parent_folder_id:
+        q += f" and '{parent_folder_id}' in parents"
+    files = service.files().list(
+        q=q, fields="files(id)", supportsAllDrives=True,
+        includeItemsFromAllDrives=True,
+    ).execute().get('files', [])
+    return files[0]['id'] if files else None
+
+
+def upload_file_to_drive(local_file_path, drive_filename=None, parent_folder_id=None):
+    """上传本地文件到 Google Drive。
+
+    parent_folder_id: 目标父文件夹 / 共享云端硬盘 ID（Service Account 必须上传到
+        共享位置，不能写到 My Drive 根目录）。不传则写到默认根（SA 场景会 403）。
+    若同名下已存在文件，则覆盖更新（保留原 ID），避免重复堆积。
+    """
     try:
         if not os.path.isabs(local_file_path):
             local_file_path = os.path.join(PROJECT_ROOT, local_file_path)
@@ -399,10 +417,22 @@ def upload_file_to_drive(local_file_path, drive_filename=None):
 
         creds = authenticate_drive()
         service = build('drive', 'v3', credentials=creds)
-        file_metadata = {'name': drive_filename or os.path.basename(local_file_path)}
+        name = drive_filename or os.path.basename(local_file_path)
+        file_metadata = {'name': name}
+        if parent_folder_id:
+            file_metadata['parents'] = [parent_folder_id]
         media = MediaFileUpload(local_file_path, resumable=True)
-        
-        file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+
+        existing_id = _find_drive_file_id(service, name, parent_folder_id)
+        if existing_id:
+            file = service.files().update(
+                fileId=existing_id, media_body=media, fields='id'
+            ).execute()
+            return f"✅ 覆盖更新成功，云端 ID: {file.get('id')}"
+        file = service.files().create(
+            body=file_metadata, media_body=media, fields='id',
+            supportsAllDrives=True,
+        ).execute()
         return f"✅ 上传成功，云端 ID: {file.get('id')}"
     except Exception as e:
         return f"❌ 上传失败: {str(e)}"
@@ -486,7 +516,8 @@ REGISTER_TOOLS = [
                     "type": "object",
                     "properties": {
                         "local_file_path": {"type": "string"},
-                        "drive_filename": {"type": "string"}
+                        "drive_filename": {"type": "string", "description": "上传后在 Drive 显示的文件名"},
+                        "parent_folder_id": {"type": "string", "description": "目标父文件夹/共享云端硬盘 ID。Service Account 必须上传到共享位置，否则报 403 storageQuotaExceeded"}
                     },
                     "required": ["local_file_path"]
                 }

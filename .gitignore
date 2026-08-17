@@ -36,3 +36,8 @@ web/
 
 # 一键脚本（临时文件）
 download_bm25.py
+
+# 本地语料库（由爬虫生成，含本地数据，不入库）
+corpus.db
+*.db
+_probe_*.py

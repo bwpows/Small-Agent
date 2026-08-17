@@ -44,6 +44,10 @@ class AssetRegistry(ABC):
         """列出所有已注册业务资产"""
         ...
 
+    def __contains__(self, name: str) -> bool:
+        """支持 `name in registry` 语法，便于调用方做业务名校验。"""
+        return self.get(name) is not None
+
     @abstractmethod
     def register(self, asset: BusinessAsset) -> None:
         """注册/更新一条业务资产"""

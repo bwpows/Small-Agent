@@ -20,9 +20,11 @@ def _auto_retrieve_web_corpus(user_input: str) -> str:
     """
     自动检索所有 web_corpus 类型业务，把命中的语料拼成可读文本注入给 LLM。
     仅当问题中包含业务别名（如「深蓝」）时才检索，避免无关问题污染上下文。
+    返回统一契约 RetrievalHit 的拼接文本（消费方读取 .text，无字段歧义）。
     """
     try:
         from agent_engine.business import get_business_layer
+        from agent_engine.business.schema import hits_to_web_info
         layer = get_business_layer()
         blocks = []
         for asset in layer.registry.list_all():
@@ -31,24 +33,35 @@ def _auto_retrieve_web_corpus(user_input: str) -> str:
             # 业务别名命中才检索（避免无关注入）
             if asset.alias not in user_input:
                 continue
+            # 车型代号动态获取（不再硬编码），与语料库保持一致，避免不同步
+            model_codes = layer.list_models(asset.alias)
+            asked_models = [m for m in model_codes if m in user_input]
+            # 版本级检索：识别问题中出现的版本名（如 560Max），缩小到具体版本
+            available_versions = layer.list_versions(asset.alias) if asked_models else []
+            asked_versions = [v for v in available_versions if v and v in user_input]
+
             try:
-                hits = layer.retrieve(asset.alias, user_input, top_k=5)
+                # 若问题指定了车型（或版本），在对应范围检索，避免被全局排序稀释
+                hits = layer.retrieve(
+                    asset.alias, user_input,
+                    top_k=10,
+                    model_filter=asked_models if asked_models else None,
+                    version_filter=asked_versions if asked_versions else None,
+                )
             except Exception as e:
                 logger.warning(f"检索业务 '{asset.alias}' 失败: {e}")
                 continue
             if not hits:
                 continue
-            lines = [f"### 来源：{asset.alias}（{asset.description}）"]
-            for i, h in enumerate(hits, 1):
-                title = h.get("title") or h.get("model") or "（无标题）"
-                date = h.get("date") or ""
-                url = h.get("url") or ""
-                text = (h.get("text") or "").strip()
-                lines.append(f"\n**片段 {i}**：{title}{(' | ' + date) if date else ''}")
-                if url:
-                    lines.append(f"来源链接：{url}")
-                lines.append(text)
-            blocks.append("\n".join(lines))
+
+            # 兜底：若识别到车型但 model_filter 未命中（数据未建），退化为全局检索后按车型过滤
+            if asked_models and not any(h.model in asked_models for h in hits):
+                fallback = layer.retrieve(asset.alias, user_input, top_k=10)
+                matched = [h for h in fallback if h.model in asked_models]
+                if matched:
+                    hits = matched[:5]
+
+            blocks.append(f"### 来源：{asset.alias}（{asset.description}）\n" + hits_to_web_info(hits))
         return "\n\n".join(blocks)
     except Exception as e:
         logger.warning(f"web_corpus 自动检索异常: {e}")
@@ -186,9 +199,34 @@ def chat_completion(
     parsed_memories = []
     # 自动检索 web_corpus 业务语料（如「深蓝」）注入回答参考
     web_info = _auto_retrieve_web_corpus(user_input)
+    # 命中 web_corpus 业务时，屏蔽联网搜索工具，强制使用本地语料
+    corpus_hit = bool(web_info and web_info.strip())
+    blocked_tools = ["search_web"] if corpus_hit else None
 
     # 注入 Drive 凭证（多租户）
     _inject_drive_creds(ctx)
+
+    # 命中业务语料时直接走单 Agent ReAct（不走 DAG 多任务，避免误调 web_searcher）
+    if corpus_hit:
+        logger.info("命中 web_corpus 业务，跳过 DAG，直接走 ReAct（屏蔽 search_web）")
+        from agent_engine.llm_engine import generate_answer
+        t0 = time.perf_counter()
+        result = generate_answer(
+            user_input=user_input,
+            recent_history=recent_history,
+            parsed_memories=parsed_memories,
+            web_info=web_info,
+            blocked_tools=blocked_tools,
+        )
+        elapsed_ms = int((time.perf_counter() - t0) * 1000)
+        if isinstance(result, str):
+            result = {"content": result, "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}, "reasoning": "", "thinking_count": 0}
+        save_message(ctx, "assistant", result["content"],
+                     usage=result.get("usage"),
+                     duration_ms=elapsed_ms,
+                     thinking_count=result.get("thinking_count", 0),
+                     reasoning_text=result.get("reasoning"))
+        return result
 
     # ── 尝试 DAG 多任务工作流 ──────────────────────────────
     t0 = time.perf_counter()
@@ -261,10 +299,50 @@ async def chat_completion_stream(
     parsed_memories = []
     # 自动检索 web_corpus 业务语料（如「深蓝」）注入回答参考
     web_info = _auto_retrieve_web_corpus(user_input)
+    # 命中 web_corpus 业务时，屏蔽联网搜索工具，强制使用本地语料
+    corpus_hit = bool(web_info and web_info.strip())
+    blocked_tools = ["search_web"] if corpus_hit else None
     _inject_drive_creds(ctx)
 
     t0 = time.perf_counter()
     trace_id = uuid.uuid4().hex[:16]  # 16 位短 ID，每次请求唯一
+
+    # 命中业务语料时直接走单 Agent 流式 ReAct（不走 DAG，避免误调 web_searcher）
+    if corpus_hit:
+        logger.info("命中 web_corpus 业务，跳过 DAG，直接走流式 ReAct（屏蔽 search_web）")
+        from agent_engine.llm_engine import generate_answer_stream
+        final_content = ""
+        final_usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
+        final_reasoning = ""
+        final_thinking_count = 0
+        try:
+            async for event in generate_answer_stream(
+                user_input=user_input,
+                recent_history=recent_history,
+                parsed_memories=parsed_memories,
+                web_info=web_info,
+                blocked_tools=blocked_tools,
+            ):
+                if event["type"] == "done":
+                    final_content = event.get("content", "")
+                    final_usage = event.get("usage", {})
+                    final_reasoning = event.get("reasoning", "")
+                    final_thinking_count = event.get("thinking_count", 0)
+                    elapsed_ms = int((time.perf_counter() - t0) * 1000)
+                    event["duration_ms"] = elapsed_ms
+                    event["trace_id"] = trace_id
+                yield f"event: {event['type']}\ndata: {json.dumps(event, ensure_ascii=False)}\n\n"
+        except Exception as e:
+            logger.error(f"流式引擎错误: {e}", exc_info=True)
+            yield f"event: error\ndata: {json.dumps({'content': str(e)}, ensure_ascii=False)}\n\n"
+        if final_content:
+            elapsed_ms = int((time.perf_counter() - t0) * 1000)
+            save_message(ctx, "assistant", final_content,
+                         usage=final_usage,
+                         duration_ms=elapsed_ms,
+                         thinking_count=final_thinking_count,
+                         reasoning_text=final_reasoning)
+        return
 
     # ── 尝试 DAG 多任务工作流 ──────────────────────────────
     dag_result = _try_dag_workflow(
